@@ -1,26 +1,26 @@
-package com.ssafy.homes.user.service;
+package com.ssafy.homes.member.service;
 
 import java.util.List;
 import java.util.Map;
 
-import com.ssafy.homes.user.model.UserDto;
+import com.ssafy.homes.member.model.MemberDto;
 
 
-public interface UserService {
+public interface MemberService {
 	
 	// 아이디 중복 체크
 	boolean idCheck(String userId) throws Exception;
 	//회원 가입
-	boolean joinMember(UserDto memberDto) throws Exception;
+	boolean joinMember(MemberDto memberDto) throws Exception;
 	//로그인
-	UserDto loginMember(UserDto userDto) throws Exception;
+	MemberDto loginMember(MemberDto memberDto) throws Exception;
 	
 	
 	
 	
 	
 	/**Token**/
-	public UserDto userInfo(String userid) throws Exception;
+	public MemberDto userInfo(String userid) throws Exception;
 	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
 	public Object getRefreshToken(String userid) throws Exception;
 	public void deleRefreshToken(String userid) throws Exception;

@@ -1,23 +1,21 @@
-package com.ssafy.homes.user.model.mapper;
+package com.ssafy.homes.member.model.mapper;
 
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.ssafy.homes.user.model.UserDto;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.ssafy.homes.member.model.MemberDto;
 
-public interface UserMapper {
+@Mapper
+public interface MemberMapper {
 	int idCheck(String userId) throws SQLException;
-	int joinMember(UserDto userDto) throws SQLException;
-	UserDto loginMember(UserDto userDto) throws SQLException;
-	
-	
-	
-	
+	int joinMember(MemberDto memberDto) throws SQLException;
+	MemberDto loginMember(MemberDto memberDto) throws SQLException;
 	
 	
 	/****** Token**************/
-	public UserDto userInfo(String userid) throws SQLException;
+	public MemberDto userInfo(String userid) throws SQLException;
 	public void saveRefreshToken(Map<String, String> map) throws SQLException;
 	public Object getRefreshToken(String userid) throws SQLException;
 	public void deleteRefreshToken(Map<String, String> map) throws SQLException;
