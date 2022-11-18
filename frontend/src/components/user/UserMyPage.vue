@@ -46,7 +46,9 @@
                 readonly
               ></b-form-input>
             </b-form-group>
-            <b-button variant="dark" href="#" class="mr-1">수정</b-button>
+            <b-button variant="dark" class="mr-1" @click="confirm"
+              >수정</b-button
+            >
             <b-button variant="dark" href="#">탈퇴</b-button>
           </b-form>
         </b-card>
@@ -67,6 +69,11 @@ export default {
   components: {},
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+  },
+  methods: {
+    confirm() {
+      this.$router.push({ name: "modify" });
+    },
   },
 };
 </script>
