@@ -1,6 +1,6 @@
-package com.ssafy.homes.user.model;
+package com.ssafy.homes.member.model;
 
-public class UserDto {
+public class MemberDto {
     private String userId;
     private String userPw;
     private String name;

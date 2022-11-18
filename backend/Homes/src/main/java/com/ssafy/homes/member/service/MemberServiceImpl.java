@@ -1,4 +1,4 @@
-package com.ssafy.homes.user.service;
+package com.ssafy.homes.member.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,12 +7,12 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.homes.user.model.UserDto;
-import com.ssafy.homes.user.model.mapper.UserMapper;
+import com.ssafy.homes.member.model.MemberDto;
+import com.ssafy.homes.member.model.mapper.MemberMapper;
 
 
 @Service
-public class UserServiceImpl implements UserService{
+public class MemberServiceImpl implements MemberService{
 
 	
 	@Autowired
@@ -22,21 +22,20 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public boolean idCheck(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(UserMapper.class).idCheck(userId)==1;
+		return sqlSession.getMapper(MemberMapper.class).idCheck(userId)==1;
 	}
 
 	/** 회원가입 **/
 	@Override
-	public boolean joinMember(UserDto userDto) throws Exception {
+	public boolean joinMember(MemberDto memberDto) throws Exception {
 		//TODO 값 제대로 안들어 왔을때 예외처리 하기 
-	  return sqlSession.getMapper(UserMapper.class).joinMember(userDto) ==1;
-		
+		return sqlSession.getMapper(MemberMapper.class).joinMember(memberDto) ==1;
 	}
    /** 로그인 하기 **/
 	@Override
-	public UserDto loginMember(UserDto userDto) throws Exception {
+	public MemberDto loginMember(MemberDto memberDto) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(UserMapper.class).loginMember(userDto);
+		return sqlSession.getMapper(MemberMapper.class).loginMember(memberDto);
 	}
 	
 	
@@ -45,8 +44,8 @@ public class UserServiceImpl implements UserService{
 	/***** Token **************/
 	
 	@Override
-	public UserDto userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
+	public MemberDto userInfo(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
 	}
 	
 	
@@ -56,12 +55,12 @@ public class UserServiceImpl implements UserService{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userid", userid);
 		map.put("token", refreshToken);
-		sqlSession.getMapper(UserMapper.class).saveRefreshToken(map);
+		sqlSession.getMapper(MemberMapper.class).saveRefreshToken(map);
 	}
 
 	@Override
 	public Object getRefreshToken(String userid) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).getRefreshToken(userid);
+		return sqlSession.getMapper(MemberMapper.class).getRefreshToken(userid);
 	}
 
 	@Override
@@ -69,7 +68,7 @@ public class UserServiceImpl implements UserService{
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("userid", userid);
 		map.put("token", null);
-		sqlSession.getMapper(UserMapper.class).deleteRefreshToken(map);
+		sqlSession.getMapper(MemberMapper.class).deleteRefreshToken(map);
 	}
 
 }

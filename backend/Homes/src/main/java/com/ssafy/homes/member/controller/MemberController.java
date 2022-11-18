@@ -1,4 +1,4 @@
-package com.ssafy.homes.user.controller;
+package com.ssafy.homes.member.controller;
 
 import java.util.HashMap;
 
@@ -19,36 +19,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.homes.jwt.service.JwtService;
-
-import com.ssafy.homes.user.service.UserService;
-
-
-import com.ssafy.homes.user.model.UserDto;
+import com.ssafy.homes.member.model.MemberDto;
+import com.ssafy.homes.member.service.MemberService;
 
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class MemberController {
 
-	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	@Autowired
-	private UserService userService;
+	private MemberService memberService;
 
 	@Autowired
 	private JwtService jwtService;
 
-	// GET : Qna 목록 긁어오기
-
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto userDto) {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
 			
 			System.out.println("받아온 유저 정보 : {}"+ userDto);
 			// 아이디와 비밀번호가 일치한지 db를 통해 접근해서 확인
-			UserDto loginUser = userService.loginMember(userDto);
+			MemberDto loginUser = memberService.loginMember(userDto);
 
 			// 로그인을 할 수 있는 상태면
 			if (loginUser != null) {
@@ -61,7 +56,7 @@ public class UserController {
 				String refreshToken = jwtService.createRefreshToken("userid", loginUser.getUserId());// key, data
 
 				// 만들어진 refreshToken을 DB에 저장해라.
-				userService.saveRefreshToken(userDto.getUserId(), refreshToken);
+				memberService.saveRefreshToken(userDto.getUserId(), refreshToken);
 
 				logger.debug("로그인 accessToken 정보 : {}", accessToken);
 				logger.debug("로그인 refreshToken 정보 : {}", refreshToken);
@@ -103,7 +98,7 @@ public class UserController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				UserDto userDto = userService.userInfo(userid);
+				MemberDto userDto = memberService.userInfo(userid);
 				System.out.println(userDto);
 				resultMap.put("userInfo", userDto);
 				resultMap.put("message", SUCCESS);
@@ -121,16 +116,12 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	
-	
-	
-	
 	@GetMapping("/logout/{userid}")
 	public ResponseEntity<?> removeToken(@PathVariable("userid") String userid) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			userService.deleRefreshToken(userid);
+			memberService.deleRefreshToken(userid);
 			System.out.println("@@@@");
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -142,20 +133,16 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
 	}
-	
-	
-	
-	
 
 	@PostMapping("/refresh")
-	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request)
+	public ResponseEntity<?> refreshToken(@RequestBody MemberDto userDto, HttpServletRequest request)
 			throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		String token = request.getHeader("refresh-token");
 		logger.debug("token : {}, memberDto : {}", token, userDto);
 		if (jwtService.checkToken(token)) {
-			if (token.equals(userService.getRefreshToken(userDto.getUserId()))) {
+			if (token.equals(memberService.getRefreshToken(userDto.getUserId()))) {
 				String accessToken = jwtService.createAccessToken("userid", userDto.getUserId());
 				logger.debug("token : {}", accessToken);
 				logger.debug("정상적으로 액세스토큰 재발급!!!");
@@ -170,7 +157,17 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	
+	@PostMapping("/join")
+	public ResponseEntity<String> join(MemberDto userDto){
+		logger.debug("join()...");
+		try {
+			memberService.joinMember(userDto);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);		// 전달하는 값 이렇게 하는거 맞는지 모르겠음..
+		}
+	}
 	
 	
 	
