@@ -1,19 +1,18 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 
-//module import 
+//module import
 import memberStore from "@/store/modules/memberStore";
 
-
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-  //  boardStore,
-  //  houseStore,
+    //  boardStore,
+    //  houseStore,
     memberStore,
-  //  todoStore,
+    //  todoStore,
   },
   plugins: [
     createPersistedState({
@@ -21,4 +20,4 @@ export default new Vuex.Store({
       storage: sessionStorage,
     }),
   ],
-})
+});

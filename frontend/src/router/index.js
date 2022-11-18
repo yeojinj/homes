@@ -5,9 +5,6 @@ import AppMain from "@/views/AppMain";
 import store from "@/store";
 Vue.use(VueRouter);
 
-
-
-
 // https://v3.router.vuejs.org/kr/guide/advanced/navigation-guards.html
 const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
@@ -28,11 +25,6 @@ const onlyAuthUser = async (to, from, next) => {
     next();
   }
 };
-
-
-
-
-
 
 const routes = [
   {
@@ -75,15 +67,21 @@ const routes = [
     name: "user",
     component: () => import("@/views/AppUser"),
     children: [
-      // {
-      //   path: "join",
-      //   name: "join",
-      //   component: () => import("@/components/user/UserRegister"),
-      // },
+      {
+        path: "join",
+        name: "join",
+        component: () => import("@/components/user/UserRegister"),
+      },
       {
         path: "login",
         name: "login",
         component: () => import("@/components/user/UserLogin"),
+      },
+      {
+        path: "mypage",
+        name: "mypage",
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/user/UserMyPage"),
       },
     ],
   },
