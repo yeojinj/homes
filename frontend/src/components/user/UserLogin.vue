@@ -36,13 +36,18 @@
                 @keyup.enter="confirm"
               ></b-form-input>
             </b-form-group>
-        
-         
+
             <b-button type="button" variant="dark" class="" @click="confirm"
               >로그인</b-button
             >
-           
-            <b-button type="button" variant="success" class="m-1" @click="movePage">회원가입</b-button> 
+
+            <b-button
+              type="button"
+              variant="success"
+              class="m-1"
+              @click="movePage"
+              >회원가입</b-button
+            >
           </b-form>
         </b-card>
       </b-col>
@@ -61,7 +66,7 @@ export default {
   name: "UserLogin",
   data() {
     return {
-   //   isLoginError: false,
+      //   isLoginError: false,
       user: {
         userId: null,
         userPw: null,
@@ -75,30 +80,28 @@ export default {
   methods: {
     // confirm() {
 
-      // http
-      //   .post(`/user/login`, {
-      //     userId: this.user.userid,
-      //     userPw: this.user.userpwd,
-          
-      //   })
-      //   .then(({ data }) => {
-      //     let msg = "등록 처리시 문제가 발생했습니다.";
-      //     if (data.rule === "success") {
-      //       msg = "등록이 완료되었습니다.";
+    // http
+    //   .post(`/user/login`, {
+    //     userId: this.user.userid,
+    //     userPw: this.user.userpwd,
 
-      //     }
-      //     alert(msg);
-      //     this.moveList();
-      //   });
+    //   })
+    //   .then(({ data }) => {
+    //     let msg = "등록 처리시 문제가 발생했습니다.";
+    //     if (data.rule === "success") {
+    //       msg = "등록이 완료되었습니다.";
 
+    //     }
+    //     alert(msg);
+    //     this.moveList();
+    //   });
 
-      // alert("로그인되었습니다.");
-
+    // alert("로그인되었습니다.");
 
     // },
     //"memberStore"의 actions인 "userConfirm", "getUserInfo"로 접근하겠다.
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
-    //로그인 버튼을 누르면 confirm 함수가 실행된다. 
+    //로그인 버튼을 누르면 confirm 함수가 실행된다.
 
     async confirm() {
       console.log(this.user);
@@ -113,7 +116,6 @@ export default {
         this.$router.push({ name: "main" });
       }
     },
-
 
     movePage() {
       this.$router.push({ name: "join" });

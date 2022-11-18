@@ -3,62 +3,74 @@
     <b-navbar class="nav-custom shadow-sm" type="light" variant="light">
       <b-navbar-brand href="#" class="item">
         <router-link :to="{ name: 'main' }">
-          <b-img :src="require('@/assets/logo.png')" id="logo" class="d-inline-block align-top" alt="logo"></b-img>
+          <b-img
+            :src="require('@/assets/logo.png')"
+            id="logo"
+            class="d-inline-block align-top"
+            alt="logo"
+          ></b-img>
         </router-link>
       </b-navbar-brand>
 
       <b-navbar-nav class="item mx-auto">
         <b-nav-item href="#">
-          <!-- <router-link :to="{ name: '' }" class="m-2 link"
+          <router-link :to="{ name: '' }" class="m-2 link"
             >실거래가</router-link
-          > -->
+          >
+          <router-link :to="{ name: '' }" class="m-2 link"
+            >공지사항</router-link
+          >
           <router-link :to="{ name: 'qna' }" class="m-2 link">QnA</router-link>
-          <!-- <router-link :to="{ name: '' }" class="m-2 link">매물</router-link> -->
         </b-nav-item>
       </b-navbar-nav>
 
       <!-- Right aligned nav items -->
+      <!-- after login -->
       <b-navbar-nav v-if="userInfo">
-        <!-- <b-nav-item href="#">
-            <router-link :to="{ name: 'join' }" class="link">
-              <b-icon icon="person-circle"></b-icon> 회원가입
-            </router-link>
-          </b-nav-item> -->
-
-
-          <b-nav-item class="align-self-center">
-            <b-avatar variant="primary" v-text="userInfo.userId.charAt(0).toUpperCase()"></b-avatar>
-            {{ userInfo.name }}({{ userInfo.userId }})님 환영합니다.
-          </b-nav-item>
-
-        <b-nav-item href="#" class="item">
-          <b-button variant="outline-success" class="my-2 my-sm-0" type="submit" v-if="userInfo" @click.prevent="onClickLogout">
-          로그아웃
-          </b-button>
+        <b-nav-item class="align-self-center user-info">
+          <!-- <b-avatar
+            variant="primary"
+            v-text="userInfo.userId.charAt(0).toUpperCase()"
+          ></b-avatar> -->
+          <p>{{ userInfo.name }}({{ userInfo.userId }})님 환영합니다.</p>
         </b-nav-item>
+
+        <b-nav-item class="align-self-center">
+          <router-link :to="{ name: 'mypage' }" class="link align-self-center"
+            >마이페이지</router-link
+          >
+        </b-nav-item>
+
+        <b-nav-item
+          class="link align-self-center"
+          @click.prevent="onClickLogout"
+          >로그아웃</b-nav-item
+        >
+
+        <!-- <b-nav-item href="#" class="item align-self-center">
+          <b-button
+            class="link align-self-center"
+            v-if="userInfo"
+            @click.prevent="onClickLogout"
+          >
+            로그아웃
+          </b-button>
+        </b-nav-item> -->
       </b-navbar-nav>
 
-
-
-
-      <!--no login-->
-
-
-      <b-navbar-nav  v-else>
-          <b-nav-item-dropdown right>
-            <template #button-content>
-              <b-icon icon="people" font-scale="2"></b-icon>
-            </template>
-            <b-dropdown-item href="#">
-              <router-link :to="{ name: 'join' }" class="link">
-                <b-icon icon="person-circle"></b-icon> 회원가입
-              </router-link>
-            </b-dropdown-item>
-            <b-dropdown-item href="#">
-              <router-link :to="{ name: 'login' }" class="link"> <b-icon icon="key"></b-icon> 로그인 </router-link>
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
-        </b-navbar-nav>
+      <!-- before login -->
+      <b-navbar-nav v-else>
+        <b-nav-item class="align-self-center">
+          <router-link :to="{ name: 'join' }" class="link">
+            <b-icon icon="person-circle"></b-icon> 회원가입
+          </router-link>
+        </b-nav-item>
+        <b-nav-item class="align-self-center">
+          <router-link :to="{ name: 'login' }" class="link">
+            <b-icon icon="key"></b-icon> 로그인
+          </router-link>
+        </b-nav-item>
+      </b-navbar-nav>
     </b-navbar>
   </div>
 </template>
@@ -99,7 +111,7 @@ export default {
 
 <style scoped>
 #logo {
-  width: 50px;
+  width: 100px;
 }
 
 .link {
@@ -116,12 +128,20 @@ nav {
 }
 
 nav a {
-  /* font-weight: bold; */
+  color: black;
+}
+
+.navbar-light .navbar-nav .nav-link {
   color: black;
 }
 
 .navbar.navbar-light.bg-light {
   background-color: white !important;
+}
+
+p {
+  margin: 0;
+  color: gray;
 }
 
 button {
