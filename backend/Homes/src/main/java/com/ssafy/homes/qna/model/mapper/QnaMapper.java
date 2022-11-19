@@ -15,5 +15,6 @@ public interface QnaMapper {
 	public QnaDto getQna(int no) throws SQLException;
 	public int modifyQna(QnaDto qnaDto) throws SQLException;
 	public int deleteQna(int no) throws SQLException;
+	public void deleteQnaWithUserId (String userId) throws SQLException;
 
 }

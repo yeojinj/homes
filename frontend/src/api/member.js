@@ -28,4 +28,14 @@ async function join(user, success, fail) {
   await api.post(`/user/join`, JSON.stringify(user)).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, join };
+async function modify (user,success ,fail){
+   console.log (user);
+   await api.put ('/user',JSON.stringify(user)).then(success).catch(fail);
+}
+
+async function remove (userId,success ,fail){
+  console.log (userId);
+  await api.delete (`/user/${userId}`).then(success).catch(fail);
+}
+
+export { login, findById, tokenRegeneration, logout, join , modify ,remove };

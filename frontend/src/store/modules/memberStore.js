@@ -1,7 +1,7 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { login, findById, tokenRegeneration, logout } from "@/api/member";
-import { join } from "core-js/core/array";
+import { modify ,join,login, findById, tokenRegeneration, logout ,remove } from "@/api/member";
+//import { join } from "core-js/core/array";
 
 const memberStore = {
   namespaced: true,
@@ -21,6 +21,10 @@ const memberStore = {
     checkToken: function (state) {
       return state.isValidToken;
     },
+
+    getUserInfo : function(state){
+      return state.userInfo;
+    }
   },
   mutations: {
     SET_IS_LOGIN: (state, isLogin) => {
@@ -36,8 +40,11 @@ const memberStore = {
       state.isLogin = true;
       state.userInfo = userInfo;
     },
-    SET_USER_DATA: (state, userData) => {
-      state.userData = userData;
+    SET_USER_DATA: (state, userInfo) => {
+      state.userInfo = userInfo;
+    },
+    SET_USER_DATA_NULL: (state) => {
+      state.userInfo = null;
     },
   },
   actions: {
@@ -149,6 +156,7 @@ const memberStore = {
         userid,
         ({ data }) => {
           if (data.message === "success") {
+            console.log("로그아웃 완료");
             commit("SET_IS_LOGIN", false);
             commit("SET_USER_INFO", null);
             commit("SET_IS_VALID_TOKEN", false);
@@ -161,13 +169,14 @@ const memberStore = {
         }
       );
     },
-    async userJoin({ commit }, user) {
+    async userJoin( {commit }, user) {
       await join(
         user,
         ({ data }) => {
-          if (data.message === "success") {
+          
+          if (data === "success") {
             console.log("회원가입 성공!");
-            commit("SET_USER_DATA", data);
+            commit();// 회원 가입이니까 store회원정보를 변경해줄필요가 없을거같음
           } else {
             console.log("회원가입 실패!");
           }
@@ -177,15 +186,32 @@ const memberStore = {
         }
       );
     },
-    // async userModify({ commit }, user) {
-    //   await modify(user, ({ data }) => {
-    //     if (data.message === "success") {
-    //       console.log("정보 수정 성공!");
-    //     } else {
-    //       console.log("정보 수정 실패!");
-    //     }
-    //   });
-    // },
+    async userModify({ commit }, user) {
+      await modify(user, ({ data }) => {
+        console.log()
+        if (data.message === "success") {
+
+          console.log("정보 수정 성공!");
+          commit("SET_USER_DATA", data);
+        } else {
+          console.log("정보 수정 실패!");
+        }
+      });
+    },
+
+
+    async userDelete({ commit }, userId) {
+      await remove(userId, ({ data }) => {
+        console.log()
+        if (data === "success") {
+
+          console.log("회원 탈퇴 완료!");
+          commit("SET_USER_DATA_NULL");
+        } else {
+          console.log("회원 탈퇴 실패 실패!");
+        }
+      });
+    },
   },
 };
 

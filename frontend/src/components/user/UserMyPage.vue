@@ -49,7 +49,7 @@
             <b-button variant="dark" class="mr-1" @click="confirm"
               >수정</b-button
             >
-            <b-button variant="dark" href="#">탈퇴</b-button>
+            <b-button variant="dark" href="#" @click="deleteMem">탈퇴</b-button>
           </b-form>
         </b-card>
       </b-col>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 const memberStore = "memberStore";
 
@@ -74,6 +74,19 @@ export default {
     confirm() {
       this.$router.push({ name: "modify" });
     },
+
+    ...mapActions(memberStore, ["userDelete"]),
+    async deleteMem() {
+     
+        
+        await this.userDelete(this.userInfo.userId);
+
+        alert("탈퇴 완료 메인화면으로 이동합니다.");
+        this.$router.push({ name: "main" });
+    
+    },
+
+    
   },
 };
 </script>

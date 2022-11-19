@@ -46,21 +46,24 @@
               <b-form-input
                 id="name"
                 placeholder="이름"
-                v-model="userInfo.name"
+                
+                v-model="user.name"
+                readonly
               ></b-form-input>
             </b-form-group>
             <b-form-group label="이메일:" label-for="email">
               <b-form-input
                 id="email"
                 placeholder="이메일"
-                v-model="userInfo.email"
+                v-model="user.email"
               ></b-form-input>
             </b-form-group>
             <b-form-group label="전화번호:" label-for="phone">
               <b-form-input
                 id="phone"
                 placeholder="전화번호"
-                v-model="userInfo.phone"
+                value="123"
+                v-model="user.phone"
               ></b-form-input>
             </b-form-group>
             <b-button variant="dark" class="mr-1" @click="confirm"
@@ -77,30 +80,42 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState ,mapActions } from "vuex";
 
 const memberStore = "memberStore";
 
 export default {
   name: "UserModify",
   data() {
+    
     return {
       user: {
         userId: null,
         userPw: null,
         // userPwCk: null,
         name: null,
-        email: null,
+      //  email: this.userInfo.email,
         phone: null,
       },
     };
   },
-  components: {},
+  created(){
+    
+    this.user= this.userInfo;
+  },
+
   computed: {
     ...mapState(memberStore, ["userInfo"]),
+    
+
+    
+    
   },
   methods: {
-    confirm() {
+    ...mapActions(memberStore, ["userModify"]),
+   async confirm() {
+    console.log(this.user);
+        await this.userModify(this.user);
       this.$router.push({ name: "mypage" });
     },
     cancel() {
