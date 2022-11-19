@@ -22,6 +22,26 @@
                 readonly
               ></b-form-input>
             </b-form-group>
+            <b-form-group label="비밀번호:" label-for="userPw">
+              <b-form-input
+                type="password"
+                id="userpw"
+                v-model="user.userPw"
+                required
+                placeholder="비밀번호"
+                @keyup.enter="confirm"
+              ></b-form-input>
+            </b-form-group>
+            <b-form-group label="비밀번호 확인:" label-for="userPwCk">
+              <b-form-input
+                type="password"
+                id="userpwCk"
+                v-model="user.userPwCk"
+                required
+                placeholder="비밀번호 확인"
+                @keyup.enter="confirm"
+              ></b-form-input>
+            </b-form-group>
             <b-form-group label="이름:" label-for="name">
               <b-form-input
                 id="name"
@@ -62,7 +82,19 @@ import { mapState } from "vuex";
 const memberStore = "memberStore";
 
 export default {
-  name: "UserMyPage",
+  name: "UserModify",
+  data() {
+    return {
+      user: {
+        userId: null,
+        userPw: null,
+        // userPwCk: null,
+        name: null,
+        email: null,
+        phone: null,
+      },
+    };
+  },
   components: {},
   computed: {
     ...mapState(memberStore, ["userInfo"]),
