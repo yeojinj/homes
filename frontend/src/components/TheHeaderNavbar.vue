@@ -14,7 +14,7 @@
 
       <b-navbar-nav class="item mx-auto">
         <b-nav-item href="#">
-          <router-link :to="{ name: '' }" class="m-2 link"
+          <router-link :to="{ name: 'house' }" class="m-2 link"
             >실거래가</router-link
           >
           <router-link :to="{ name: '' }" class="m-2 link"
