@@ -99,7 +99,7 @@ export default {
       user: {
         userId: null,
         userPw: null,
-        userPwCk: null,
+        // userPwCk: null,
         name: null,
         email: null,
         phone: null,
@@ -107,7 +107,14 @@ export default {
     };
   },
   methods: {
-    confirm() {},
+    confirm() {
+      if (userPw === userPwCk) {
+        await this.userJoin(this.user);
+        this.$router.push({ name: "login" });
+      } else {
+        alert("비밀번호가 일치하지 않습니다.");
+      }
+    },
     movePage() {
       this.$router.push({ name: "main" });
     },
