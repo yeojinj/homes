@@ -15,23 +15,14 @@
         >
           <b-form class="text-left">
             <b-form-group label="아이디:" label-for="userId">
-              <div style="display:flex">
               <b-form-input
                 id="userid"
                 v-model="user.userId"
                 required
                 placeholder="아이디"
-                @keyup.enter="confirm"
+                @keyup="idCheck"
               ></b-form-input>
-
-              <b-button
-              type="button"
-              variant="light"
-              class="m-1"
-              @click="idCheck"
-              >check</b-button
-            >
-          </div>
+              <div :style="{ color: idColor }">{{ idCheckDiv }}</div>
             </b-form-group>
             <b-form-group label="비밀번호:" label-for="userPw">
               <b-form-input
@@ -40,8 +31,9 @@
                 v-model="user.userPw"
                 required
                 placeholder="비밀번호"
-                @keyup.enter="confirm"
+                @keyup="pwCheck"
               ></b-form-input>
+              <div :style="{ color: pwColor }">{{ pwCheckDiv }}</div>
             </b-form-group>
             <b-form-group label="비밀번호 확인:" label-for="userPwCk">
               <b-form-input
@@ -50,8 +42,9 @@
                 v-model="user.userPwCk"
                 required
                 placeholder="비밀번호 확인"
-                @keyup.enter="confirm"
+                @keyup="pwSameCheck"
               ></b-form-input>
+              <div :style="{ color: pwSameColor }">{{ pwSameCheckDiv }}</div>
             </b-form-group>
             <b-form-group label="이름:" label-for="name">
               <b-form-input
@@ -102,14 +95,21 @@
 </template>
 
 <script>
-import {  mapActions } from "vuex";
+import http from "@/api/http";
+import { mapActions } from "vuex";
 const memberStore = "memberStore";
 export default {
-
   name: "UserRegister",
   data() {
     return {
-      canUseId:false,
+      idColor: "black",
+      pwColor: "black",
+      pwSameColor: "black",
+      canUseId: false,
+      canUserPw: false,
+      idCheckDiv: "",
+      pwCheckDiv: "",
+      pwSameCheckDiv: "",
       user: {
         userId: null,
         userPw: null,
@@ -121,20 +121,78 @@ export default {
     };
   },
   methods: {
-    ...mapActions(memberStore, ["userJoin"]),
+    ...mapActions(memberStore, ["userJoin", "userIdCheck"]),
     async confirm() {
-      if (this.userPw === this.userPwCk) {
+      if (this.userPw === this.userPwCk && this.canUseId && this.canUserPw) {
         console.log("front :" + this.user);
         await this.userJoin(this.user);
 
-        alert(this.user.name+"님의 회원가입 완료!");
+        alert(this.user.name + "님의 회원가입 완료!");
         this.$router.push({ name: "login" });
-     } else {
-        alert("비밀번호가 일치하지 않습니다.");
+      } else {
+        alert("회원 정보를 확인해주세요 ");
       }
     },
     movePage() {
       this.$router.push({ name: "main" });
+    },
+
+    idCheck: function (e) {
+      let userid = e.target.value;
+      console.log(userid.length + "@@@@@길이");
+
+      if (userid.length == 0) {
+        this.idCheckDiv = "";
+        this.canUseId = false;
+      } else if (userid.length < 6 || userid.length > 16) {
+        this.idColor = "red";
+        this.idCheckDiv = "아이디는 6자 이상 16자 이하 입니다.";
+        this.canUseId = false;
+      } else {
+        http.get(`/user/${userid}`).then(({ data }) => {
+          if (data === "success") {
+            this.idColor = "blue";
+            this.canUseId = true;
+            this.idCheckDiv = "사용가능한  아이디 입니다.";
+          } else {
+            this.idColor = "red";
+            this.canUseId = false;
+            this.idCheckDiv = "사용할 수 없는 아이디 입니다.";
+          }
+        });
+      }
+    },
+
+    pwCheck: function (e) {
+      let password = e.target.value;
+
+      console.log(password);
+
+      if (password.length == 0) {
+        this.pwCheckDiv = "";
+      } else if (password.length < 8 || password.length > 16) {
+        this.pwColor = "red";
+        this.pwCheckDiv = "비밀번호 8 자 이상 16자 이하 입니다.";
+      } else {
+        this.pwColor = "blue";
+        this.pwCheckDiv = "사용할 수 있는 비밀번호 입니다.";
+      }
+    },
+
+    pwSameCheck: function (e) {
+      let passwordSame = e.target.value;
+      if (passwordSame.length == 0) {
+        this.pwSameCheckDiv = " ";
+        this.canUserPw = false;
+      } else if (passwordSame === this.user.userPw) {
+        this.pwSameColor = "blue";
+        this.pwSameCheckDiv = "비밀번호가 일치합니다.";
+        this.canUserPw = true;
+      } else {
+        this.pwSameColor = "red";
+        this.pwSameCheckDiv = "비밀번호가 일치하지 않습니다.";
+        this.canUserPw = false;
+      }
     },
   },
 };
