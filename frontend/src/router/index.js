@@ -91,6 +91,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/house",
+    name: "house",
+    component: () => import("@/views/AppHouse"),
+  },
 ];
 
 const router = new VueRouter({
