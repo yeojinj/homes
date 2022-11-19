@@ -41,6 +41,20 @@ public class MemberController {
 
 	@Autowired
 	private JwtService jwtService;
+	
+	
+	/** GET : 아이디 중복 체크 **/
+	@GetMapping("/{userid}")
+
+	public ResponseEntity<String> idCheck(@PathVariable("userid") String userId) throws Exception {
+		//logger.debug("idCheck userid : {}", userId);
+		if( memberService.idCheck(userId)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}else {
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);	
+		}
+		
+	}
 
 	
 	/** POST : 로그인 **/
@@ -106,11 +120,11 @@ public class MemberController {
 		
 		//logger.info("deleteArticle - 호출");
 		if (memberService.deleteMember(userid)){
-			System.out.println("삭제2"+userid);
+			
 			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}else {
-			System.out.println("삭제23"+userid);
+			
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);	
 		}
 		

@@ -20,7 +20,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public boolean idCheck(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(MemberMapper.class).idCheck(userId) == 1;
+		return sqlSession.getMapper(MemberMapper.class).idCheck(userId) == 0;
 	}
 
 	/** 회원가입 **/
