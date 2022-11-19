@@ -24,6 +24,7 @@ import com.ssafy.homes.jwt.service.JwtService;
 import com.ssafy.homes.member.model.MemberDto;
 import com.ssafy.homes.member.service.MemberService;
 import com.ssafy.homes.qna.model.QnaDto;
+import com.ssafy.homes.qna.service.QnaService;
 
 @RestController
 @RequestMapping("/user")
@@ -32,8 +33,11 @@ public class MemberController {
 	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
+	
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private QnaService qnaService;
 
 	@Autowired
 	private JwtService jwtService;
@@ -92,11 +96,24 @@ public class MemberController {
 	//DELETE :  QNA 삭제
 	@DeleteMapping("/{userid}")
 	public ResponseEntity<String> deleteMember(@PathVariable("userid") String userid) throws Exception {
+		
+		System.out.println("삭제"+userid);
+		
+		//회원을 탈퇴 시키기전에 qna에 작성된 글이 있다면 삭제 시킴
+		 qnaService.deleteQnaWithUserId(userid) ;
+			 
+		 
+		
 		//logger.info("deleteArticle - 호출");
 		if (memberService.deleteMember(userid)){
+			System.out.println("삭제2"+userid);
+			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}else {
+			System.out.println("삭제23"+userid);
+			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);	
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		
 	}
 	
 	
@@ -187,8 +204,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/join")
-	public ResponseEntity<String> join(MemberDto userDto){
+	public ResponseEntity<String> joinMember( @RequestBody MemberDto userDto){
 		logger.debug("join()...");
+		System.out.println("회원가입 :" + userDto);
 		try {
 			memberService.joinMember(userDto);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);

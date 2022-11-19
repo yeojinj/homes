@@ -44,11 +44,18 @@ public class QnaServiceImpl  implements QnaService{
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(QnaMapper.class).modifyQna(qnaDto) == 1;
 	}
-	// DELETE 사용자 : Qna 삭제
+	// DELETE  : Qna 삭제  - 글 번호
 
 	@Override
 	public boolean deleteQna(int no) throws Exception {
 		return sqlSession.getMapper(QnaMapper.class).deleteQna(no) == 1;
+	}
+	
+	// DELETE  Qna 삭제  -  유저 아이디
+	@Override
+	public void deleteQnaWithUserId(String userId) throws Exception {
+		// TODO Auto-generated method stub
+	 sqlSession.getMapper(QnaMapper.class).deleteQnaWithUserId(userId);
 	}
 
 

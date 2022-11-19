@@ -15,6 +15,7 @@
         >
           <b-form class="text-left">
             <b-form-group label="아이디:" label-for="userId">
+              <div style="display:flex">
               <b-form-input
                 id="userid"
                 v-model="user.userId"
@@ -22,6 +23,15 @@
                 placeholder="아이디"
                 @keyup.enter="confirm"
               ></b-form-input>
+
+              <b-button
+              type="button"
+              variant="light"
+              class="m-1"
+              @click="idCheck"
+              >check</b-button
+            >
+          </div>
             </b-form-group>
             <b-form-group label="비밀번호:" label-for="userPw">
               <b-form-input
@@ -92,14 +102,18 @@
 </template>
 
 <script>
+import {  mapActions } from "vuex";
+const memberStore = "memberStore";
 export default {
+
   name: "UserRegister",
   data() {
     return {
+      canUseId:false,
       user: {
         userId: null,
         userPw: null,
-        // userPwCk: null,
+        userPwCk: null,
         name: null,
         email: null,
         phone: null,
@@ -107,11 +121,15 @@ export default {
     };
   },
   methods: {
-    confirm() {
-      if (userPw === userPwCk) {
+    ...mapActions(memberStore, ["userJoin"]),
+    async confirm() {
+      if (this.userPw === this.userPwCk) {
+        console.log("front :" + this.user);
         await this.userJoin(this.user);
+
+        alert(this.user.name+"님의 회원가입 완료!");
         this.$router.push({ name: "login" });
-      } else {
+     } else {
         alert("비밀번호가 일치하지 않습니다.");
       }
     },

@@ -12,5 +12,6 @@ public interface QnaService {
 	public QnaDto getQna(int no) throws Exception;
 	public boolean modifyQna(QnaDto qnaDto) throws Exception;
 	public boolean deleteQna(int no) throws Exception;
+	public void deleteQnaWithUserId(String userId) throws Exception;
 
 }

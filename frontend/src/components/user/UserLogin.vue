@@ -78,27 +78,7 @@ export default {
     ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
   },
   methods: {
-    // confirm() {
-
-    // http
-    //   .post(`/user/login`, {
-    //     userId: this.user.userid,
-    //     userPw: this.user.userpwd,
-
-    //   })
-    //   .then(({ data }) => {
-    //     let msg = "등록 처리시 문제가 발생했습니다.";
-    //     if (data.rule === "success") {
-    //       msg = "등록이 완료되었습니다.";
-
-    //     }
-    //     alert(msg);
-    //     this.moveList();
-    //   });
-
-    // alert("로그인되었습니다.");
-
-    // },
+  
     //"memberStore"의 actions인 "userConfirm", "getUserInfo"로 접근하겠다.
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
     //로그인 버튼을 누르면 confirm 함수가 실행된다.

@@ -43,10 +43,17 @@
 	
 	<!-- DELETE : QNA 삭제  -->
 	
+	<!--  DELETE : QNA 삭제 : 글번호 -->
 	<delete id="deleteQna" parameterType="int">
 		delete from qnaboard
 		where no = #{no}
 	</delete>
 	
+	
+	<!--  DELETE : QNA 삭제 : 회원 아이디 -->
+		<delete id="deleteQnaWithUserId" parameterType="String">
+		delete from qnaboard
+		where user_id = #{userId}
+	</delete>
 	
 	</mapper>
