@@ -9,9 +9,18 @@ import com.ssafy.homes.member.model.MemberDto;
 
 @Mapper
 public interface MemberMapper {
+	
+	/** 아이디 중복 체크 **/
 	int idCheck(String userId) throws SQLException;
+	/** 회원 가입 **/
 	int joinMember(MemberDto memberDto) throws SQLException;
+	/** 로그인  **/
 	MemberDto loginMember(MemberDto memberDto) throws SQLException;
+	/** 회원 탈퇴 **/
+	int deleteMember (String userId) throws SQLException;
+	/** 회원 정보 수정 **/
+	int updateMember (MemberDto memberDto) throws SQLException;
+	
 	
 	
 	/****** Token**************/

@@ -10,46 +10,55 @@ import org.springframework.stereotype.Service;
 import com.ssafy.homes.member.model.MemberDto;
 import com.ssafy.homes.member.model.mapper.MemberMapper;
 
-
 @Service
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
-	
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	/** 아이디 중복 체크 **/
 	@Override
 	public boolean idCheck(String userId) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.getMapper(MemberMapper.class).idCheck(userId)==1;
+		return sqlSession.getMapper(MemberMapper.class).idCheck(userId) == 1;
 	}
 
 	/** 회원가입 **/
 	@Override
 	public boolean joinMember(MemberDto memberDto) throws Exception {
-		//TODO 값 제대로 안들어 왔을때 예외처리 하기 
-		return sqlSession.getMapper(MemberMapper.class).joinMember(memberDto) ==1;
+		// TODO 값 제대로 안들어 왔을때 예외처리 하기
+		return sqlSession.getMapper(MemberMapper.class).joinMember(memberDto) == 1;
 	}
-   /** 로그인 하기 **/
+
+	/** 로그인 하기 **/
 	@Override
 	public MemberDto loginMember(MemberDto memberDto) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(MemberMapper.class).loginMember(memberDto);
 	}
-	
-	
-	
-	
+
+	/** 회원 탈퇴 **/
+	@Override
+	public boolean deleteMember(String userId) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(MemberMapper.class).deleteMember(userId) == 1;
+	}
+
+	/** 회원 정보 수정 **/
+	@Override
+	public boolean updateMember(MemberDto memberDto) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(MemberMapper.class).updateMember(memberDto) == 1;
+	}
+
 	/***** Token **************/
-	
+
 	@Override
 	public MemberDto userInfo(String userid) throws Exception {
 		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
 	}
-	
-	
-	// RefreshToken을 저장해라 
+
+	// RefreshToken을 저장해라
 	@Override
 	public void saveRefreshToken(String userid, String refreshToken) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
