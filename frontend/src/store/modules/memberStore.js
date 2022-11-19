@@ -1,6 +1,7 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
 import { login, findById, tokenRegeneration, logout } from "@/api/member";
+import { join } from "core-js/core/array";
 
 const memberStore = {
   namespaced: true,
@@ -9,6 +10,7 @@ const memberStore = {
     isLoginError: false,
     userInfo: null,
     isValidToken: false,
+    userData: null,
   },
   getters: {
     //로그인 한 사람이냐
@@ -33,6 +35,9 @@ const memberStore = {
     SET_USER_INFO: (state, userInfo) => {
       state.isLogin = true;
       state.userInfo = userInfo;
+    },
+    SET_USER_DATA: (state, userData) => {
+      state.userData = userData;
     },
   },
   actions: {
@@ -156,6 +161,31 @@ const memberStore = {
         }
       );
     },
+    async userJoin({ commit }, user) {
+      await join(
+        user,
+        ({ data }) => {
+          if (data.message === "success") {
+            console.log("회원가입 성공!");
+            commit("SET_USER_DATA", data);
+          } else {
+            console.log("회원가입 실패!");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    // async userModify({ commit }, user) {
+    //   await modify(user, ({ data }) => {
+    //     if (data.message === "success") {
+    //       console.log("정보 수정 성공!");
+    //     } else {
+    //       console.log("정보 수정 실패!");
+    //     }
+    //   });
+    // },
   },
 };
 
