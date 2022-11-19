@@ -11,9 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.homes.jwt.service.JwtService;
 import com.ssafy.homes.member.model.MemberDto;
 import com.ssafy.homes.member.service.MemberService;
+import com.ssafy.homes.qna.model.QnaDto;
 
 @RestController
 @RequestMapping("/user")
@@ -35,6 +38,8 @@ public class MemberController {
 	@Autowired
 	private JwtService jwtService;
 
+	
+	/** POST : 로그인 **/
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -83,6 +88,30 @@ public class MemberController {
 		// 이 리턴이 이제 vue의 login 함수 => login (user, success ,fail )로 넘어간다.
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	/** DELETE : 회원탈퇴 **/
+	//DELETE :  QNA 삭제
+	@DeleteMapping("/{userid}")
+	public ResponseEntity<String> deleteMember(@PathVariable("userid") String userid) throws Exception {
+		//logger.info("deleteArticle - 호출");
+		if (memberService.deleteMember(userid)){
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+	}
+	
+	
+	/**UPDATE: (PUT) 회원 정보 수정**/
+	@PutMapping
+	public ResponseEntity<String> updateMember(@RequestBody MemberDto memberDto) throws Exception {
+		System.out.println("modifyArticle - 호출 {}" + memberDto);
+		
+		if (memberService.updateMember(memberDto)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+
 
 	// 회원 인증
 	@GetMapping("/info/{userid}")

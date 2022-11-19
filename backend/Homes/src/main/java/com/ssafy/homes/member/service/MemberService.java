@@ -15,6 +15,13 @@ public interface MemberService {
 	//로그인
 	MemberDto loginMember(MemberDto memberDto) throws Exception;
 	
+	//회원 탈퇴
+	boolean deleteMember(String userId) throws Exception;
+	
+	//회원 정보 수정 
+	boolean updateMember(MemberDto memberDto) throws Exception;
+	
+	
 	
 	
 	
