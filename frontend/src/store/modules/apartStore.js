@@ -114,6 +114,7 @@ const apartStore = {
         ({ data }) => {
           if (data) {
             console.log("아파트 목록 정보  성공");
+            console.log("아파트 목록 정보  성공 " + data);
 
             commit("SET_APART_LIST", data);
           } else {
