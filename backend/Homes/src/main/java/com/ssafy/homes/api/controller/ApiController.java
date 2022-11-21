@@ -30,7 +30,7 @@ public class ApiController {
 		
 		String keyword = "부동산";
 		
-		ResponseEntity<String> response = rt.exchange("https://openapi.naver.com/v1/search/news.json?query=" + keyword + "&display=100&sort=sim", HttpMethod.GET,
+		ResponseEntity<String> response = rt.exchange("https://openapi.naver.com/v1/search/news.json?query=" + keyword + "&display=2&sort=sim", HttpMethod.GET,
 				newsRequest, String.class);
 				
 		return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
