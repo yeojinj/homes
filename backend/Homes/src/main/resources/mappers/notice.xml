@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.homes.notice.model.mapper.NoticeMapper">
+	<resultMap type="noticeDto" id="article">
+		<result column="no" property="no"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="hit" property="hit"/>
+		<result column="reg_time" property="regTime"/>
+	</resultMap>
+
+	<insert id="writeArticle" parameterType="noticeDto">
+		insert into noticeboard (user_id, subject, content)
+		values (#{userId}, #{subject}, #{content})
+		<selectKey resultType="int" keyProperty="no" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+
+	<select id="listArticle" parameterType="map" resultMap="article">
+		select n.no, n.user_id, n.subject, n.content, n.hit, n.reg_time
+		from noticeboard n, member m 
+		where n.user_id = m.user_id
+		order by n.no desc
+		limit #{start}, #{listsize}
+	</select>
+	
+	<select id="getTotalArticleCount" parameterType="map" resultType="int">
+		select count(no)
+		from noticeboard
+	</select>
+	
+	<select id="getArticle" parameterType="int" resultMap="article">
+		select n.no, n.user_id, n.subject, n.content, n.hit, n.reg_time
+		from noticeboard n, member m
+		where n.user_id = m.user_id
+		and n.no = #{no}
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update noticeboard
+		set hit = hit + 1
+		where no = #{no}
+	</update>
+	
+	<update id="modifyArticle" parameterType="noticeDto">
+		update noticeboard
+		set subject = #{subject}, content = #{content}
+		where no = #{no}
+	</update>
+	
+	<delete id="deleteArticle" parameterType="int">
+		delete from noticeboard
+		where no = #{no}
+	</delete>
+
+</mapper>
