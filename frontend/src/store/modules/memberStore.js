@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import router from "@/router";
-import { modify ,join,login, findById, tokenRegeneration, logout ,remove } from "@/api/member";
+import { modify, join, login, findById, tokenRegeneration, logout, remove } from "@/api/member";
 //import { join } from "core-js/core/array";
 
 const memberStore = {
@@ -22,9 +22,9 @@ const memberStore = {
       return state.isValidToken;
     },
 
-    getUserInfo : function(state){
+    getUserInfo: function (state) {
       return state.userInfo;
-    }
+    },
   },
   mutations: {
     SET_IS_LOGIN: (state, isLogin) => {
@@ -56,11 +56,7 @@ const memberStore = {
           if (data.message === "success") {
             let accessToken = data["access-token"];
             let refreshToken = data["refresh-token"];
-            console.log(
-              "login success token created!!!! >> ",
-              accessToken,
-              refreshToken
-            );
+            console.log("login success token created!!!! >> ", accessToken, refreshToken);
 
             commit("SET_IS_LOGIN", true); //로그인 된 상태로 변경
             commit("SET_IS_LOGIN_ERROR", false); //에러는 없음 상태
@@ -98,20 +94,14 @@ const memberStore = {
           }
         },
         async (error) => {
-          console.log(
-            "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-            error.response.status
-          );
+          console.log("getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ", error.response.status);
           commit("SET_IS_VALID_TOKEN", false);
           await dispatch("tokenRegeneration");
         }
       );
     },
     async tokenRegeneration({ commit, state }) {
-      console.log(
-        "토큰 재발급 >> 기존 토큰 정보 : {}",
-        sessionStorage.getItem("access-token")
-      );
+      console.log("토큰 재발급 >> 기존 토큰 정보 : {}", sessionStorage.getItem("access-token"));
       await tokenRegeneration(
         JSON.stringify(state.userInfo),
         ({ data }) => {
@@ -169,14 +159,13 @@ const memberStore = {
         }
       );
     },
-    async userJoin( {commit }, user) {
+    async userJoin({ commit }, user) {
       await join(
         user,
         ({ data }) => {
-          
           if (data === "success") {
             console.log("회원가입 성공!");
-            commit();// 회원 가입이니까 store회원정보를 변경해줄필요가 없을거같음
+            commit(); // 회원 가입이니까 store회원정보를 변경해줄필요가 없을거같음
           } else {
             console.log("회원가입 실패!");
           }
@@ -188,9 +177,8 @@ const memberStore = {
     },
     async userModify({ commit }, user) {
       await modify(user, ({ data }) => {
-        console.log()
+        console.log();
         if (data.message === "success") {
-
           console.log("정보 수정 성공!");
           commit("SET_USER_DATA", data);
         } else {
@@ -199,12 +187,10 @@ const memberStore = {
       });
     },
 
-
     async userDelete({ commit }, userId) {
       await remove(userId, ({ data }) => {
-        console.log()
+        console.log();
         if (data === "success") {
-
           console.log("회원 탈퇴 완료!");
           commit("SET_USER_DATA_NULL");
         } else {
