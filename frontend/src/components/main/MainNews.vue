@@ -1,8 +1,15 @@
 <template>
   <div id="news">
-    <h2>부동산 관련 뉴스</h2>
+    <h2>관련 뉴스</h2>
     <div id="news-detail" v-for="(item, index) in newsItems" :key="index">
-      <b-card @click="handleClick(item)" tag="article" style="max-width: 20rem" class="mb-2" :title="item.title">
+      <b-card
+        @click="handleClick(item)"
+        tag="article"
+        style="max-width: 20rem; border: none"
+        class="mb-2 shadow"
+        :title="item.title"
+      >
+        <hr />
         <b-card-text v-html="item.description"></b-card-text>
       </b-card>
     </div>
