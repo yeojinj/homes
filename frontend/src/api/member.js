@@ -14,8 +14,7 @@ async function findById(userid, success, fail) {
 }
 
 async function tokenRegeneration(user, success, fail) {
-  api.defaults.headers["refresh-token"] =
-    sessionStorage.getItem("refresh-token"); //axios header에 refresh-token 셋팅
+  api.defaults.headers["refresh-token"] = sessionStorage.getItem("refresh-token"); //axios header에 refresh-token 셋팅
   await api.post(`/user/refresh`, user).then(success).catch(fail);
 }
 
@@ -28,14 +27,14 @@ async function join(user, success, fail) {
   await api.post(`/user/join`, JSON.stringify(user)).then(success).catch(fail);
 }
 
-async function modify (user,success ,fail){
-   console.log (user);
-   await api.put ('/user',JSON.stringify(user)).then(success).catch(fail);
+async function modify(user, success, fail) {
+  console.log(user);
+  await api.put("/user", JSON.stringify(user)).then(success).catch(fail);
 }
 
-async function remove (userId,success ,fail){
-  console.log (userId);
-  await api.delete (`/user/${userId}`).then(success).catch(fail);
+async function remove(userId, success, fail) {
+  console.log(userId);
+  await api.delete(`/user/${userId}`).then(success).catch(fail);
 }
 
-export { login, findById, tokenRegeneration, logout, join , modify ,remove };
+export { login, findById, tokenRegeneration, logout, join, modify, remove };

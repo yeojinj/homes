@@ -3,22 +3,7 @@
     <div id="map"></div>
     <div id="search-box" class="card">
       <div>
-        <div class="input-group pb-2 px-3">
-          <input
-            @keyup.enter="onKeywordSearch"
-            type="text"
-            v-model="inputKeyword"
-            class="form-control d-inline-block"
-            placeholder="아파트 또는 동 이름으로 검색해보세요"
-          />
-          <b-button
-            @click="search"
-            size="sm"
-            class="btn btn-primary d-inline-block"
-          >
-            <b-icon icon="search" aria-hidden="true"></b-icon>
-          </b-button>
-        </div>
+        <apart-search></apart-search>
       </div>
     </div>
     <div id="list-box" class="card">
@@ -78,8 +63,12 @@
 </template>
 
 <script>
+import ApartSearch from "@/components/apart/ApartSearch.vue";
 export default {
   name: "AppHouse",
+  components: {
+    ApartSearch,
+  },
   data() {
     return {
       map: null,
@@ -133,6 +122,7 @@ export default {
   overflow-y: auto;
 }
 #list-box {
+  margin-top: 80px;
   position: absolute;
   top: 150px;
   left: 20px;
