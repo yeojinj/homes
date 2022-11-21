@@ -33,36 +33,6 @@ const routes = [
     component: AppMain,
   },
   {
-    path: "/qna",
-    name: "qna",
-    beforeEnter: onlyAuthUser,
-    component: () => import("@/views/AppQna"),
-    redirect: "/qna/list",
-    children: [
-      {
-        path: "list",
-        name: "qnalist",
-        component: () => import("@/components/qna/QnaList"),
-      },
-      {
-        path: "view/:no",
-        name: "qnaview",
-        component: () => import("@/components/qna/QnaView"),
-      },
-
-      {
-        path: "write",
-        name: "qnawrite",
-        component: () => import("@/components/qna/QnaWrite"),
-      },
-      {
-        path: "modify/:no",
-        name: "qnamodify",
-        component: () => import("@/components/qna/QnaModify"),
-      },
-    ],
-  },
-  {
     path: "/user",
     name: "user",
     component: () => import("@/views/AppUser"),
@@ -95,6 +65,66 @@ const routes = [
     path: "/house",
     name: "house",
     component: () => import("@/views/AppHouse"),
+  },
+  {
+    path: "/qna",
+    name: "qna",
+    beforeEnter: onlyAuthUser,
+    component: () => import("@/views/AppQna"),
+    redirect: "/qna/list",
+    children: [
+      {
+        path: "list",
+        name: "qnalist",
+        component: () => import("@/components/qna/QnaList"),
+      },
+      {
+        path: "view/:no",
+        name: "qnaview",
+        component: () => import("@/components/qna/QnaView"),
+      },
+
+      {
+        path: "write",
+        name: "qnawrite",
+        component: () => import("@/components/qna/QnaWrite"),
+      },
+      {
+        path: "modify/:no",
+        name: "qnamodify",
+        component: () => import("@/components/qna/QnaModify"),
+      },
+    ],
+  },
+  {
+    path: "/notice",
+    name: "notice",
+    beforeEnter: onlyAuthUser,
+    component: () => import("@/views/AppNotice"),
+    redirect: "/notice/list",
+    children: [
+      {
+        path: "list",
+        name: "noticelist",
+        component: () => import("@/components/notice/NoticeList"),
+      },
+      {
+        path: "view/:no",
+        name: "noticeview",
+        component: () => import("@/components/notice/NoticeView"),
+      },
+
+      {
+        path: "write",
+        name: "noticewrite",
+        component: () => import("@/components/notice/NoticeWrite"),
+      },
+      {
+        path: "modify/:no",
+        name: "noticemodify",
+        component: () => import("@/components/notice/NoticeModify"),
+      },
+    ],
   },
 ];
 

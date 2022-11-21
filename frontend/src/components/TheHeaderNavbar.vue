@@ -3,23 +3,14 @@
     <b-navbar class="nav-custom shadow-sm" type="light" variant="light">
       <b-navbar-brand href="#" class="item">
         <router-link :to="{ name: 'main' }">
-          <b-img
-            :src="require('@/assets/logo.png')"
-            id="logo"
-            class="d-inline-block align-top"
-            alt="logo"
-          ></b-img>
+          <b-img :src="require('@/assets/logo.png')" id="logo" class="d-inline-block align-top" alt="logo"></b-img>
         </router-link>
       </b-navbar-brand>
 
       <b-navbar-nav class="item mx-auto">
         <b-nav-item href="#">
-          <router-link :to="{ name: 'house' }" class="m-2 link"
-            >실거래가</router-link
-          >
-          <router-link :to="{ name: '' }" class="m-2 link"
-            >공지사항</router-link
-          >
+          <router-link :to="{ name: 'house' }" class="m-2 link">실거래가</router-link>
+          <router-link :to="{ name: 'notice' }" class="m-2 link">공지사항</router-link>
           <router-link :to="{ name: 'qna' }" class="m-2 link">QnA</router-link>
         </b-nav-item>
       </b-navbar-nav>
@@ -36,16 +27,10 @@
         </b-nav-item>
 
         <b-nav-item class="align-self-center">
-          <router-link :to="{ name: 'mypage' }" class="link align-self-center"
-            >마이페이지</router-link
-          >
+          <router-link :to="{ name: 'mypage' }" class="link align-self-center">마이페이지</router-link>
         </b-nav-item>
 
-        <b-nav-item
-          class="link align-self-center"
-          @click.prevent="onClickLogout"
-          >로그아웃</b-nav-item
-        >
+        <b-nav-item class="link align-self-center" @click.prevent="onClickLogout">로그아웃</b-nav-item>
 
         <!-- <b-nav-item href="#" class="item align-self-center">
           <b-button
@@ -66,9 +51,7 @@
           </router-link>
         </b-nav-item>
         <b-nav-item class="align-self-center">
-          <router-link :to="{ name: 'login' }" class="link">
-            <b-icon icon="key"></b-icon> 로그인
-          </router-link>
+          <router-link :to="{ name: 'login' }" class="link"> <b-icon icon="key"></b-icon> 로그인 </router-link>
         </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
