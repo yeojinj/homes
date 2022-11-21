@@ -9,14 +9,10 @@ import org.springframework.stereotype.Service;
 import com.ssafy.homes.qna.model.QnaDto;
 import com.ssafy.homes.qna.model.mapper.QnaMapper;
 
-
-
-
 @Service
 public class QnaServiceImpl  implements QnaService{
 	@Autowired
 	private SqlSession sqlSession;
-
 	
 	// Insert : Qna 등록
 	@Override

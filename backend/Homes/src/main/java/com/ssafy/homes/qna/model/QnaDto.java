@@ -1,7 +1,6 @@
 package com.ssafy.homes.qna.model;
 
 public class QnaDto {
-
 	
 	private int no;
 	private String userId;

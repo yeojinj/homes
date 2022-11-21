@@ -1,12 +1,14 @@
 package com.ssafy.homes.member.model;
 
 public class MemberDto {
+	
     private String userId;
     private String userPw;
     private String name;
     private String email;
     private String phone;
     private String rule;
+    
 	public String getUserId() {
 		return userId;
 	}
