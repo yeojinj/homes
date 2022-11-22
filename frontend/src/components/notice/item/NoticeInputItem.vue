@@ -8,7 +8,7 @@
             v-model="noticeItem.subject"
             type="text"
             required
-            placeholder="제목 입력..."
+            placeholder="제목 입력"
           ></b-form-input>
         </b-form-group>
 
@@ -16,7 +16,7 @@
           <b-form-textarea
             id="content"
             v-model="noticeItem.content"
-            placeholder="내용 입력..."
+            placeholder="내용 입력"
             rows="10"
             max-rows="15"
           ></b-form-textarea>
@@ -41,7 +41,6 @@ export default {
     return {
       noticeItem: {
         no: 0,
-        state: "no",
         userId: "",
         subject: "",
         content: "",

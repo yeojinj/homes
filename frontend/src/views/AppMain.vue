@@ -3,7 +3,6 @@
     <div id="main-image">
       <div class="container">
         <h1>HOMES</h1>
-
         <svg
           class="pulse"
           viewBox="0 0 1024 1024"
@@ -75,6 +74,7 @@ h1 {
   align-items: center;
   justify-content: center;
   min-height: 50vh;
+  max-width: 100%;
   overflow: hidden;
 }
 
@@ -88,7 +88,7 @@ h1 {
 }
 
 .pulse > circle {
-  fill: #ff5154;
+  fill: #7a4c51;
   transform: scale(0);
   opacity: 0;
   transform-origin: 50% 50%;
@@ -96,12 +96,12 @@ h1 {
 }
 
 #Oval2 {
-  fill: #7fc6a4;
+  fill: #3f667a;
   animation: pulse 2s 0.75s cubic-bezier(0.5, 0.5, 0, 1);
 }
 
 #Oval3 {
-  fill: #e5f77d;
+  fill: #c7c35d;
   animation: pulse 2s 1.5s cubic-bezier(0.5, 0.5, 0, 1);
 }
 
