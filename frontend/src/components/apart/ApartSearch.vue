@@ -2,10 +2,18 @@
   <div id="sigungu">
     <b-row class="mt-3 mb-3 text-center">
       <b-col class="sm-3">
-        <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
+        <b-form-select
+          v-model="sidoCode"
+          :options="sidos"
+          @change="gugunList"
+        ></b-form-select>
       </b-col>
       <b-col class="sm-2">
-        <b-form-select v-model="gugunCode" :options="guguns" @change="dongList"></b-form-select>
+        <b-form-select
+          v-model="gugunCode"
+          :options="guguns"
+          @change="dongList"
+        ></b-form-select>
       </b-col>
       <b-col class="sm-3">
         <b-form-select v-model="dongCode" :options="dongs"></b-form-select>
@@ -20,7 +28,11 @@
         class="form-control d-inline-block"
         placeholder="아파트 또는 동 이름으로 검색해보세요"
       />
-      <b-button @click="searchApt" size="sm" class="btn btn-primary d-inline-block">
+      <b-button
+        @click="searchApt"
+        size="sm"
+        class="btn btn-primary d-inline-block"
+      >
         <b-icon icon="search" aria-hidden="true"></b-icon>
       </b-button>
     </div>
@@ -38,12 +50,12 @@ export default {
       sidoCode: null,
       gugunCode: null,
       dongCode: null,
-      apartName: null,
+      apartName: "",
     };
   },
 
   computed: {
-    ...mapState(apartStore, ["sidos", "guguns", "dongs", "houses"]),
+    ...mapState(apartStore, ["sidos", "guguns", "dongs", "apartments"]),
     // sidos() {
     //   return this.$store.state.sidos;
     // },
@@ -64,8 +76,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(apartStore, ["getSido", "getGugun", "getDong", "getApartList"]),
-    ...mapMutations(apartStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_APT_LIST"]),
+    ...mapActions(apartStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getApartList",
+    ]),
+    ...mapMutations(apartStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+      "CLEAR_APT_LIST",
+    ]),
     async sidoList() {
       console.log("@@@");
       await this.getSido();
@@ -108,6 +130,8 @@ export default {
           apartName: this.apartName,
         };
         await this.getApartList(searchInfo);
+        await console.log(this.apartments + "아파트");
+        await this.$emit("show-apart-list");
       }
     },
   },

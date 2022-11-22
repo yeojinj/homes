@@ -3,11 +3,13 @@
     <div id="map"></div>
     <div id="search-box" class="card">
       <div>
-        <apart-search></apart-search>
+        <!-- 하위 컴포넌트의 이벤를 수신 -->
+        <apart-search v-on:show-apart-list="showApartList"></apart-search>
       </div>
     </div>
     <div id="list-box" class="card">
       <!-- 검색 결과 아파트 리스트 -->
+      <apart-list v-bind:apartments="apart"></apart-list>
       <div class="bg-white mb-2">
         <div class="border-bottom"><h5 class="p-3 m-0">실거래가</h5></div>
         <div>
@@ -64,15 +66,26 @@
 
 <script>
 import ApartSearch from "@/components/apart/ApartSearch.vue";
+import ApartList from "@/components/apart/ApartList.vue";
+import { mapState } from "vuex";
+const apartStore = "apartStore";
 export default {
   name: "AppHouse",
   components: {
     ApartSearch,
+    ApartList,
   },
   data() {
     return {
-      map: null,
+      apart: [],
     };
+  },
+
+  computed: {
+    ...mapState(apartStore, ["apartments"]),
+    // sidos() {
+    //   return this.$store.state.sidos;
+    // },
   },
   mounted() {
     // kakao map 초기화
@@ -101,6 +114,11 @@ export default {
         // 지도의 우측에 확대 축소 컨트롤을 추가한다
         map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       });
+    },
+    showApartList() {
+      //state의 값을 넘겨줌
+      console.log("이벤트 넘어옴");
+      this.apart = this.apartments;
     },
   },
 };
