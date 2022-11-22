@@ -1,11 +1,12 @@
 <template>
   <div class="notice-list" style="width: 1000px">
     <div id="list">
-      <b-table-simple hover responsive outlined="outlined">
-        <b-thead head-variant="dark">
+      <b-table-simple class="shadow" hover responsive outlined="outlined">
+        <b-thead head-variant="light">
           <b-tr>
             <b-th>제목</b-th>
             <b-th>작성일</b-th>
+            <b-th>조회수</b-th>
           </b-tr>
         </b-thead>
         <b-tbody>
@@ -14,15 +15,19 @@
       </b-table-simple>
     </div>
     <br />
-    <div id="buttons">
-      <b-button class="button-write" variant="outline-dark" @click="moveWrite()">글쓰기</b-button>
-    </div>
+    <template v-if="userInfo.rule == 'A'">
+      <div id="buttons">
+        <b-button class="button-write" variant="outline-dark" @click="moveWrite()">글쓰기</b-button>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import http from "@/api/http";
 import NoticeListItem from "@/components/notice/item/NoticeListItem.vue";
+import { mapState } from "vuex";
+const memberStore = "memberStore";
 
 export default {
   name: "NoticeList",
@@ -35,6 +40,7 @@ export default {
       fields: [
         { key: "subject", label: "제목", tdClass: "tdSubject" },
         { key: "regTime", label: "작성일", tdClass: "tdClass" },
+        { key: "hit", label: "조회수", tdClass: "tdClass" },
       ],
     };
   },
@@ -43,9 +49,12 @@ export default {
       this.noticeItems = data;
     });
   },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
+  },
   methods: {
     moveWrite() {
-      this.$router.push({ name: "noticeWrite" });
+      this.$router.push({ name: "noticewrite" });
     },
   },
 };

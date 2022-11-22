@@ -8,15 +8,9 @@
     <b-row>
       <b-col></b-col>
       <b-col cols="8">
-        <b-card
-          class="text-center mt-3 login-box"
-          style="max-width: 40rem"
-          align="center"
-        >
+        <b-card class="text-center mt-3 login-box" style="max-width: 40rem" align="center">
           <b-form class="text-left">
-            <b-alert show variant="danger" v-if="isLoginError"
-              >아이디 또는 비밀번호를 확인하세요.</b-alert
-            >
+            <b-alert show variant="danger" v-if="isLoginError">아이디 또는 비밀번호를 확인하세요.</b-alert>
             <b-form-group label="아이디:" label-for="userId">
               <b-form-input
                 id="userid"
@@ -37,17 +31,9 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="button" variant="dark" class="" @click="confirm"
-              >로그인</b-button
-            >
+            <b-button type="button" variant="dark" class="" @click="confirm">로그인</b-button>
 
-            <b-button
-              type="button"
-              variant="success"
-              class="m-1"
-              @click="movePage"
-              >회원가입</b-button
-            >
+            <b-button type="button" variant="success" class="m-1" @click="movePage">회원가입</b-button>
           </b-form>
         </b-card>
       </b-col>
@@ -66,19 +52,17 @@ export default {
   name: "UserLogin",
   data() {
     return {
-      //   isLoginError: false,
+      // isLoginError: false,
       user: {
         userId: null,
         userPw: null,
       },
     };
   },
-
   computed: {
     ...mapState(memberStore, ["isLogin", "isLoginError", "userInfo"]),
   },
   methods: {
-  
     //"memberStore"의 actions인 "userConfirm", "getUserInfo"로 접근하겠다.
     ...mapActions(memberStore, ["userConfirm", "getUserInfo"]),
     //로그인 버튼을 누르면 confirm 함수가 실행된다.
