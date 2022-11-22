@@ -1,23 +1,23 @@
 <template>
   <b-list-group flush class="list my--3">
     <b-list-group-item
-      v-for="member in apartments"
-      :key="member.apartCode"
+      v-for="apart in apartments"
+      :key="apart.aptCode"
       class="list-group-item px-0"
+      :to="{ name: 'apartDetailView', params: { apartCode: apart.aptCode } }"
+      action
     >
       <b-row align-v="center">
         <b-col md="auto">
           <!-- Avatar -->
-          <a href="javascript:;" class="avatar"> </a>
+          <a href="javascript:;" class="avatar"> 1111</a>
         </b-col>
         <b-col class="ml--2">
           <h4 class="mb-0">
-            <a href="javascript:;"></a>
+            <a href="javascript:;">123213</a>
           </h4>
           <img id="apartLogo" src="@/assets/building.png" />
-          <span :class="`text-${member.apartmentName}`">{{
-            member.apartmentName
-          }}</span>
+          <span :class="`text-${apart.apartCode}`">{{ apart.dongName }} {{ apart.apartmentName }}</span>
           <small></small>
         </b-col>
         <b-col md="auto">
@@ -45,36 +45,31 @@ export default {
           name: "John Michael",
           status: "Online",
           statusType: "success",
-          image:
-            "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-1.jpg",
+          image: "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-1.jpg",
         },
         {
           name: "Alex Smith",
           status: "In a meeting",
           statusType: "danger",
-          image:
-            "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-2.jpg",
+          image: "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-2.jpg",
         },
         {
           name: "Samantha Ivy",
           status: "Offline",
           statusType: "danger",
-          image:
-            "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-3.jpg",
+          image: "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-3.jpg",
         },
         {
           name: "John Michael",
           status: "Online",
           statusType: "success",
-          image:
-            "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-4.jpg",
+          image: "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-4.jpg",
         },
         {
           name: "John Snow",
           status: "Online",
           statusType: "success",
-          image:
-            "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-5.jpg",
+          image: "https://demos.creative-tim.com/argon-dashboard-pro-bs4/assets/img/theme/team-5.jpg",
         },
       ],
     };

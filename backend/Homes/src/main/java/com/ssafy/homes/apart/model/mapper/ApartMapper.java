@@ -23,4 +23,13 @@ public interface ApartMapper {
 	
 	//아파트 목록 불러오기 
 	List<HouseInfoDto> getAptInfoInDong (Map<String,String> map) throws SQLException;
-}
+	
+	
+	//연월기준 평균 거래 금액 얻어오기 
+	List<Map<String, Object>> getYearMonthAmount(Map<String, String> map) throws SQLException;
+	
+	//해당 아파트의 모든 평수를 얻어온다
+	List <String> getArea(String aptCode) throws SQLException;
+
+
+ }

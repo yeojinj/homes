@@ -36,5 +36,15 @@ public class ApartServiceImpl implements ApartService{
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(ApartMapper.class).getAptInfoInDong(map);
 	}
+	@Override
+	public List<Map<String, Object>> getYearMonthAmount(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ApartMapper.class).getYearMonthAmount(map);
+	}
+	@Override
+	public List<String> getArea(String aptCode) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ApartMapper.class).getArea(aptCode);
+	}
 
 }

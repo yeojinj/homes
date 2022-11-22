@@ -14,6 +14,13 @@ public interface ApartService {
 	List<SiGunDongDto> getGugunInSido(String sido) throws Exception;
 	//동 정보 얻어오기 
 	List<SiGunDongDto> getDongInGugun(String gugun) throws Exception;
-	//아파트 목록 불러오기 
+	//아파트 목록 얻어오기 
 	List<HouseInfoDto> getAptInfoInDong (Map<String,String> map) throws Exception;
+	
+	//연월 기준 평균 거래금액 얻어오기 
+	List<Map<String,Object>> getYearMonthAmount (Map<String , String> map) throws Exception;
+	
+	//해당하는 아파트의 모든 평수를 얻어온다.
+	
+	List<String> getArea (String aptCode) throws Exception;
 }
