@@ -19,15 +19,14 @@
 
     <div id="main-boards">
       <main-news></main-news>
-      <!-- <div id="notice">
-        <h2>공지사항</h2>
-      </div> -->
+      <main-notice></main-notice>
     </div>
   </div>
 </template>
 
 <script>
 import MainNews from "@/components/main/MainNews.vue";
+import MainNotice from "@/components/main/MainNotice.vue";
 
 export default {
   name: "AppMain",
@@ -36,6 +35,7 @@ export default {
   },
   components: {
     MainNews,
+    MainNotice,
   },
 };
 </script>

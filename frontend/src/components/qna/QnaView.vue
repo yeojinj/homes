@@ -21,7 +21,7 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h5 style='color: gray'>질문</h5><h3>${qnaItem.no}. ${qnaItem.subject}</h3>
+          :header-html="`<h5 style='color: gray'>질문</h5><h3>${qnaItem.subject}</h3>
           <div style='text-align: right;'><h6>${qnaItem.userId}</div><div style='text-align: right;'>${qnaItem.regTime}</h6></div>`"
           class="shadow-sm text-left"
         >
@@ -94,11 +94,11 @@ export default {
     },
     //삭제하기
     deleteQna() {
-      if (confirm("정말로 삭제하시겠습니꺼??")) {
+      if (confirm("정말 삭제하시겠습니까??")) {
         http.delete(`/qna/${this.$route.params.no}`).then(({ data }) => {
-          let msg = "삭제 처리시 문제가 발생했습니다.";
+          let msg = "삭제 시 문제가 발생했습니다.";
           if (data === "success") {
-            msg = "삭제가 완료되었습니다.";
+            msg = "삭제되었습니다.";
           }
           alert(msg);
           // 현재 route를 /list로 변경.

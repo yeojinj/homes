@@ -83,7 +83,6 @@ const routes = [
         name: "qnaview",
         component: () => import("@/components/qna/QnaView"),
       },
-
       {
         path: "write",
         name: "qnawrite",
@@ -118,7 +117,6 @@ const routes = [
         name: "noticeview",
         component: () => import("@/components/notice/NoticeView"),
       },
-
       {
         path: "write",
         name: "noticewrite",

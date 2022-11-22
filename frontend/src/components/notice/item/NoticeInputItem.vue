@@ -117,7 +117,8 @@ export default {
         });
     },
     moveList() {
-      this.$router.push({ name: "noticelist" });
+      console.log("공지사항 리스트로 이동...");
+      this.$router.replace({ name: "noticelist" });
     },
   },
 };

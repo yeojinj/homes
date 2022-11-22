@@ -60,7 +60,9 @@ export default {
     this.isUserid = true;
   },
   methods: {
-    onSubmit() {
+    onSubmit(event) {
+      event.preventDefault();
+
       http
         .put(`/qna/comment`, {
           no: this.qnaItem.no,
@@ -76,7 +78,6 @@ export default {
             msg = "답변 등록이 완료되었습니다.";
           }
           alert(msg);
-          // 현재 route를 /list로 변경.
           this.moveList();
         });
     },
@@ -86,7 +87,8 @@ export default {
       this.moveList();
     },
     moveList() {
-      this.$router.push({ name: "qnalist" });
+      console.log("qna 리스트로 이동...");
+      this.$router.replace({ name: "qnalist" });
     },
   },
 };
