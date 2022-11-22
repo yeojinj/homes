@@ -64,7 +64,22 @@ const routes = [
   {
     path: "/house",
     name: "house",
+    redirect: "/house/main",
     component: () => import("@/views/AppHouse"),
+
+    children: [
+      {
+        path: "main",
+        name: "apartMain",
+        component: () => import("@/components/apart/ApartMain"),
+      },
+
+      {
+        path: "view/:apartCode",
+        name: "apartDetailView",
+        component: () => import("@/components/apart/ApartDetail"),
+      },
+    ],
   },
   {
     path: "/qna",
