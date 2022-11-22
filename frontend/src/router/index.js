@@ -17,7 +17,7 @@ const onlyAuthUser = async (to, from, next) => {
     await store.dispatch("memberStore/getUserInfo", token);
   }
   if (!checkToken || checkUserInfo === null) {
-    alert("로그인이 필요한 페이지입니다..");
+    alert("로그인이 필요한 페이지입니다.");
     // next({ name: "login" });
     router.push({ name: "login" });
   } else {
@@ -98,7 +98,6 @@ const routes = [
         name: "qnaview",
         component: () => import("@/components/qna/QnaView"),
       },
-
       {
         path: "write",
         name: "qnawrite",
@@ -108,6 +107,11 @@ const routes = [
         path: "modify/:no",
         name: "qnamodify",
         component: () => import("@/components/qna/QnaModify"),
+      },
+      {
+        path: "comment/:no",
+        name: "qnacomment",
+        component: () => import("@/components/qna/QnaComment"),
       },
     ],
   },
@@ -128,7 +132,6 @@ const routes = [
         name: "noticeview",
         component: () => import("@/components/notice/NoticeView"),
       },
-
       {
         path: "write",
         name: "noticewrite",

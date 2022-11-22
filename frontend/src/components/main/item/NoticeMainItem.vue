@@ -1,23 +1,27 @@
 <template>
   <b-tr>
-    <b-th class="text-left">
+    <b-td class="text-center item">
       <router-link :to="{ name: 'noticeview', params: { no: no } }">{{ subject }}</router-link>
-    </b-th>
-    <b-td>{{ regTime }}</b-td>
-    <b-td>{{ hit }}</b-td>
+    </b-td>
   </b-tr>
 </template>
 
 <script>
 export default {
-  name: "NoticeListItem",
+  name: "NoticeMainItem",
   props: {
     subject: String,
-    regTime: String,
     no: Number,
-    hit: Number,
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.item {
+  border: none;
+}
+
+a {
+  color: black;
+}
+</style>

@@ -2,24 +2,13 @@
   <b-row class="mb-1">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <b-form-group id="userid-group" label="작성자:" label-for="userid" description="작성자를 입력하세요.">
-          <b-form-input
-            id="userid"
-            :disabled="isUserid"
-            v-model="qnaItem.userId"
-            type="text"
-            required
-            placeholder="작성자 입력..."
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-group id="subject-group" label="제목:" label-for="subject" description="제목을 입력하세요.">
+        <b-form-group id="subject-group" label="제목:" label-for="subject">
           <b-form-input
             id="subject"
             v-model="qnaItem.subject"
             type="text"
             required
-            placeholder="제목 입력..."
+            placeholder="제목 입력"
           ></b-form-input>
         </b-form-group>
 
@@ -27,15 +16,15 @@
           <b-form-textarea
             id="content"
             v-model="qnaItem.content"
-            placeholder="내용 입력..."
+            placeholder="내용 입력"
             rows="10"
             max-rows="15"
           ></b-form-textarea>
         </b-form-group>
 
-        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'write'">글 작성</b-button>
-        <b-button type="submit" variant="primary" class="m-1" v-else>글 수정</b-button>
-        <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
+        <b-button type="submit" variant="outline-primary" class="m-1" v-if="this.type === 'write'">작성</b-button>
+        <b-button type="submit" variant="outline-primary" class="m-1" v-else>수정</b-button>
+        <b-button type="reset" variant="outline-danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
   </b-row>
@@ -43,6 +32,8 @@
 
 <script>
 import http from "@/api/http";
+import { mapState } from "vuex";
+const memberStore = "memberStore";
 
 export default {
   name: "QnaInputItem",
@@ -50,7 +41,7 @@ export default {
     return {
       qnaItem: {
         no: 0,
-        state: "no",
+        state: "N",
         userId: "",
         subject: "",
         content: "",
@@ -73,13 +64,15 @@ export default {
       this.isUserid = true;
     }
   },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
 
       let err = true;
       let msg = "";
-      !this.qnaItem.userId && ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userid.focus());
       err && !this.qnaItem.subject && ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
       err && !this.qnaItem.content && ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
@@ -96,13 +89,13 @@ export default {
     writeQna() {
       http
         .post(`/qna`, {
-          userId: this.qnaItem.userId,
+          userId: this.userInfo.userId, // 현재 로그인한 사용자의 아이디
           subject: this.qnaItem.subject,
           content: this.qnaItem.content,
           state: this.qnaItem.state,
         })
         .then(({ data }) => {
-          let msg = "등록 처리시 문제가 발생했습니다.";
+          let msg = "등록 시 문제가 발생했습니다.";
           if (data === "success") {
             msg = "등록이 완료되었습니다.";
           }
@@ -120,7 +113,7 @@ export default {
           state: this.qnaItem.state,
         })
         .then(({ data }) => {
-          let msg = "수정 처리시 문제가 발생했습니다.";
+          let msg = "수정 시 문제가 발생했습니다.";
           if (data === "success") {
             msg = "수정이 완료되었습니다.";
           }
