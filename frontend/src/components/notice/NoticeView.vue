@@ -14,7 +14,7 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${noticeItem.no}. ${noticeItem.subject}</h3>
+          :header-html="`<h3>${noticeItem.subject}</h3>
           <div style='text-align: right;'><h6>관리자</div><div style='text-align: right;'>${noticeItem.regTime}</h6></div>`"
           class="shadow-sm text-left"
         >
@@ -60,11 +60,11 @@ export default {
       });
     },
     deleteNotice() {
-      if (confirm("정말로 삭제하시겠습니꺼??")) {
+      if (confirm("정말 삭제하시겠습니까??")) {
         http.delete(`/notice/${this.$route.params.no}`).then(({ data }) => {
-          let msg = "삭제 처리시 문제가 발생했습니다.";
+          let msg = "삭제 시 문제가 발생했습니다.";
           if (data === "success") {
-            msg = "삭제가 완료되었습니다.";
+            msg = "삭제되었습니다.";
           }
           alert(msg);
           this.moveNoticeList();
