@@ -94,6 +94,11 @@ const routes = [
         name: "qnamodify",
         component: () => import("@/components/qna/QnaModify"),
       },
+      {
+        path: "comment/:no",
+        name: "qnacomment",
+        component: () => import("@/components/qna/QnaComment"),
+      },
     ],
   },
   {

@@ -5,18 +5,25 @@
         <b-button variant="outline-dark" size="sm" @click="moveQnaList">목록</b-button>
       </b-col>
       <b-col class="text-right">
-        <b-button variant="outline-primary" size="sm" @click="moveModifyQna" class="mr-2">수정</b-button>
-        <b-button variant="outline-danger" size="sm" @click="deleteQna">삭제</b-button>
+        <b-button
+          variant="outline-primary"
+          size="sm"
+          @click="moveModifyQna"
+          class="mr-2"
+          v-if="qnaItem.userId === userInfo.userId && qnaItem.state == 'N'"
+          >수정</b-button
+        >
+        <b-button variant="outline-danger" size="sm" @click="deleteQna" v-if="qnaItem.userId === userInfo.userId"
+          >삭제</b-button
+        >
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${qnaItem.no}.
-          ${qnaItem.subject}</h3><div><h6>${qnaItem.userId}</div><div>${qnaItem.regTime}</h6></div>`"
-          class="mb-2"
-          border-variant="dark"
-          no-body
+          :header-html="`<h5 style='color: gray'>질문</h5><h3>${qnaItem.no}. ${qnaItem.subject}</h3>
+          <div style='text-align: right;'><h6>${qnaItem.userId}</div><div style='text-align: right;'>${qnaItem.regTime}</h6></div>`"
+          class="shadow-sm text-left"
         >
           <b-card-body class="text-left">
             <div v-html="message"></div>
@@ -24,12 +31,32 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-row class="mb-1" v-if="qnaItem.state == 'Y'">
+      <b-col>
+        <b-card
+          :header-html="`<h5 style='color: gray'>답변</h5>
+          <div style='text-align: right;'><h6>관리자</div><div style='text-align: right;'>${qnaItem.comTime}</h6></div>`"
+          class="shadow-sm text-left"
+        >
+          <b-card-body class="text-left">
+            <div v-html="comment"></div>
+          </b-card-body>
+        </b-card>
+      </b-col>
+    </b-row>
+    <template v-if="userInfo.rule == 'A' && qnaItem.state == 'N'">
+      <div id="buttons">
+        <b-button class="button-write" variant="outline-dark" @click="moveComment()">답변하기</b-button>
+      </div>
+    </template>
   </b-container>
 </template>
 
 <script>
 // import moment from "moment";
 import http from "@/api/http";
+import { mapState } from "vuex";
+const memberStore = "memberStore";
 
 export default {
   name: "QnaDetail",
@@ -39,8 +66,13 @@ export default {
     };
   },
   computed: {
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
     message() {
       if (this.qnaItem.content) return this.qnaItem.content.split("\n").join("<br>");
+      return "";
+    },
+    comment() {
+      if (this.qnaItem.comment) return this.qnaItem.comment.split("\n").join("<br>");
       return "";
     },
   },
@@ -52,7 +84,7 @@ export default {
   },
 
   methods: {
-    //수정하기로 이동한다.
+    //수정하기
     moveModifyQna() {
       this.$router.replace({
         name: "qnamodify",
@@ -77,6 +109,12 @@ export default {
     //Qna 전체 보기로 이동
     moveQnaList() {
       this.$router.push({ name: "qnalist" });
+    },
+    moveComment() {
+      this.$router.replace({
+        name: "qnacomment",
+        params: { no: this.qnaItem.no },
+      });
     },
   },
 };

@@ -17,15 +17,19 @@
       </b-table-simple>
     </div>
     <br />
-    <div id="buttons">
-      <b-button class="button-write" variant="outline-dark" @click="moveWrite()">글쓰기</b-button>
-    </div>
+    <template v-if="userInfo.rule == 'G'">
+      <div id="buttons">
+        <b-button class="button-write" variant="outline-dark" @click="moveWrite()">질문하기</b-button>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import http from "@/api/http";
 import QnaListItem from "@/components/qna/item/QnaListItem.vue";
+import { mapState } from "vuex";
+const memberStore = "memberStore";
 
 export default {
   name: "QnaList",
@@ -48,6 +52,9 @@ export default {
       this.qnaItems = data;
       console.log(this.qnaItems + "데이터");
     });
+  },
+  computed: {
+    ...mapState(memberStore, ["isLogin", "userInfo"]),
   },
   methods: {
     moveWrite() {

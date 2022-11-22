@@ -14,11 +14,9 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${noticeItem.no}.
-          ${noticeItem.subject}</h3><div><h6>${noticeItem.userId}</div><div>${noticeItem.regTime}</h6></div>`"
-          class="mb-2"
-          border-variant="dark"
-          no-body
+          :header-html="`<h3>${noticeItem.no}. ${noticeItem.subject}</h3>
+          <div style='text-align: right;'><h6>관리자</div><div style='text-align: right;'>${noticeItem.regTime}</h6></div>`"
+          class="shadow-sm text-left"
         >
           <b-card-body class="text-left">
             <div v-html="message"></div>
