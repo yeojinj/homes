@@ -86,7 +86,8 @@
 		inner join houseinfo hi
 		on hd.aptCode = hi.aptCode
 		where hd.aptCode = #{aptCode}
-		group by area;
+		group by round(area/3.30579)
+		order by round(area/3.30579);
 
 
 
