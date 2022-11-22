@@ -8,11 +8,7 @@
     <b-row>
       <b-col></b-col>
       <b-col cols="8">
-        <b-card
-          class="text-center mt-3 register-box"
-          style="max-width: 40rem"
-          align="center"
-        >
+        <b-card class="text-center mt-3 register-box" style="max-width: 40rem" align="center">
           <b-form class="text-left">
             <b-form-group label="아이디:" label-for="userId">
               <b-form-input
@@ -21,6 +17,7 @@
                 required
                 placeholder="아이디"
                 @keyup="idCheck"
+                @keyup.enter="confirm"
               ></b-form-input>
               <div :style="{ color: idColor }">{{ idCheckDiv }}</div>
             </b-form-group>
@@ -32,6 +29,7 @@
                 required
                 placeholder="비밀번호"
                 @keyup="pwCheck"
+                @keyup.enter="confirm"
               ></b-form-input>
               <div :style="{ color: pwColor }">{{ pwCheckDiv }}</div>
             </b-form-group>
@@ -43,6 +41,7 @@
                 required
                 placeholder="비밀번호 확인"
                 @keyup="pwSameCheck"
+                @keyup.enter="confirm"
               ></b-form-input>
               <div :style="{ color: pwSameColor }">{{ pwSameCheckDiv }}</div>
             </b-form-group>
@@ -74,17 +73,9 @@
               ></b-form-input>
             </b-form-group>
 
-            <b-button type="button" variant="dark" class="" @click="confirm"
-              >회원가입</b-button
-            >
+            <b-button type="button" variant="dark" class="" @click="confirm">회원가입</b-button>
 
-            <b-button
-              type="button"
-              variant="light"
-              class="m-1"
-              @click="movePage"
-              >취소</b-button
-            >
+            <b-button type="button" variant="light" class="m-1" @click="movePage">취소</b-button>
           </b-form>
         </b-card>
       </b-col>
@@ -130,7 +121,7 @@ export default {
         alert(this.user.name + "님의 회원가입 완료!");
         this.$router.push({ name: "login" });
       } else {
-        alert("회원 정보를 확인해주세요 ");
+        alert("회원 정보를 모두 입력해주세요.");
       }
     },
     movePage() {
@@ -139,7 +130,6 @@ export default {
 
     idCheck: function (e) {
       let userid = e.target.value;
-      console.log(userid.length + "@@@@@길이");
 
       if (userid.length == 0) {
         this.idCheckDiv = "";
@@ -153,11 +143,11 @@ export default {
           if (data === "success") {
             this.idColor = "blue";
             this.canUseId = true;
-            this.idCheckDiv = "사용가능한  아이디 입니다.";
+            this.idCheckDiv = "사용 가능한 아이디입니다.";
           } else {
             this.idColor = "red";
             this.canUseId = false;
-            this.idCheckDiv = "사용할 수 없는 아이디 입니다.";
+            this.idCheckDiv = "사용할 수 없는 아이디입니다.";
           }
         });
       }
@@ -175,7 +165,7 @@ export default {
         this.pwCheckDiv = "비밀번호 8 자 이상 16자 이하 입니다.";
       } else {
         this.pwColor = "blue";
-        this.pwCheckDiv = "사용할 수 있는 비밀번호 입니다.";
+        this.pwCheckDiv = "사용 가능한 비밀번호입니다.";
       }
     },
 

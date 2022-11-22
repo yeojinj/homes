@@ -4,6 +4,7 @@
       <router-link :to="{ name: 'noticeview', params: { no: no } }">{{ subject }}</router-link>
     </b-th>
     <b-td>{{ regTime }}</b-td>
+    <b-td>{{ hit }}</b-td>
   </b-tr>
 </template>
 
@@ -14,6 +15,7 @@ export default {
     subject: String,
     regTime: String,
     no: Number,
+    hit: Number,
   },
 };
 </script>
