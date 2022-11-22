@@ -1,14 +1,32 @@
 <template>
   <div id="sigungu">
     <b-row class="mt-3 mb-3 text-center">
-      <b-col class="sm-3">
-        <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
+      <b-col class="sm-2">
+        <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList">
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >광역시/도</b-form-select-option
+            >
+          </template>
+        </b-form-select>
       </b-col>
       <b-col class="sm-2">
-        <b-form-select v-model="gugunCode" :options="guguns" @change="dongList"></b-form-select>
+        <b-form-select v-model="gugunCode" :options="guguns" @change="dongList">
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >시/구</b-form-select-option
+            >
+          </template>
+        </b-form-select>
       </b-col>
-      <b-col class="sm-3">
-        <b-form-select v-model="dongCode" :options="dongs"></b-form-select>
+      <b-col class="sm-2">
+        <b-form-select v-model="dongCode" :options="dongs">
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >동</b-form-select-option
+            >
+          </template>
+        </b-form-select>
       </b-col>
     </b-row>
 
@@ -18,9 +36,13 @@
         type="text"
         v-model="apartName"
         class="form-control d-inline-block"
-        placeholder="아파트 또는 동 이름으로 검색해보세요"
+        placeholder="아파트 이름을 검색해보세요"
       />
-      <b-button @click="searchApt" size="sm" class="btn btn-primary d-inline-block">
+      <b-button
+        @click="searchApt"
+        size="sm"
+        class="btn btn-primary d-inline-block"
+      >
         <b-icon icon="search" aria-hidden="true"></b-icon>
       </b-button>
     </div>
@@ -64,8 +86,18 @@ export default {
   },
 
   methods: {
-    ...mapActions(apartStore, ["getSido", "getGugun", "getDong", "getApartList"]),
-    ...mapMutations(apartStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_APT_LIST"]),
+    ...mapActions(apartStore, [
+      "getSido",
+      "getGugun",
+      "getDong",
+      "getApartList",
+    ]),
+    ...mapMutations(apartStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+      "CLEAR_APT_LIST",
+    ]),
     async sidoList() {
       console.log("@@@");
       await this.getSido();
@@ -116,4 +148,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.mt-3 {
+  width: fit-content;
+  display: inline-block;
+}
+
+.sm-2 {
+  max-width: 120px;
+  padding-left: 5px;
+  padding-right: 5px;
+  float: left;
+}
+</style>

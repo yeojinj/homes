@@ -3,14 +3,15 @@
     <div id="map"></div>
     <div id="search-box" class="card">
       <div>
-        <!-- 하위 컴포넌트의 이벤를 수신 -->
+        <!-- 하위 컴포넌트의 이벤트를 수신 -->
         <apart-search v-on:show-apart-list="showApartList"></apart-search>
       </div>
     </div>
-    <div id="list-box" class="card">
+    <div id="list-box" class="card" v-if="visible">
       <!-- 검색 결과 아파트 리스트 -->
       <apart-list v-bind:apartments="apart"></apart-list>
-      <div class="bg-white mb-2">
+
+      <!-- <div class="bg-white mb-2">
         <div class="border-bottom"><h5 class="p-3 m-0">실거래가</h5></div>
         <div>
           <table class="w-100">
@@ -23,7 +24,7 @@
               </tr>
             </thead>
             <tbody class="px-2">
-              <!-- <tr
+              <tr
                 v-for="(item, index) in dealInfo"
                 :key="index"
                 class="border-bottom"
@@ -32,13 +33,13 @@
                 <td>{{ item.dealAmount }}</td>
                 <td>{{ item.area }}</td>
                 <td>{{ item.floor }}</td>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
         </div>
-      </div>
+      </div> -->
 
-      <!-- 아파트 세부 정보 -->
+      <!-- 아파트 세부 정보
       <div class="bg-white mb-2">
         <div class="border-bottom">
           <h5 class="p-3 m-0">00아파트 세부 정보</h5>
@@ -46,7 +47,7 @@
         <div>
           <table class="w-100">
             <tbody class="px-2">
-              <!-- <tr
+              <tr
                 v-for="(item, index) in dealInfo"
                 :key="index"
                 class="border-bottom"
@@ -55,11 +56,11 @@
                 <td>{{ item.dealAmount }}</td>
                 <td>{{ item.area }}</td>
                 <td>{{ item.floor }}</td>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -77,7 +78,11 @@ export default {
   },
   data() {
     return {
+      visible: false,
       apart: [],
+      map: null,
+      marker: null,
+      markers: [],
     };
   },
 
@@ -104,21 +109,66 @@ export default {
       window.kakao.maps.load(() => {
         var mapContainer = document.getElementById("map");
         var mapOption = {
-          center: new window.kakao.maps.LatLng(37.56666, 126.978),
+          center: new window.kakao.maps.LatLng(35.205314, 126.811552),
           level: 3,
         };
         // 지도를 생성한다
-        var map = new window.kakao.maps.Map(mapContainer, mapOption);
+        this.map = new window.kakao.maps.Map(mapContainer, mapOption);
         // 지도에 확대 축소 컨트롤을 생성한다
         var zoomControl = new window.kakao.maps.ZoomControl();
         // 지도의 우측에 확대 축소 컨트롤을 추가한다
-        map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+        this.map.addControl(
+          zoomControl,
+          window.kakao.maps.ControlPosition.RIGHT
+        );
+        this.map.setMapTypeId(window.kakao.maps.MapTypeId.ROADMAP);
       });
     },
     showApartList() {
       //state의 값을 넘겨줌
       console.log("이벤트 넘어옴");
       this.apart = this.apartments;
+      this.visible = true;
+      this.initMarker();
+    },
+    // 마커 초기화
+    initMarker() {
+      console.log("initMarker()...");
+      if (this.marker != null) {
+        console.log("마커 초기화 해야함");
+        for (var i = 0; i < this.markers.length; i++) {
+          console.log("=== " + this.markers[i]);
+          this.markers[i].setMap(null);
+        }
+      }
+
+      this.createMarker();
+    },
+
+    // 마커 생성
+    createMarker() {
+      for (var i = 0; i < this.apart.length; i++) {
+        // 마커를 생성합니다
+        this.marker = new window.kakao.maps.Marker({
+          map: this.map, // 마커를 표시할 지도
+          // position: positions[i].latlng,
+          position: new window.kakao.maps.LatLng(
+            this.apart[i].lat,
+            this.apart[i].lng
+          ), // 마커를 표시할 위치
+          title: this.apart[i].apartmentName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+        });
+
+        this.markers.push(this.marker);
+
+        // 지도 중심 좌표 설정
+        var moveLatLon = new window.kakao.maps.LatLng(
+          this.apart[0].lat,
+          this.apart[0].lng
+        );
+
+        this.map.setCenter(moveLatLon);
+      }
     },
   },
 };
