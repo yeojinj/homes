@@ -4,7 +4,7 @@
       v-for="apart in apartments"
       :key="apart.aptCode"
       class="list-group-item px-0"
-      :to="{ name: 'apartDetailView', params: { apartCode: apart.aptCode } }"
+      :to="{ name: 'apartDetailView', params: { apartCode: apart.aptCode, apartDto: apart } }"
       action
     >
       <b-row align-v="center">

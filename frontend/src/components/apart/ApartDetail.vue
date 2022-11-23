@@ -4,7 +4,7 @@
       <fieldset class="search-group except-content">
         <div class="header-info">
           <h1 style="font-size: 20px">
-            <span>{{ this.$route.params.apartCode }}</span>
+            <span>{{ this.$route.params.apartDto.apartmentName }}</span>
           </h1>
           <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
           ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
@@ -53,6 +53,34 @@
           :width="width"
           :height="height"
         />
+      </div>
+
+      <div class="dealTabel">
+        <div id="list-box" class="card">
+          <div class="bg-white mb-2">
+            <div class="border-bottom"><h5 class="p-3 m-0">실거래가</h5></div>
+            <div style="overflow: auto; max-height: 25vh">
+              <table class="w-100">
+                <thead class="bg-secondary text-white" style="position: sticky; top: 0">
+                  <tr>
+                    <td class="ps-3 py-1">거래일</td>
+                    <td>가격</td>
+                    <td>면적</td>
+                    <td>층</td>
+                  </tr>
+                </thead>
+                <tbody class="px-2">
+                  <tr v-for="(item, index) in dealList" :key="index" class="border-bottom">
+                    <td class="ps-3 py-2">{{ item.dealYear + "." + item.dealMonth + "." + item.dealDay }}</td>
+                    <td>{{ item.amount }}</td>
+                    <td>{{ Math.round(apartArea / 3.30579) + "평" }}</td>
+                    <td>{{ item.floor + "층" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="map_wrap">
@@ -135,6 +163,7 @@ export default {
     return {
       apartArea: null,
       areas: [],
+      dealList: [],
       chartData: {
         labels: [],
         datasets: [
@@ -158,9 +187,8 @@ export default {
             },
             ticks: {
               callback: function (value) {
-                console.log(value + "인덱스");
                 let length = value.toString().length;
-                console.log(value.length);
+
                 if (length >= 5) {
                   return (
                     value.toString().substring(0, length - 4) +
@@ -175,20 +203,11 @@ export default {
             },
           },
         },
-
-        // scales: {
-        //   yAxes: [
-        //     {
-        //       ticks: {
-        //         stepSize: 20, // 증가범위
-        //         beginAtZero: true,
-        //         max: 100, // 최대범위
-        //         min: 0, // 최소범위
-        //         padding: 10, // 오른쪽 간격
-        //       },
-        //     },
-        //   ],
-        // },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
       },
     };
   },
@@ -233,16 +252,24 @@ export default {
     async init() {
       console.log(this.$route.params.apartCode + " " + "create");
       // this.chartData.labels = null;
+      //반드시 변수명 params로 선언
+      const params = {
+        apt: this.$route.params.apartCode,
+      };
+      await http
+        .get(`apart/area`, {
+          params,
+        })
+        .then(({ data }) => {
+          data.forEach((area) => {
+            this.areas.push({ value: area, text: Math.round(area / 3.30579) });
+          });
 
-      await http.get(`apart/area/${this.$route.params.apartCode}`).then(({ data }) => {
-        data.forEach((area) => {
-          this.areas.push({ value: area, text: Math.round(area / 3.30579) });
+          this.apartArea = this.areas[0].value;
         });
 
-        this.apartArea = this.areas[0].value;
-      });
-
       await this.getApartDealWithArea();
+      await this.getDealTable();
     },
 
     getApartDealWithArea() {
@@ -251,21 +278,39 @@ export default {
         for (var i = 0; i < data.length; i++) {
           this.chartData.labels.push(data[i].dealYear.toString().substr(2, 2) + "년 " + data[i].dealMonth + "월");
 
-          console.log(data[i].amount);
           this.chartData.datasets[0].data.push(data[i].amount);
         }
       });
     },
 
+    getDealTable() {
+      http.get(`apart/dealList/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
+        console.log("아파트거래 리스트 정보");
+        //  console.log(data);
+        this.dealList = data;
+      });
+    },
+
     changeArea() {
-      //리스트 초기화
+      //차트 데이터 초기화
       this.initChartData();
+      //거래 테이블 초기화
+      this.initDealTable();
+
+      //변경된 평수 가지고 다시 차트 데이터 얻어오기
       this.getApartDealWithArea();
+
+      //변경된 평수 가지고 다시 거래 테이블 정보 얻어오기
+      this.getDealTable();
     },
 
     initChartData() {
       this.chartData.labels = [];
       this.chartData.datasets[0].data = [];
+    },
+
+    initDealTable() {
+      this.dealList = [];
     },
   },
 };
@@ -306,23 +351,6 @@ export default {
   display: flex;
   justify-content: center;
   flex-direction: column;
-}
-
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  padding-inline-start: 40px;
-}
-li {
-  display: list-item;
-  text-align: -webkit-match-parent;
-  list-style: none;
 }
 
 .map_wrap,

@@ -37,7 +37,8 @@
 		resultType="houseInfoDto">
 		select h.aptCode, h.aptName, h.buildyear, h.dongCode,
 		h.dongName, h.jibun, h.lat, h.lng, si.sidoname, gu.gugunname,
-		(select dealAmount from housedeal where aptCode = h.aptCode and no = (select
+		(select
+		dealAmount from housedeal where aptCode = h.aptCode and no = (select
 		max(no) from housedeal where aptCode = h.aptCode)) recentPrice
 		from
 		houseinfo h
@@ -58,12 +59,30 @@
 		resultType="map">
 
 
-		select dealYear ,dealMonth , round((replace(dealAmount,',',''))) as amount
+		select dealYear ,dealMonth ,
+		round((replace(dealAmount,',',''))) as amount
+		from housedeal hd
+		inner
+		join houseinfo hi
+		on hd.aptCode = hi.aptCode
+		where hd.aptCode =
+		#{aptCode} and area = #{area}
+		group by dealYear ,dealMonth;
+	</select>
+
+
+
+
+
+	<select id="getDealList" parameterType="map" resultType="map">
+
+		select floor, dealYear ,dealMonth , dealDay, round((replace(dealAmount,',',''))) as amount 
 		from housedeal hd
 		inner join houseinfo hi
 		on hd.aptCode = hi.aptCode
 		where hd.aptCode = #{aptCode} and area = #{area}
-		group by dealYear ,dealMonth;
+		group by dealYear ,dealMonth
+		order by dealYear desc , dealMonth desc, dealDay desc;
 	</select>
 
 
@@ -81,13 +100,15 @@
 
 	<!-- 해당 아파트의 모든 평수 (m^2)를 얻어온다. -->
 	<select id="getArea" parameterType="String" resultType="String">
-		select area
+		select
+		area
 		from housedeal hd
 		inner join houseinfo hi
 		on hd.aptCode = hi.aptCode
 		where hd.aptCode = #{aptCode}
 		group by round(area/3.30579)
-		order by round(area/3.30579);
+		order by
+		round(area/3.30579);
 
 
 
