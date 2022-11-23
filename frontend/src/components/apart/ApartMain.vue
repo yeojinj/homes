@@ -130,7 +130,7 @@ export default {
         window.kakao.maps.event.addListener(
           this.marker,
           "mouseover",
-          this.makeOverListener(this.map, this.marker, infowindow),
+          this.makeOverListener(this.map, this.marker, infowindow)
         );
         window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
 

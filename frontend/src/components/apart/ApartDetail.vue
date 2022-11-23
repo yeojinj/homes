@@ -247,6 +247,26 @@ export default {
     }
   },
   methods: {
+    initMap() {
+      window.kakao.maps.load(() => {
+        var mapContainer = document.getElementById("map");
+        var mapOption = {
+          center: new window.kakao.maps.LatLng(37.56666, 126.978),
+          level: 3,
+        };
+        // 지도를 생성한다
+        var map = new window.kakao.maps.Map(mapContainer, mapOption);
+        // 지도에 확대 축소 컨트롤을 생성한다
+        var zoomControl = new window.kakao.maps.ZoomControl();
+        // 지도의 우측에 확대 축소 컨트롤을 추가한다
+        map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+      });
+    },
+    showApartList() {
+      //state의 값을 넘겨줌
+      console.log("이벤트 넘어옴");
+      this.apart = this.apartments;
+    },
     async init() {
       console.log(this.$route.params.apartCode + " " + "create");
       // this.chartData.labels = null;
@@ -260,7 +280,7 @@ export default {
         })
         .then(({ data }) => {
           data.forEach((area) => {
-            this.areas.push({ value: area, text: Math.round(area / 3.30579) });
+            this.areas.push({ value: area, text: Math.round(area / 3.30579) + "평(" + area + ")" });
           });
 
           this.apartArea = this.areas[0].value;
@@ -284,8 +304,20 @@ export default {
     getDealTable() {
       http.get(`apart/dealList/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
         console.log("아파트거래 리스트 정보");
-        //  console.log(data);
-        this.dealList = data;
+        for (var i = 0; i < data.length; i++) {
+          let length = data[i].amount.toString().length;
+          if (length >= 5) {
+            data[i].amount =
+              data[i].amount.toString().substring(0, length - 4) +
+              "억 " +
+              data[i].amount.toString().substring(length - 4, length) +
+              "만원";
+          } else {
+            data[i].amount = data[i].amount + "만원";
+          }
+
+          this.dealList.push(data[i]);
+        }
       });
     },
 
