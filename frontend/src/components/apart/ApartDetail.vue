@@ -91,27 +91,27 @@
         <div class="border-bottom"><h5 class="p-3 m-0">주변 정보</h5></div>
         <div>
           <ul id="category">
-            <li id="BK9" data-order="0">
+            <li id="BK9" data-order="0" @click="onClickCategory">
               <span class="category_bg bank"></span>
               은행
             </li>
-            <li id="MT1" data-order="1">
+            <li id="MT1" data-order="1" @click="onClickCategory">
               <span class="category_bg mart"></span>
               마트
             </li>
-            <li id="PM9" data-order="2">
+            <li id="PM9" data-order="2" @click="onClickCategory">
               <span class="category_bg pharmacy"></span>
               약국
             </li>
-            <li id="OL7" data-order="3">
+            <li id="OL7" data-order="3" @click="onClickCategory">
               <span class="category_bg oil"></span>
               주유소
             </li>
-            <li id="CE7" data-order="4">
+            <li id="CE7" data-order="4" @click="onClickCategory">
               <span class="category_bg cafe"></span>
               카페
             </li>
-            <li id="CS2" data-order="5">
+            <li id="CS2" data-order="5" @click="onClickCategory">
               <span class="category_bg store"></span>
               편의점
             </li>
@@ -309,8 +309,6 @@ export default {
 
     /////////////////////////////// 지도 관련 /////////////////////////////
     // 지도 초기화
-    /////////////////////////////// 지도 관련 /////////////////////////////
-    // 지도 초기화
     initMap() {
       console.log("initMpap");
       window.kakao.maps.load(() => {
@@ -430,8 +428,7 @@ export default {
         this.apartInfo.lat = data.lat;
         this.apartInfo.lng = data.lng;
 
-        this.createMarker();
-
+        // this.createMarker();
         //initmap
         this.hi();
       });
@@ -550,7 +547,7 @@ export default {
       this.placeOverlay.setContent(this.contentNode);
 
       // 각 카테고리에 클릭 이벤트를 등록합니다
-      this.addCategoryClickEvent();
+      // this.addCategoryClickEvent();
     },
 
     // 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
@@ -708,7 +705,7 @@ export default {
         this.changeCategoryClass();
         this.removeMarker();
       } else {
-        console.log("=====처음 클릭하는 카테고리");
+        // console.log("=====처음 클릭하는 카테고리 : " + event.currentTarget.id);
         this.currCategory = event.currentTarget.id;
         this.changeCategoryClass(event.currentTarget);
         this.searchPlaces();
