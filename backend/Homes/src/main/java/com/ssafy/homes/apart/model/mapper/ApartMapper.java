@@ -30,6 +30,10 @@ public interface ApartMapper {
 	
 	//해당 아파트의 모든 평수를 얻어온다
 	List <String> getArea(String aptCode) throws SQLException;
+	
+	
+	//해당 아파트의 평수 기준 모든 거래내역을 불러온다.
+	List<Map<String,Object>> getDealList (Map<String,String> map) throws SQLException;
 
 
  }
