@@ -7,60 +7,9 @@
         <apart-search v-on:show-apart-list="showApartList"></apart-search>
       </div>
     </div>
-    <div id="list-box" class="card" v-if="visible">
+    <div id="list-box" class="card">
       <!-- 검색 결과 아파트 리스트 -->
-      <apart-list v-bind:apartments="apart"></apart-list>
-
-      <!-- <div class="bg-white mb-2">
-        <div class="border-bottom"><h5 class="p-3 m-0">실거래가</h5></div>
-        <div>
-          <table class="w-100">
-            <thead class="bg-secondary text-white">
-              <tr>
-                <td class="ps-3 py-1">거래일</td>
-                <td>가격</td>
-                <td>면적</td>
-                <td>층</td>
-              </tr>
-            </thead>
-            <tbody class="px-2">
-              <tr
-                v-for="(item, index) in dealInfo"
-                :key="index"
-                class="border-bottom"
-              >
-                <td class="ps-3 py-2">{{ item.dealYear }}</td>
-                <td>{{ item.dealAmount }}</td>
-                <td>{{ item.area }}</td>
-                <td>{{ item.floor }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->
-
-      <!-- 아파트 세부 정보
-      <div class="bg-white mb-2">
-        <div class="border-bottom">
-          <h5 class="p-3 m-0">00아파트 세부 정보</h5>
-        </div>
-        <div>
-          <table class="w-100">
-            <tbody class="px-2">
-              <tr
-                v-for="(item, index) in dealInfo"
-                :key="index"
-                class="border-bottom"
-              >
-                <td class="ps-3 py-2">{{ item.dealYear }}</td>
-                <td>{{ item.dealAmount }}</td>
-                <td>{{ item.area }}</td>
-                <td>{{ item.floor }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div> -->
+      <apart-list v-bind:apartments="apartments"></apart-list>
     </div>
   </div>
 </template>
@@ -92,6 +41,10 @@ export default {
     //   return this.$store.state.sidos;
     // },
   },
+
+  created() {
+    //   console.log(this.apart + "아파트당");
+  },
   mounted() {
     // kakao map 초기화
     if (window.kakao && window.kakao.maps) {
@@ -117,10 +70,7 @@ export default {
         // 지도에 확대 축소 컨트롤을 생성한다
         var zoomControl = new window.kakao.maps.ZoomControl();
         // 지도의 우측에 확대 축소 컨트롤을 추가한다
-        this.map.addControl(
-          zoomControl,
-          window.kakao.maps.ControlPosition.RIGHT
-        );
+        this.map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
         this.map.setMapTypeId(window.kakao.maps.MapTypeId.ROADMAP);
       });
     },
@@ -152,20 +102,14 @@ export default {
         this.marker = new window.kakao.maps.Marker({
           map: this.map, // 마커를 표시할 지도
           // position: positions[i].latlng,
-          position: new window.kakao.maps.LatLng(
-            this.apart[i].lat,
-            this.apart[i].lng
-          ), // 마커를 표시할 위치
+          position: new window.kakao.maps.LatLng(this.apart[i].lat, this.apart[i].lng), // 마커를 표시할 위치
           title: this.apart[i].apartmentName, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
         });
 
         this.markers.push(this.marker);
 
         // 지도 중심 좌표 설정
-        var moveLatLon = new window.kakao.maps.LatLng(
-          this.apart[0].lat,
-          this.apart[0].lng
-        );
+        var moveLatLon = new window.kakao.maps.LatLng(this.apart[0].lat, this.apart[0].lng);
 
         this.map.setCenter(moveLatLon);
       }

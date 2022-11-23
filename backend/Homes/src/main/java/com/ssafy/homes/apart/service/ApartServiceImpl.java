@@ -46,5 +46,12 @@ public class ApartServiceImpl implements ApartService{
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(ApartMapper.class).getArea(aptCode);
 	}
+	
+	//해당 아파트의 평수 기준 모든 거래내역을 불러온다.
+	@Override
+	public List<Map<String, Object>> getDealList(Map<String, String> map) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ApartMapper.class).getDealList(map);
+	}
 
 }

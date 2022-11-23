@@ -91,11 +91,25 @@ public class ApartController {
 		return new ResponseEntity<List<Map<String, Object>>>(apartService.getYearMonthAmount(map), HttpStatus.OK);
 	}
 
-	@GetMapping("/area/{apartCode}")
+	@GetMapping("/area")
 	public ResponseEntity<List<String>> getArea(
-			@PathVariable("apartCode") String aptCode) throws Exception {
+			@RequestParam("apt") String aptCode) throws Exception {
 
 		logger.info("해당 아파트 모든 평수 얻기  - 호출");
 		return new ResponseEntity<List<String>>(apartService.getArea(aptCode), HttpStatus.OK);
 	}
+	
+	@GetMapping("/dealList/{apartCode}/{area}")
+	public ResponseEntity<List<Map<String, Object>>> getDealList(
+
+			@PathVariable("apartCode") String aptCode ,@PathVariable("area") String area) throws Exception {
+
+		Map<String, String> map = new HashMap();
+		map.put("aptCode", aptCode);
+		map.put("area",area);
+
+		logger.info("거래 리스트  - 호출");
+		return new ResponseEntity<List<Map<String, Object>>>(apartService.getDealList(map), HttpStatus.OK);
+	}
+	
 }
