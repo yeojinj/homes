@@ -32,6 +32,8 @@
 		left(dongCode, 5) = #{gugun}
 		order by dongName
 	</select>
+	
+	<!-- 뭘까?? ?? -->
 
 	<select id="getAptInDong" parameterType="string"
 		resultType="houseInfoDto">
@@ -109,9 +111,13 @@
 		group by round(area/3.30579)
 		order by
 		round(area/3.30579);
-
-
-
-
+	</select>
+	
+	
+	<!-- 해당하는 아파트의 정보 얻어오기  -->
+	<select id = "getApartInfo"  parameterType="String" resultType="houseInfoDto">
+	select *
+	from  houseinfo
+	where aptCode = #{aptCode}
 	</select>
 </mapper>

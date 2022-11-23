@@ -112,4 +112,14 @@ public class ApartController {
 		return new ResponseEntity<List<Map<String, Object>>>(apartService.getDealList(map), HttpStatus.OK);
 	}
 	
+	
+	@GetMapping("/apartInfo")
+	public ResponseEntity<HouseInfoDto> getApartInfo(
+
+			@RequestParam("apt") String aptCode) throws Exception {
+		logger.info("아파트 정보 info  - 호출");
+		return new ResponseEntity<HouseInfoDto>(apartService.getApartInfo(aptCode), HttpStatus.OK);
+	}
+	
+	
 }
