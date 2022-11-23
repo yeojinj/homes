@@ -26,7 +26,7 @@ public class ApartServiceImpl implements ApartService{
 	public List<SiGunDongDto> getGugunInSido(String sido) throws Exception {
 		return sqlSession.getMapper(ApartMapper.class).getGugunInSido(sido);
 	}
-
+	// 해당하는 아파트의 정보 얻어오기 
 	@Override
 	public List<SiGunDongDto> getDongInGugun(String gugun) throws Exception {
 		return sqlSession.getMapper(ApartMapper.class).getDongInGugun(gugun);
@@ -52,6 +52,13 @@ public class ApartServiceImpl implements ApartService{
 	public List<Map<String, Object>> getDealList(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(ApartMapper.class).getDealList(map);
+	}
+	
+	// 해당하는 아파트의 정보 얻어오기 
+	@Override
+	public HouseInfoDto getApartInfo(String aptCode) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(ApartMapper.class).getApartInfo(aptCode);
 	}
 
 }
