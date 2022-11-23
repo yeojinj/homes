@@ -4,7 +4,8 @@
       <fieldset class="search-group except-content">
         <div class="header-info">
           <h1 style="font-size: 20px">
-            <span>{{ apartInfo.dongName }} </span> <span>{{ apartInfo.apartmentName }} </span>
+            <span>{{ apartInfo.dongName }} </span>
+            <span>{{ apartInfo.apartmentName }} </span>
           </h1>
           <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
           ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
@@ -15,7 +16,8 @@
         </div>
         <div class="address-info">
           <h2 class="address" style="font-size: 10px">
-            도로명: {{ apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
+            도로명:
+            {{ apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
         </div>
         <div class="apart-buildYear">
@@ -23,20 +25,10 @@
         </div>
 
         <ul class="search-select-group">
-          <li class="type select">
-            <div>
-              <button data-ga-event="select,tradeType">매매</button>
-              <ul class="list-layer" style="display: none">
-                <li><a href="#" data-value="0">매매</a></li>
-                <li><a href="#" data-value="1">전월세</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="area select">
-            <button type="button" class="areaSelector" data-ga-event="select,area">29평</button>
-          </li>
-          <li class="comment">
-            <a href="/apt/5wW15/0/2/review" data-ga-event="apt,viewReviewOnHeader">38</a>
+          <li class="type select"></li>
+          <li class="area select"></li>
+          <li class="roadViewButton">
+            <button @click="showRoadView">로드뷰</button>
           </li>
           <li class="options">
             <div>
@@ -45,6 +37,11 @@
           </li>
         </ul>
       </fieldset>
+
+      <div class="averDeal">최근 3개월 평균 거래가격 : {{ averDeal }}</div>
+
+      <!--로드뷰-->
+      <div id="roadview" style="width: 100%; height: 300px" v-show="isRoadViewOn"></div>
 
       <div class="chart">
         <LineChartGenerator
@@ -76,7 +73,9 @@
                 </thead>
                 <tbody class="px-2">
                   <tr v-for="(item, index) in dealList" :key="index" class="border-bottom">
-                    <td class="ps-3 py-2">{{ item.dealYear + "." + item.dealMonth + "." + item.dealDay }}</td>
+                    <td class="ps-3 py-2">
+                      {{ item.dealYear + "." + item.dealMonth + "." + item.dealDay }}
+                    </td>
                     <td>{{ item.amount }}</td>
                     <td>{{ Math.round(apartArea / 3.30579) + "평" }}</td>
                     <td>{{ item.floor + "층" }}</td>
@@ -123,6 +122,7 @@
 
 <script>
 import http from "@/api/http";
+//import { throws } from "assert";
 import { Chart, registerables } from "chart.js";
 import { Line as LineChartGenerator } from "vue-chartjs/legacy";
 Chart.register(...registerables);
@@ -179,6 +179,16 @@ export default {
       },
       areas: [],
       dealList: [],
+      averDeal: 0,
+      count: 0,
+      date: {
+        nowYear: "",
+        oldYear: "",
+        nowMonth: "",
+        oldMonth: "",
+      },
+      isRoadViewOn: false,
+
       chartData: {
         labels: [],
         datasets: [
@@ -202,15 +212,11 @@ export default {
             },
             ticks: {
               callback: function (value) {
+                //여긴왜 calUnitAmount를 하면 안먹힐까....error
                 let length = value.toString().length;
 
                 if (length >= 5) {
-                  return (
-                    value.toString().substring(0, length - 4) +
-                    "억 " +
-                    value.toString().substring(length - 4, length) +
-                    "만원"
-                  );
+                  return value.toString().substring(0, length - 4) + "억 " + value.toString().substring(length - 4, length) + "만원";
                 } else {
                   return value + "만원";
                 }
@@ -231,45 +237,40 @@ export default {
   },
 
   created() {
-    this.init();
+    console.log("created");
+    // this.init();
+    //this.initRoadView();
+    //현재 년월
+    var now = new Date(2022, 4); // 현재 날짜 및 시간
+    this.date.nowYear = now.getFullYear();
+    this.date.nowMonth = now.getMonth();
+
+    //기준이 될 년월
+    var oneMonthAgo = new Date(now.setMonth(now.getMonth() - 3)); // 한달 전
+    this.date.oldYear = oneMonthAgo.getFullYear();
+    this.date.oldMonth = oneMonthAgo.getMonth();
   },
 
   mounted() {
     // kakao map 초기화
-    if (window.kakao && window.kakao.maps) {
-      this.initMap();
-    } else {
-      const script = document.createElement("script");
-      script.onload = () => window.kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
-      document.head.appendChild(script);
-    }
+    this.init();
   },
   methods: {
-    initMap() {
-      window.kakao.maps.load(() => {
-        var mapContainer = document.getElementById("map");
-        var mapOption = {
-          center: new window.kakao.maps.LatLng(37.56666, 126.978),
-          level: 3,
-        };
-        // 지도를 생성한다
-        var map = new window.kakao.maps.Map(mapContainer, mapOption);
-        // 지도에 확대 축소 컨트롤을 생성한다
-        var zoomControl = new window.kakao.maps.ZoomControl();
-        // 지도의 우측에 확대 축소 컨트롤을 추가한다
-        map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
-      });
-    },
-    showApartList() {
-      //state의 값을 넘겨줌
-      console.log("이벤트 넘어옴");
-      this.apart = this.apartments;
+    hi() {
+      if (window.kakao && window.kakao.maps) {
+        console.log("initmap mounted");
+        this.initMap();
+      } else {
+        const script = document.createElement("script");
+
+        console.log("initmap mounted  else");
+        script.onload = () => window.kakao.maps.load(this.initMap);
+
+        script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
+        document.head.appendChild(script);
+      }
     },
     async init() {
-      console.log(this.$route.params.apartCode + " " + "create");
-      // this.chartData.labels = null;
       //반드시 변수명 params로 선언
       const params = {
         apt: this.$route.params.apartCode,
@@ -280,94 +281,29 @@ export default {
         })
         .then(({ data }) => {
           data.forEach((area) => {
-            this.areas.push({ value: area, text: Math.round(area / 3.30579) + "평(" + area + ")" });
+            this.areas.push({
+              value: area,
+              text: Math.round(area / 3.30579) + "평(" + area + ")",
+            });
           });
 
           this.apartArea = this.areas[0].value;
         });
-      await this.getApartInfo();
+      await this.getApartInfo(); //얘가
+      // await this.hi();
       await this.getApartDealWithArea();
       await this.getDealTable();
     },
 
-    getApartDealWithArea() {
-      http.get(`apart/view/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
-        console.log("아파트거래정보");
-        for (var i = 0; i < data.length; i++) {
-          this.chartData.labels.push(data[i].dealYear.toString().substr(2, 2) + "년 " + data[i].dealMonth + "월");
-
-          this.chartData.datasets[0].data.push(data[i].amount);
-        }
-      });
-    },
-
-    getDealTable() {
-      http.get(`apart/dealList/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
-        console.log("아파트거래 리스트 정보");
-        for (var i = 0; i < data.length; i++) {
-          let length = data[i].amount.toString().length;
-          if (length >= 5) {
-            data[i].amount =
-              data[i].amount.toString().substring(0, length - 4) +
-              "억 " +
-              data[i].amount.toString().substring(length - 4, length) +
-              "만원";
-          } else {
-            data[i].amount = data[i].amount + "만원";
-          }
-
-          this.dealList.push(data[i]);
-        }
-      });
-    },
-
-    getApartInfo() {
-      const params = {
-        apt: this.$route.params.apartCode,
-      };
-      http.get(`apart/apartInfo`, { params }).then(({ data }) => {
-        console.log("아파트거래 상세 정보");
-        console.log(data);
-
-        this.apartInfo.apartmentName = data.apartmentName;
-        this.apartInfo.dongName = data.dongName;
-        this.apartInfo.jibun = data.jibun;
-
-        this.apartInfo.buildYear = data.buildYear;
-        this.apartInfo.roadName = data.roadName;
-        this.apartInfo.roadNameBonbun = data.roadNameBonbun;
-        this.apartInfo.lat = data.lat;
-        this.apartInfo.lng = data.lng;
-      });
-    },
-
-    changeArea() {
-      //차트 데이터 초기화
-      this.initChartData();
-      //거래 테이블 초기화
-      this.initDealTable();
-
-      //변경된 평수 가지고 다시 차트 데이터 얻어오기
-      this.getApartDealWithArea();
-
-      //변경된 평수 가지고 다시 거래 테이블 정보 얻어오기
-      this.getDealTable();
-    },
-
-    initChartData() {
-      this.chartData.labels = [];
-      this.chartData.datasets[0].data = [];
-    },
-
-    initDealTable() {
-      this.dealList = [];
-    },
-
+    /////////////////////////////// 지도 관련 /////////////////////////////
+    // 지도 초기화
     /////////////////////////////// 지도 관련 /////////////////////////////
     // 지도 초기화
     initMap() {
+      console.log("initMpap");
       window.kakao.maps.load(() => {
         var mapContainer = document.getElementById("map");
+
         // 아파트 위치 좌표
         var mapOption = {
           center: new window.kakao.maps.LatLng(35.205314, 126.811552),
@@ -381,14 +317,198 @@ export default {
         this.map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
         this.map.setMapTypeId(window.kakao.maps.MapTypeId.ROADMAP);
 
-        // 마커를 생성합니다
-        this.marker = new window.kakao.maps.Marker({
-          position: new window.kakao.maps.LatLng(this.apartInfo.lat, this.apartInfo.lng),
-        });
+        ////로드뷰@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@//
 
-        // 마커가 지도 위에 표시되도록 설정합니다
-        this.marker.setMap(this.map);
+        var roadviewContainer = document.getElementById("roadview");
+        var roadview = new window.kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+        var roadviewClient = new window.kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+
+        //지도를 생성할 때 필요한 기본 옵션
+        var position = new window.kakao.maps.LatLng(this.apartInfo.lat, this.apartInfo.lng); //지도의 중심좌표.
+
+        roadviewClient.getNearestPanoId(position, 50, function (panoId) {
+          roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+        }); //지도 생성 및 객체 리턴
+        //마커찍기
+        this.createMarker();
       });
+
+      //this.createMarker();
+    },
+
+    //로드뷰 보여주기 유무
+
+    showRoadView() {
+      this.isRoadViewOn = !this.isRoadViewOn;
+    },
+
+    getApartDealWithArea() {
+      http.get(`apart/view/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
+        console.log("getApart");
+        //console.log("아파트거래정보");
+        for (var i = 0; i < data.length; i++) {
+          this.chartData.labels.push(data[i].dealYear.toString().substr(2, 2) + "년 " + data[i].dealMonth + "월");
+
+          this.chartData.datasets[0].data.push(data[i].amount);
+        }
+      });
+    },
+    // 실거래가 테이블 정보 불러오기
+    getDealTable() {
+      http.get(`apart/dealList/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
+        console.log("getDeal");
+        console.log("아파트거래 리스트 정보");
+
+        this.count = 0;
+        this.averDeal = 0;
+        for (var i = 0; i < data.length; i++) {
+          //최근 3개월 평균 거래금액
+          let year = data[i].dealYear;
+          let month = data[i].dealMonth;
+
+          if (year >= this.date.oldYear && year <= this.date.nowYear && month >= this.date.oldMonth && month <= this.date.nowMonth) {
+            //최근 3개월 거래 개수
+
+            this.count++;
+            //총 금액
+            this.averDeal += parseInt(data[i].amount);
+          }
+          //억,천만 단위 찍어주는 함수 호출
+          data[i].amount = this.calUnitAmount(data[i].amount);
+
+          this.dealList.push(data[i]);
+        }
+
+        //거래한 개수가 존재할때만 평균 금액을 구한다.
+        if (this.count != 0) {
+          //거래 횟수 만큼 나눔
+          let deal = this.averDeal / this.count;
+
+          //억,천만 단위 찍어주는 함수 호출
+          this.averDeal = this.calUnitAmount(deal);
+        } else {
+          this.averDeal = "-";
+        }
+      });
+    },
+
+    //거래금액 (숫자)을 억,천만 단위로 자르는 함수
+    calUnitAmount(amount) {
+      let length = amount.toString().length;
+      if (length >= 5) {
+        return amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원";
+      } else {
+        return amount + "만원";
+      }
+    },
+    //선택한 아파트 정보(aptCode)를 가져오는 함수 (비동기)
+    getApartInfo() {
+      console.log("getApartInfo");
+      const params = {
+        apt: this.$route.params.apartCode,
+      };
+      http.get(`apart/apartInfo`, { params }).then(({ data }) => {
+        //    console.log(data.lat);
+        this.apartInfo.apartmentName = data.apartmentName;
+        this.apartInfo.dongName = data.dongName;
+        this.apartInfo.jibun = data.jibun;
+
+        this.apartInfo.buildYear = data.buildYear;
+        this.apartInfo.roadName = data.roadName;
+        this.apartInfo.roadNameBonbun = data.roadNameBonbun;
+        this.apartInfo.lat = data.lat;
+        this.apartInfo.lng = data.lng;
+
+        //initmap
+        this.hi();
+      });
+    },
+
+    //평수가 변경되면 불리는 함수
+    changeArea() {
+      //차트 데이터 초기화
+      this.initChartData();
+      //거래 테이블 초기화
+      this.initDealTable();
+
+      //변경된 평수 가지고 다시 차트 데이터 얻어오기
+      this.getApartDealWithArea();
+
+      //변경된 평수 가지고 다시 거래 테이블 정보 얻어오기
+      this.getDealTable();
+    },
+
+    //차트에 넣을 데이터를 초기화하는 함수
+    initChartData() {
+      //label 초기화
+      this.chartData.labels = [];
+      //datasets.date 초기화
+      this.chartData.datasets[0].data = [];
+    },
+
+    //거래 테이블 데이터 초기화하는 함수
+    initDealTable() {
+      this.dealList = [];
+    },
+
+    // createRoadMap() {
+
+    // },
+
+    // 마커 생성, 지도 범위 재설정
+    createMarker() {
+      // 마커 및 지도 위치
+      var pos = new window.kakao.maps.LatLng(this.apartInfo.lat, this.apartInfo.lng);
+
+      // 마커 이미지의 이미지 주소입니다
+      var imageSrc = "https://cdn-icons-png.flaticon.com/512/4970/4970769.png"; // https://cdn-icons-png.flaticon.com/512/6917/6917662.png
+
+      // 마커 이미지의 이미지 크기 입니다
+      var imageSize = new window.kakao.maps.Size(40, 40);
+
+      // 마커 이미지를 생성합니다
+      var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize);
+
+      // 마커를 생성합니다
+      this.marker = new window.kakao.maps.Marker({
+        position: pos,
+        image: markerImage, // 마커 이미지
+      });
+
+      // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
+      var iwContent = '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+      // 인포윈도우를 생성합니다
+      var infowindow = new window.kakao.maps.InfoWindow({
+        content: iwContent,
+      });
+
+      // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+      // 이벤트 리스너로는 클로저를 만들어 등록합니다
+      // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+      window.kakao.maps.event.addListener(this.marker, "mouseover", this.makeOverListener(this.map, this.marker, infowindow));
+
+      window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
+
+      // 마커가 지도 위에 표시되도록 설정합니다
+      this.marker.setMap(this.map);
+
+      // 지도 중심을 이동 시킵니다
+      this.map.setCenter(pos);
+    },
+
+    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 - 마우스 오버
+    makeOverListener(map, marker, infowindow) {
+      return function () {
+        infowindow.open(map, marker);
+      };
+    },
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다 - 마우스 아웃
+    makeOutListener(infowindow) {
+      return function () {
+        infowindow.close();
+      };
     },
   },
 };
@@ -559,8 +679,7 @@ export default {
   padding: 10px;
   color: #fff;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px
-    center;
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
 }
 .placeinfo .tel {
   color: #3f667a;
