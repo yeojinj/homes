@@ -3,9 +3,9 @@ import { sido, gugun, dong, apartInfo } from "@/api/apart.js";
 const apartStore = {
   namespaced: true,
   state: {
-    sidos: [{ value: null, text: "선택하세요" }],
-    guguns: [{ value: null, text: "선택하세요" }],
-    dongs: [{ value: null, text: "선택하세요" }],
+    sidos: [],
+    guguns: [],
+    dongs: [],
     apartments: [],
     house: null,
   },
@@ -28,17 +28,17 @@ const apartStore = {
       });
     },
     CLEAR_SIDO_LIST(state) {
-      state.sidos = [{ value: null, text: "선택하세요" }];
+      state.sidos = [];
     },
     CLEAR_APT_LIST(state) {
       state.houses = [];
       state.house = null;
     },
     CLEAR_GUGUN_LIST(state) {
-      state.guguns = [{ value: null, text: "선택하세요" }];
+      state.guguns = [];
     },
     CLEAR_DONG_LIST(state) {
-      state.dongs = [{ value: null, text: "선택하세요" }];
+      state.dongs = [];
     },
     SET_APART_LIST(state, apartments) {
       state.apartments = apartments;
@@ -67,7 +67,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
     async getGugun({ commit }, sidoCode) {
@@ -86,7 +86,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
 
@@ -104,7 +104,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
     },
 
@@ -113,8 +113,8 @@ const apartStore = {
         searchInfo,
         ({ data }) => {
           if (data) {
-            console.log("아파트 목록 정보  성공");
-            console.log("아파트 목록 정보  성공 " + data);
+            console.log("아파트 목록 정보 성공");
+            console.log("아파트 목록 정보 성공 " + data);
 
             commit("SET_APART_LIST", data);
           } else {
@@ -123,7 +123,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
 
       // // vue cli enviroment variables 검색

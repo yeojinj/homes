@@ -6,15 +6,15 @@
           <h1 style="font-size: 20px">
             <span>{{ this.$route.params.apartDto.apartmentName }}</span>
           </h1>
-          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span> 뒤로 </span></a
+          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
           ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">지번 :경기도 부천시 괴안동 162-2</h2>
+          <h2 class="address" style="font-size: 10px">지번: 경기도 부천시 괴안동 162-2</h2>
         </div>
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">도로명 :경기도 부천시 괴안동 162-2</h2>
+          <h2 class="address" style="font-size: 10px">도로명: 경기도 부천시 괴안동 162-2</h2>
         </div>
 
         <ul class="search-select-group">
@@ -169,8 +169,8 @@ export default {
         datasets: [
           {
             label: "Data One",
-            backgroundColor: "#2e2929",
-            borderColor: "#1A9A91",
+            backgroundColor: "#3f667a",
+            borderColor: "#3f667a",
 
             data: [],
           },
@@ -276,7 +276,7 @@ export default {
       http.get(`apart/view/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
         console.log("아파트거래정보");
         for (var i = 0; i < data.length; i++) {
-          this.chartData.labels.push(data[i].dealYear + "년 " + data[i].dealMonth + "월");
+          this.chartData.labels.push(data[i].dealYear.toString().substr(2, 2) + "년 " + data[i].dealMonth + "월");
 
           this.chartData.datasets[0].data.push(data[i].amount);
         }
@@ -331,7 +331,7 @@ export default {
   top: 0;
   left: 0;
   width: 430px;
-  background-color: #1a9a91;
+  background-color: #3f667a;
   padding-top: 12px;
   color: #ffffff;
 }
@@ -485,7 +485,7 @@ export default {
     center;
 }
 .placeinfo .tel {
-  color: #0f7833;
+  color: #3f667a;
 }
 .placeinfo .jibun {
   color: #999;
