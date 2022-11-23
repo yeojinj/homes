@@ -45,8 +45,7 @@ export default {
     } else {
       const script = document.createElement("script");
       script.onload = () => window.kakao.maps.load(this.initMap);
-      script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
+      script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
       document.head.appendChild(script);
     }
   },
@@ -116,8 +115,7 @@ export default {
         });
 
         // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-        var iwContent =
-          '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apart[i].apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+        var iwContent = '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apart[i].apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
         // 인포윈도우를 생성합니다
         var infowindow = new window.kakao.maps.InfoWindow({
@@ -127,11 +125,7 @@ export default {
         // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
         // 이벤트 리스너로는 클로저를 만들어 등록합니다
         // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-        window.kakao.maps.event.addListener(
-          this.marker,
-          "mouseover",
-          this.makeOverListener(this.map, this.marker, infowindow)
-        );
+        window.kakao.maps.event.addListener(this.marker, "mouseover", this.makeOverListener(this.map, this.marker, infowindow));
         window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
 
         let makeClickListener = this.makeClickListener;
