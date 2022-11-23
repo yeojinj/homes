@@ -4,17 +4,22 @@
       <fieldset class="search-group except-content">
         <div class="header-info">
           <h1 style="font-size: 20px">
-            <span>{{ this.$route.params.apartDto.apartmentName }}</span>
+            <span>{{ apartInfo.dongName }} </span> <span>{{ apartInfo.apartmentName }} </span>
           </h1>
           <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
           ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">지번: 경기도 부천시 괴안동 162-2</h2>
+          <h2 class="address" style="font-size: 10px">지번 : {{ apartInfo.dongName + " " + apartInfo.jibun }}</h2>
         </div>
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">도로명: 경기도 부천시 괴안동 162-2</h2>
+          <h2 class="address" style="font-size: 10px">
+            도로명: {{ apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
+          </h2>
+        </div>
+        <div class="apart-buildYear">
+          <h2 class="buildYear" style="font-size: 10px">준공년도: {{ apartInfo.buildYear }}</h2>
         </div>
 
         <ul class="search-select-group">
@@ -162,6 +167,16 @@ export default {
   data() {
     return {
       apartArea: null,
+      apartInfo: {
+        apartmentName: "",
+        dongName: "",
+        jibun: "",
+        buildYear: "",
+        roadName: "",
+        roadNameBonbun: "",
+        lat: "",
+        lng: "",
+      },
       areas: [],
       dealList: [],
       chartData: {
@@ -267,7 +282,7 @@ export default {
 
           this.apartArea = this.areas[0].value;
         });
-
+      await this.getApartInfo();
       await this.getApartDealWithArea();
       await this.getDealTable();
     },
@@ -288,6 +303,26 @@ export default {
         console.log("아파트거래 리스트 정보");
         //  console.log(data);
         this.dealList = data;
+      });
+    },
+
+    getApartInfo() {
+      const params = {
+        apt: this.$route.params.apartCode,
+      };
+      http.get(`apart/apartInfo`, { params }).then(({ data }) => {
+        console.log("아파트거래 상세 정보");
+        console.log(data);
+
+        this.apartInfo.apartmentName = data.apartmentName;
+        this.apartInfo.dongName = data.dongName;
+        this.apartInfo.jibun = data.jibun;
+
+        this.apartInfo.buildYear = data.buildYear;
+        this.apartInfo.roadName = data.roadName;
+        this.apartInfo.roadNameBonbun = data.roadNameBonbun;
+        this.apartInfo.lat = data.lat;
+        this.apartInfo.lng = data.lng;
       });
     },
 
