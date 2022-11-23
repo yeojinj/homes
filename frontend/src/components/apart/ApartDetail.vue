@@ -4,7 +4,7 @@
       <fieldset class="search-group except-content">
         <div class="header-info">
           <h1 style="font-size: 20px">
-            <span>{{ this.$route.params.apartDto.apartmentName }}</span>
+            <span>{{}}</span>
           </h1>
           <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
           ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
