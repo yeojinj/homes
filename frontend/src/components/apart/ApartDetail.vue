@@ -224,6 +224,9 @@ export default {
           },
         },
       },
+      map: null,
+      marker: null,
+      markers: [],
     };
   },
 
@@ -258,6 +261,11 @@ export default {
         // 지도의 우측에 확대 축소 컨트롤을 추가한다
         map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
       });
+    },
+    showApartList() {
+      //state의 값을 넘겨줌
+      console.log("이벤트 넘어옴");
+      this.apart = this.apartments;
     },
     async init() {
       console.log(this.$route.params.apartCode + " " + "create");
@@ -353,6 +361,34 @@ export default {
 
     initDealTable() {
       this.dealList = [];
+    },
+
+    /////////////////////////////// 지도 관련 /////////////////////////////
+    // 지도 초기화
+    initMap() {
+      window.kakao.maps.load(() => {
+        var mapContainer = document.getElementById("map");
+        // 아파트 위치 좌표
+        var mapOption = {
+          center: new window.kakao.maps.LatLng(35.205314, 126.811552),
+          level: 3,
+        };
+        // 지도를 생성한다
+        this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+        // 지도에 확대 축소 컨트롤을 생성한다
+        var zoomControl = new window.kakao.maps.ZoomControl();
+        // 지도의 우측에 확대 축소 컨트롤을 추가한다
+        this.map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+        this.map.setMapTypeId(window.kakao.maps.MapTypeId.ROADMAP);
+
+        // 마커를 생성합니다
+        this.marker = new window.kakao.maps.Marker({
+          position: new window.kakao.maps.LatLng(this.apartInfo.lat, this.apartInfo.lng),
+        });
+
+        // 마커가 지도 위에 표시되도록 설정합니다
+        this.marker.setMap(this.map);
+      });
     },
   },
 };
