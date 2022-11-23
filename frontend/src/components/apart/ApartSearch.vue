@@ -1,51 +1,44 @@
 <template>
   <div id="sigungu">
-    <b-row class="mt-3 mb-3 text-center">
-      <b-col class="sm-2">
-        <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList">
-          <template #first>
-            <b-form-select-option :value="null" disabled
-              >광역시/도</b-form-select-option
-            >
-          </template>
-        </b-form-select>
-      </b-col>
-      <b-col class="sm-2">
-        <b-form-select v-model="gugunCode" :options="guguns" @change="dongList">
-          <template #first>
-            <b-form-select-option :value="null" disabled
-              >시/구</b-form-select-option
-            >
-          </template>
-        </b-form-select>
-      </b-col>
-      <b-col class="sm-2">
-        <b-form-select v-model="dongCode" :options="dongs">
-          <template #first>
-            <b-form-select-option :value="null" disabled
-              >동</b-form-select-option
-            >
-          </template>
-        </b-form-select>
-      </b-col>
-    </b-row>
-
-    <div class="input-group pb-2 px-3">
-      <input
-        @keyup.enter="searchApt"
-        type="text"
-        v-model="apartName"
-        class="form-control d-inline-block"
-        placeholder="아파트 이름을 검색해보세요"
-      />
-      <b-button
-        @click="searchApt"
-        size="sm"
-        class="btn btn-primary d-inline-block"
-      >
-        <b-icon icon="search" aria-hidden="true"></b-icon>
-      </b-button>
-    </div>
+    <b-container>
+      <b-row class="text-center pb-2 px-1">
+        <b-col class="select-bar">
+          <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList">
+            <template #first>
+              <b-form-select-option :value="null" disabled>광역시/도</b-form-select-option>
+            </template>
+          </b-form-select>
+        </b-col>
+        <b-col class="select-bar">
+          <b-form-select v-model="gugunCode" :options="guguns" @change="dongList">
+            <template #first>
+              <b-form-select-option :value="null" disabled>시/구</b-form-select-option>
+            </template>
+          </b-form-select>
+        </b-col>
+        <b-col class="select-bar">
+          <b-form-select v-model="dongCode" :options="dongs">
+            <template #first>
+              <b-form-select-option :value="null" disabled>동</b-form-select-option>
+            </template>
+          </b-form-select>
+        </b-col>
+      </b-row>
+      <b-row>
+        <div class="input-group pb-2 px-3">
+          <input
+            @keyup.enter="searchApt"
+            type="text"
+            v-model="apartName"
+            class="form-control d-inline-block"
+            placeholder="아파트 이름을 검색해보세요"
+          />
+          <b-button @click="searchApt" size="sm" class="btn btn-primary d-inline-block">
+            <b-icon icon="search" aria-hidden="true"></b-icon>
+          </b-button>
+        </div>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
@@ -86,18 +79,8 @@ export default {
   },
 
   methods: {
-    ...mapActions(apartStore, [
-      "getSido",
-      "getGugun",
-      "getDong",
-      "getApartList",
-    ]),
-    ...mapMutations(apartStore, [
-      "CLEAR_SIDO_LIST",
-      "CLEAR_GUGUN_LIST",
-      "CLEAR_DONG_LIST",
-      "CLEAR_APT_LIST",
-    ]),
+    ...mapActions(apartStore, ["getSido", "getGugun", "getDong", "getApartList"]),
+    ...mapMutations(apartStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_APT_LIST"]),
     async sidoList() {
       console.log("@@@");
       await this.getSido();
@@ -151,7 +134,8 @@ export default {
 <style scoped>
 .mt-3 {
   width: fit-content;
-  display: inline-block;
+  display: inline;
+  margin: 0 auto;
 }
 
 .sm-2 {
@@ -159,5 +143,14 @@ export default {
   padding-left: 5px;
   padding-right: 5px;
   float: left;
+}
+
+.select-bar {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+button {
+  background-color: #3f667a;
 }
 </style>

@@ -6,22 +6,15 @@
           <h1 style="font-size: 20px">
             <span>{{ this.$route.params.apartCode }}</span>
           </h1>
-          <a href="#" class="btn-back" data-ga-event="apt,backBtn"
-            ><span> 뒤로 </span></a
-          ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"
-            ><span>X</span></a
-          >
+          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
+          ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">
-            지번 :경기도 부천시 괴안동 162-2
-          </h2>
+          <h2 class="address" style="font-size: 10px">지번: 경기도 부천시 괴안동 162-2</h2>
         </div>
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">
-            도로명 :경기도 부천시 괴안동 162-2
-          </h2>
+          <h2 class="address" style="font-size: 10px">도로명: 경기도 부천시 괴안동 162-2</h2>
         </div>
 
         <ul class="search-select-group">
@@ -35,28 +28,14 @@
             </div>
           </li>
           <li class="area select">
-            <button
-              type="button"
-              class="areaSelector"
-              data-ga-event="select,area"
-            >
-              29평
-            </button>
+            <button type="button" class="areaSelector" data-ga-event="select,area">29평</button>
           </li>
           <li class="comment">
-            <a
-              href="/apt/5wW15/0/2/review"
-              data-ga-event="apt,viewReviewOnHeader"
-              >38</a
-            >
+            <a href="/apt/5wW15/0/2/review" data-ga-event="apt,viewReviewOnHeader">38</a>
           </li>
           <li class="options">
             <div>
-              <b-form-select
-                v-model="apartArea"
-                :options="areas"
-                @change="changeArea"
-              ></b-form-select>
+              <b-form-select v-model="apartArea" :options="areas" @change="changeArea"></b-form-select>
             </div>
           </li>
         </ul>
@@ -161,8 +140,8 @@ export default {
         datasets: [
           {
             label: "Data One",
-            backgroundColor: "#2e2929",
-            borderColor: "#1A9A91",
+            backgroundColor: "#3f667a",
+            borderColor: "#3f667a",
 
             data: [],
           },
@@ -255,33 +234,27 @@ export default {
       console.log(this.$route.params.apartCode + " " + "create");
       // this.chartData.labels = null;
 
-      await http
-        .get(`apart/area/${this.$route.params.apartCode}`)
-        .then(({ data }) => {
-          data.forEach((area) => {
-            this.areas.push({ value: area, text: Math.round(area / 3.30579) });
-          });
-
-          this.apartArea = this.areas[0].value;
+      await http.get(`apart/area/${this.$route.params.apartCode}`).then(({ data }) => {
+        data.forEach((area) => {
+          this.areas.push({ value: area, text: Math.round(area / 3.30579) });
         });
+
+        this.apartArea = this.areas[0].value;
+      });
 
       await this.getApartDealWithArea();
     },
 
     getApartDealWithArea() {
-      http
-        .get(`apart/view/${this.$route.params.apartCode}/${this.apartArea}`)
-        .then(({ data }) => {
-          console.log("아파트거래정보");
-          for (var i = 0; i < data.length; i++) {
-            this.chartData.labels.push(
-              data[i].dealYear + "년 " + data[i].dealMonth + "월"
-            );
+      http.get(`apart/view/${this.$route.params.apartCode}/${this.apartArea}`).then(({ data }) => {
+        console.log("아파트거래정보");
+        for (var i = 0; i < data.length; i++) {
+          this.chartData.labels.push(data[i].dealYear.toString().substr(2, 2) + "년 " + data[i].dealMonth + "월");
 
-            console.log(data[i].amount);
-            this.chartData.datasets[0].data.push(data[i].amount);
-          }
-        });
+          console.log(data[i].amount);
+          this.chartData.datasets[0].data.push(data[i].amount);
+        }
+      });
     },
 
     changeArea() {
@@ -313,7 +286,7 @@ export default {
   top: 0;
   left: 0;
   width: 430px;
-  background-color: #1a9a91;
+  background-color: #3f667a;
   padding-top: 12px;
   color: #ffffff;
 }
@@ -403,8 +376,7 @@ li {
   height: 28px;
 }
 #category li .category_bg {
-  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png)
-    no-repeat;
+  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;
 }
 #category li .bank {
   background-position: -10px 0;
@@ -481,12 +453,11 @@ li {
   padding: 10px;
   color: #fff;
   background: #d95050;
-  background: #d95050
-    url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png)
-    no-repeat right 14px center;
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px
+    center;
 }
 .placeinfo .tel {
-  color: #0f7833;
+  color: #3f667a;
 }
 .placeinfo .jibun {
   color: #999;
