@@ -117,9 +117,7 @@ export default {
 
         // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
         var iwContent =
-          '<div id="info-box" style="padding: 5px; font-weight: bold; color: #fff;background: #d95050; ">' +
-          this.apart[i].apartmentName +
-          "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+          '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apart[i].apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
         // 인포윈도우를 생성합니다
         var infowindow = new window.kakao.maps.InfoWindow({
@@ -135,6 +133,13 @@ export default {
           this.makeOverListener(this.map, this.marker, infowindow),
         );
         window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
+
+        let makeClickListener = this.makeClickListener;
+        let apartCode = this.apart[i].apartCode;
+        // 마커에 클릭이벤트를 등록합니다.
+        window.kakao.maps.event.addListener(this.marker, "click", function () {
+          makeClickListener(apartCode);
+        });
 
         this.markers.push(this.marker);
 
@@ -157,6 +162,10 @@ export default {
       return function () {
         infowindow.close();
       };
+    },
+
+    makeClickListener(aptCode) {
+      this.$router.push({ name: "apartDetailView", params: { apartCode: aptCode } });
     },
   },
 };
@@ -181,7 +190,7 @@ export default {
 }
 
 #list-box {
-  margin-top: 80px;
+  margin-top: 60px;
   position: absolute;
   top: 150px;
   left: 20px;
@@ -190,9 +199,6 @@ export default {
   z-index: 100;
   background-color: rgba(255, 255, 255, 0.7);
   overflow-y: auto;
-  /* max-height: 60vh; */
-}
-
-#info-box {
+  max-height: 60vh;
 }
 </style>
