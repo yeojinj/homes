@@ -88,7 +88,6 @@ export default {
         name: "qnamodify",
         params: { no: this.qnaItem.no },
       });
-      //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     //삭제하기
     deleteQna() {

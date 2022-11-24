@@ -3,15 +3,18 @@
     <div id="detailInfo">
       <fieldset class="search-group except-content">
         <div class="header-info">
-          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로가기</span></a>
+          <router-link class="btn-back" data-ga-event="apt,backBtn" :to="{ name: 'apartMain' }"><span>뒤로가기</span></router-link>
           <h1 style="font-size: 23px">
             <span>{{ apartInfo.apartmentName }} </span>
           </h1>
         </div>
 
         <div class="address-info">
+          <h2 class="address" style="font-size: 11px">지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}</h2>
+        </div>
+        <div class="address-info">
           <h2 class="address" style="font-size: 11px">
-            도로명 :
+            도로명:
             {{ sidoName + " " + apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
         </div>
@@ -400,7 +403,7 @@ export default {
         //거래한 개수가 존재할때만 평균 금액을 구한다.
         if (this.count != 0) {
           //거래 횟수 만큼 나눔
-          let deal = this.averDeal / this.count;
+          let deal = Math.round(this.averDeal / this.count);
 
           //억,천만 단위 찍어주는 함수 호출
           this.averDeal = this.calUnitAmount(deal);
@@ -914,8 +917,8 @@ export default {
   margin: -1px -1px 0 -1px;
   padding: 10px;
   color: #fff;
-  background: #3f667a;
-  background: #3f667a url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
+  background: #d95050;
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
 }
 .placeinfo .tel {
   color: #3f667a;

@@ -31,16 +31,19 @@ public class ApartServiceImpl implements ApartService{
 	public List<SiGunDongDto> getDongInGugun(String gugun) throws Exception {
 		return sqlSession.getMapper(ApartMapper.class).getDongInGugun(gugun);
 	}
+	//아파트 목록 얻어오기 
 	@Override
 	public List<HouseInfoDto> getAptInfoInDong(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(ApartMapper.class).getAptInfoInDong(map);
 	}
+	//연월 기준 평균 거래금액 얻어오기 
 	@Override
 	public List<Map<String, Object>> getYearMonthAmount(Map<String, String> map) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.getMapper(ApartMapper.class).getYearMonthAmount(map);
 	}
+	//해당하는 아파트의 모든 평수를 얻어온다.
 	@Override
 	public List<String> getArea(String aptCode) throws Exception {
 		// TODO Auto-generated method stub

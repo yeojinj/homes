@@ -32,9 +32,11 @@ public class ApartController {
 	@Autowired
 	private ApartService apartService;
 
-	// GET :시도 정보
+	// GET :시 정보 얻기
 	@GetMapping("/sido")
 	public ResponseEntity<Map<String, Object>> sido() throws Exception {
+		
+		//logger.info("sido- 호출");
 
 		List<SiGunDongDto> resultList = apartService.getSido();
 		Map<String, Object> resultMap = new HashMap<>();
@@ -49,26 +51,29 @@ public class ApartController {
 		}
 
 	}
-
+	//GET :구군 정보 얻기
 	@GetMapping("/gugun")
 	public ResponseEntity<List<SiGunDongDto>> gugun(@RequestParam("sido") String sido) throws Exception {
-		logger.info("gugun - 호출");
+		
+		//logger.info("gugun - 호출");
+		
 		return new ResponseEntity<List<SiGunDongDto>>(apartService.getGugunInSido(sido), HttpStatus.OK);
 	}
-
+	//GET : 동 정보 얻기
 	@GetMapping("/dong")
 	public ResponseEntity<List<SiGunDongDto>> dong(@RequestParam("gugun") String gugun) throws Exception {
 		logger.info("dong - 호출");
 
 		return new ResponseEntity<List<SiGunDongDto>>(apartService.getDongInGugun(gugun), HttpStatus.OK);
 	}
-
+	//GET : 해당하는 동 코드의 전체 아파트 목록 얻기
 	@GetMapping("/apartList")
 	public ResponseEntity<List<HouseInfoDto>> aptInfo(@RequestParam("dongCode") String dong,
 			@RequestParam("apartName") String apartName) throws Exception {
-		// ,@RequestParam("apartName") String apartName
+		
 
-		System.out.println(dong);
+		//logger.info("apartList with dongcode - 호출");
+		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("dongCode", dong);
 		map.put("apartName", apartName);
@@ -77,20 +82,21 @@ public class ApartController {
 
 		return new ResponseEntity<List<HouseInfoDto>>(apartService.getAptInfoInDong(map), HttpStatus.OK);
 	}
-
+	//GET : 아파트코드와 평수에 따른 거래년,월과 금액 얻어오기
 	@GetMapping("/view/{apartCode}/{area}")
 	public ResponseEntity<List<Map<String, Object>>> getYearMonthAmount(
 
 			@PathVariable("apartCode") String aptCode ,@PathVariable("area") String area) throws Exception {
-
+		logger.info(" getYearMonthAmount- 호출");
 		Map<String, String> map = new HashMap();
 		map.put("aptCode", aptCode);
 		map.put("area",area);
 
-		logger.info("연월 기준 평균 거래 값  - 호출");
+		
 		return new ResponseEntity<List<Map<String, Object>>>(apartService.getYearMonthAmount(map), HttpStatus.OK);
 	}
 
+	//GET : 해당아파트에 존재하는 모든 평수 얻어오기
 	@GetMapping("/area")
 	public ResponseEntity<List<String>> getArea(
 			@RequestParam("apt") String aptCode) throws Exception {
@@ -99,6 +105,7 @@ public class ApartController {
 		return new ResponseEntity<List<String>>(apartService.getArea(aptCode), HttpStatus.OK);
 	}
 	
+	//GET : 아파트코드와 평수에 따른 거래 상세 정보 얻어오기
 	@GetMapping("/dealList/{apartCode}/{area}")
 	public ResponseEntity<List<Map<String, Object>>> getDealList(
 
@@ -112,6 +119,8 @@ public class ApartController {
 		return new ResponseEntity<List<Map<String, Object>>>(apartService.getDealList(map), HttpStatus.OK);
 	}
 	
+	
+	//GET : 아파트 정보 얻어오기
 	
 	@GetMapping("/apartInfo")
 	public ResponseEntity<HouseInfoDto> getApartInfo(

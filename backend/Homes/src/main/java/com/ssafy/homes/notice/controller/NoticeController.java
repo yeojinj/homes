@@ -29,7 +29,7 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 
-	// 글 쓰기 POST
+	//POST : 글쓰기
 	@PostMapping
 	public ResponseEntity<String> writeNotice(@RequestBody NoticeDto noticeDto) throws Exception {
 		if (noticeService.writeArticle(noticeDto)) {
@@ -38,21 +38,20 @@ public class NoticeController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	// 글 전체 목록 GET/list
-	// "/notice?pgno=1&key=&word="
+	//GET : 글 전체 목록
 	@GetMapping
 	public ResponseEntity<List<NoticeDto>> listNotice(@RequestParam Map<String, String> map) throws Exception {
 		return new ResponseEntity<List<NoticeDto>>(noticeService.listArticle(map), HttpStatus.OK);
 	}
 	
-	// 글 상세 GET/no
+	//GET : 글 상세 조회
 	@GetMapping("/{no}")
 	public ResponseEntity<NoticeDto> getNotice(@PathVariable("no") int no) throws Exception {
 		noticeService.updateHit(no);
 		return new ResponseEntity<NoticeDto>(noticeService.getArticle(no), HttpStatus.OK);
 	}
 	
-	// 글 수정 PUT
+	// PUT :  글 수정
 	@PutMapping
 	public ResponseEntity<String> modifyNotice(@RequestBody NoticeDto noticeDto) throws Exception {
 		if (noticeService.modifyArticle(noticeDto)) {
@@ -61,7 +60,7 @@ public class NoticeController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
-	// 글 삭제 DELETE/no
+	// DELETE :  글 삭제
 	@DeleteMapping("/{no}")
 	public ResponseEntity<String> deleteNotice(@PathVariable("no") int no) throws Exception {
 		if(noticeService.deleteArticle(no)) {
