@@ -14,12 +14,12 @@
         </div>
         <div class="address-info">
           <h2 class="address" style="font-size: 11px">
-            도로명:
+            도로명 :
             {{ sidoName + " " + apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
         </div>
         <div class="apart-buildYear">
-          <h2 class="buildYear" style="font-size: 11px">준공년도: {{ apartInfo.buildYear }}</h2>
+          <h2 class="buildYear" style="font-size: 11px">준공년도 : {{ apartInfo.buildYear }}</h2>
         </div>
 
         <div style="display: flex">
@@ -30,7 +30,9 @@
         </div>
       </fieldset>
 
-      <div class="averDealDiv">최근 3개월 평균 거래가격 : {{ averDeal }}</div>
+      <div class="averDealDiv">
+        최근 <span class="highlight">3개월 평균</span> 거래가 : <span class="highlight">{{ averDeal }}</span>
+      </div>
 
       <!--로드뷰-->
       <div id="roadview" style="width: 100%; height: 300px" v-show="isRoadViewOn"></div>
@@ -54,7 +56,7 @@
           <div class="bg-white mb-2">
             <div style="overflow: auto; max-height: 25vh">
               <table class="w-100">
-                <thead class="bg-secondary text-white" style="position: sticky; top: 0">
+                <thead class="table-bg text-white" style="position: sticky; top: 0">
                   <tr>
                     <td class="ps-3 py-1">거래일</td>
                     <td>가격</td>
@@ -79,32 +81,32 @@
       </div>
 
       <div class="map_wrap">
-        <div class="border-bottom"><h5 class="p-3 m-0">주변 정보</h5></div>
+        <div class=""><h5 class="p-3 m-0">주변 정보</h5></div>
         <div>
           <ul id="category">
-            <li id="BK9" data-order="0" @click="onClickCategory">
-              <span class="category_bg bank"></span>
-              은행
+            <li id="MT1" data-order="5" @click="onClickCategory">
+              <span class="category_bg market"></span>
+              대형마트
             </li>
-            <li id="MT1" data-order="1" @click="onClickCategory">
-              <span class="category_bg mart"></span>
-              마트
+            <li id="CS2" data-order="4" @click="onClickCategory">
+              <span class="category_bg store"></span>
+              편의점
             </li>
-            <li id="PM9" data-order="2" @click="onClickCategory">
-              <span class="category_bg pharmacy"></span>
-              약국
-            </li>
-            <li id="OL7" data-order="3" @click="onClickCategory">
-              <span class="category_bg oil"></span>
-              주유소
-            </li>
-            <li id="CE7" data-order="4" @click="onClickCategory">
+            <li id="CE7" data-order="0" @click="onClickCategory">
               <span class="category_bg cafe"></span>
               카페
             </li>
-            <li id="CS2" data-order="5" @click="onClickCategory">
-              <span class="category_bg store"></span>
-              편의점
+            <li id="SC4" data-order="3" @click="onClickCategory">
+              <span class="category_bg school"></span>
+              학교
+            </li>
+            <li id="HP8" data-order="1" @click="onClickCategory">
+              <span class="category_bg hospital"></span>
+              병원
+            </li>
+            <li id="AG2" data-order="2" @click="onClickCategory">
+              <span class="category_bg agency"></span>
+              부동산
             </li>
           </ul>
         </div>
@@ -192,8 +194,8 @@ export default {
         datasets: [
           {
             label: "Data One",
-            backgroundColor: "#3f667a",
-            borderColor: "#3f667a",
+            backgroundColor: "#7A4C51",
+            borderColor: "#7A4C51",
 
             data: [],
           },
@@ -478,7 +480,7 @@ export default {
       var pos = new window.kakao.maps.LatLng(this.apartInfo.lat, this.apartInfo.lng);
 
       // 마커 이미지의 이미지 주소입니다
-      var imageSrc = "https://cdn-icons-png.flaticon.com/512/4970/4970769.png"; // https://cdn-icons-png.flaticon.com/512/6917/6917662.png
+      var imageSrc = "https://cdn-icons-png.flaticon.com/512/197/197722.png";
 
       // 마커 이미지의 이미지 크기 입니다
       var imageSize = new window.kakao.maps.Size(40, 40);
@@ -622,21 +624,15 @@ export default {
       }
     },
 
-    // onClickPlace(place) {
-    //   return function () {
-    //     this.displayPlaceInfo(place);
-    //   };
-    // },
-
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     addMarker(position, order) {
       console.log("[주변 상권] 마커를 생성하고 표시합니다.");
-      var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
-        imageSize = new window.kakao.maps.Size(27, 28), // 마커 이미지의 크기
+      var imageSrc = "https://ifh.cc/g/SNW11K.png", // 마커 이미지 url, 스프라이트 이미지를 씁니다
+        imageSize = new window.kakao.maps.Size(42, 42), // 마커 이미지의 크기
         imgOptions = {
-          spriteSize: new window.kakao.maps.Size(72, 208), // 스프라이트 이미지의 크기
-          spriteOrigin: new window.kakao.maps.Point(46, order * 36), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-          offset: new window.kakao.maps.Point(11, 28), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+          spriteSize: new window.kakao.maps.Size(252, 42), // 스프라이트 이미지의 크기
+          spriteOrigin: new window.kakao.maps.Point(order * 42, 0), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+          offset: new window.kakao.maps.Point(21, 21), // 마커 좌표에 일치시킬 이미지 내에서의 좌표
         },
         markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
         marker = new window.kakao.maps.Marker({
@@ -696,7 +692,6 @@ export default {
 
     // 각 카테고리에 클릭 이벤트를 등록합니다
     /*addCategoryClickEvent() {
-      console.log("[주변 상권] 클릭 이벤트를 등록합니다.");
       var category = document.getElementById("category"),
         children = category.children;
 
@@ -707,7 +702,6 @@ export default {
 
     // 카테고리를 클릭했을 때 호출되는 함수입니다
     onClickCategory(event) {
-      // console.log("[주변 상권] 클릭하셨습니다: className=" + this.className + " id=" + this.id);
       // var id = this.id,
       //   className = this.className;
 
@@ -797,8 +791,8 @@ export default {
   /* left: 10px; */
   /* border-radius: 5px; */
   /* border: 1px solid #909090; */
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
-  background: #fff;
+  /* box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4); */
+  /* background: #fff; */
   overflow: hidden;
   z-index: 2;
 }
@@ -832,29 +826,41 @@ export default {
   height: 28px;
 }
 #category li .category_bg {
-  background: url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_category.png) no-repeat;
-}
-#category li .bank {
-  background-position: -10px 0;
-}
-#category li .mart {
-  background-position: -10px -36px;
-}
-#category li .pharmacy {
-  background-position: -10px -72px;
-}
-#category li .oil {
-  background-position: -10px -108px;
+  background: url(https://ifh.cc/g/SNW11K.png) no-repeat;
 }
 #category li .cafe {
-  background-position: -10px -144px;
+  width: 32px;
+  height: 32px;
+  background-position: -5px -5px;
+}
+#category li .hospital {
+  width: 32px;
+  height: 32px;
+  background-position: -47px -5px;
+}
+#category li .agency {
+  width: 32px;
+  height: 32px;
+  background-position: -89px -5px;
+}
+#category li .school {
+  width: 32px;
+  height: 32px;
+  background-position: -131px -5px;
 }
 #category li .store {
-  background-position: -10px -180px;
+  width: 32px;
+  height: 32px;
+  background-position: -173px -5px;
 }
-#category li.on .category_bg {
+#category li .market {
+  width: 32px;
+  height: 32px;
+  background-position: -215px -5px;
+}
+/* #category li.on .category_bg {
   background-position-x: -46px;
-}
+} */
 .placeinfo_wrap {
   position: absolute;
   bottom: 28px;
@@ -934,13 +940,12 @@ h1 {
 .btn-back span {
   display: inline-block;
   overflow: hidden;
-  width: 16px;
+  width: 17px;
   height: 16px;
-  background-image: url("~@/assets/left-arrow.png");
-  /* background-position: -283px -383px; */
+  background-image: url(https://static.hogangnono.com/dist/web/sp_pc.e76dd6e1fb046cb8a71ec352aca15fdd.png);
+  background-position: -283px -383px;
   line-height: 999em;
   vertical-align: top;
-  /* background-repeat: no-repeat; */
 }
 
 .btn-back {
@@ -954,8 +959,6 @@ h1 {
 .areaDiv > .area-select {
   border: none;
   color: white;
-}
-.areaDiv > .custom-select {
   background: #3f667a
     url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='white' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e")
     no-repeat right 0.75rem center/8px 10px;
@@ -966,12 +969,23 @@ h1 {
   border-right: solid 1px lightslategray;
   border-top: solid 1px lightslategray;
 }
+
 .areaDiv {
   border-top: solid 1px lightslategray;
 }
+
 .averDealDiv {
   padding-top: 10px;
   padding-bottom: 10px;
-  border-bottom: solid 1px lightslategray;
+  /* border-bottom: solid 1px lightslategray; */
+}
+
+.averDealDiv > .highlight {
+  color: #7a4c51;
+  font-weight: bold;
+}
+
+.table-bg {
+  background-color: #3f667a;
 }
 </style>

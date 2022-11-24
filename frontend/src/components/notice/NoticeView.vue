@@ -1,17 +1,6 @@
 <template>
   <b-container class="bv-example-row mt-3">
     <b-row class="mb-1">
-      <b-col class="text-left">
-        <b-button variant="outline-dark" size="sm" @click="moveNoticeList">목록</b-button>
-      </b-col>
-      <template v-if="userInfo.rule == 'A'">
-        <b-col class="text-right">
-          <b-button variant="outline-primary" size="sm" @click="moveModifyNotice" class="mr-2">수정</b-button>
-          <b-button variant="outline-danger" size="sm" @click="deleteNotice">삭제</b-button>
-        </b-col>
-      </template>
-    </b-row>
-    <b-row class="mb-1">
       <b-col>
         <b-card
           :header-html="`<h3>${noticeItem.subject}</h3>
@@ -23,6 +12,17 @@
           </b-card-body>
         </b-card>
       </b-col>
+    </b-row>
+    <b-row class="mb-1">
+      <b-col class="text-left">
+        <b-button variant="outline-dark" size="sm" @click="moveNoticeList">목록</b-button>
+      </b-col>
+      <template v-if="userInfo.rule == 'A'">
+        <b-col class="text-right">
+          <b-button variant="outline-primary" size="sm" @click="moveModifyNotice" class="mr-2">수정</b-button>
+          <b-button variant="outline-danger" size="sm" @click="deleteNotice">삭제</b-button>
+        </b-col>
+      </template>
     </b-row>
   </b-container>
 </template>
