@@ -9,7 +9,7 @@
         <apart-search v-on:show-apart-list="showApartList"></apart-search>
       </div>
     </div>
-    <div id="list-box" class="card">
+    <div id="list-box" class="card" v-if="visible">
       <!-- 검색 결과 아파트 리스트 -->
       <h4>아파트 목록</h4>
       <apart-list v-bind:apartments="apartments"></apart-list>
@@ -133,7 +133,7 @@ export default {
         window.kakao.maps.event.addListener(
           this.marker,
           "mouseover",
-          this.makeOverListener(this.map, this.marker, infowindow)
+          this.makeOverListener(this.map, this.marker, infowindow),
         );
         window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
 

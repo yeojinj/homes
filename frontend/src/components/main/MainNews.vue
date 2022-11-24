@@ -1,12 +1,12 @@
 <template>
   <div id="news">
-    <h2>관련 뉴스</h2>
+    <h3>관련 뉴스</h3>
     <div id="news-detail" v-for="(item, index) in newsItems" :key="index">
       <b-card
         @click="handleClick(item)"
         tag="article"
         style="max-width: 20rem; border: none"
-        class="mb-2 shadow"
+        class="mb-2 shadow news-table"
         :title="item.title"
       >
         <hr />
@@ -48,10 +48,35 @@ export default {
 <style scope>
 #news {
   display: inline-block;
+  animation: fadeInUp 2s;
+  /* animation-delay: 2s; */
+}
+
+h3 {
+  color: #3f667a;
 }
 
 #news-detail {
   float: left;
   margin: 10px;
+}
+
+.news-table {
+  border-radius: 10px;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 10%, 0);
+  }
+  60% {
+    opacity: 0;
+    transform: translate3d(0, 10%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0);
+  }
 }
 </style>

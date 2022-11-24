@@ -259,7 +259,7 @@ export default {
     // this.init();
     //this.initRoadView();
     //현재 년월
-    var now = new Date(2022, 4); // 현재 날짜 및 시간
+    var now = new Date(); // 현재 날짜 및 시간
     this.date.nowYear = now.getFullYear();
     this.date.nowMonth = now.getMonth();
 
@@ -527,7 +527,7 @@ export default {
       window.kakao.maps.event.addListener(
         this.marker,
         "mouseover",
-        this.makeOverListener(this.map, this.marker, infowindow)
+        this.makeOverListener(this.map, this.marker, infowindow),
       );
 
       window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
