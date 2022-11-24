@@ -26,27 +26,23 @@
         </b-card>
       </b-col>
     </b-row>
+    <br />
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button variant="outline-dark" size="sm" @click="moveQnaList">목록</b-button>
+        <b-button variant="outline-dark" @click="moveQnaList">목록</b-button>
+      </b-col>
+      <b-col v-if="userInfo.rule == 'A' && qnaItem.state == 'N'">
+        <div id="buttons">
+          <b-button class="button-write" variant="outline-dark" @click="moveComment()">답변하기</b-button>
+        </div>
       </b-col>
       <b-col class="text-right">
-        <b-button
-          variant="outline-primary"
-          size="sm"
-          @click="moveModifyQna"
-          class="mr-2"
-          v-if="qnaItem.userId === userInfo.userId && qnaItem.state == 'N'"
+        <b-button variant="outline-primary" @click="moveModifyQna" class="mr-2" v-if="qnaItem.userId === userInfo.userId && qnaItem.state == 'N'"
           >수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteQna" v-if="qnaItem.userId === userInfo.userId">삭제</b-button>
+        <b-button variant="outline-danger" @click="deleteQna" v-if="qnaItem.userId === userInfo.userId">삭제</b-button>
       </b-col>
     </b-row>
-    <template v-if="userInfo.rule == 'A' && qnaItem.state == 'N'">
-      <div id="buttons">
-        <b-button class="button-write" variant="outline-dark" @click="moveComment()">답변하기</b-button>
-      </div>
-    </template>
   </b-container>
 </template>
 
