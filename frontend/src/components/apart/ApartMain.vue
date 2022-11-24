@@ -3,12 +3,15 @@
     <div id="map"></div>
     <div id="search-box" class="card">
       <div>
+        <h4>검색</h4>
+        <p style="font-size: small">지역을 반드시 선택해주세요.</p>
         <!-- 하위 컴포넌트의 이벤트를 수신 -->
         <apart-search v-on:show-apart-list="showApartList"></apart-search>
       </div>
     </div>
     <div id="list-box" class="card">
       <!-- 검색 결과 아파트 리스트 -->
+      <h4>아파트 목록</h4>
       <apart-list v-bind:apartments="apartments"></apart-list>
     </div>
   </div>
@@ -37,9 +40,6 @@ export default {
 
   computed: {
     ...mapState(apartStore, ["apartments"]),
-  },
-  created() {
-    console.log(this.apartments);
   },
   mounted() {
     // kakao map 초기화
@@ -195,7 +195,7 @@ export default {
 #list-box {
   margin-top: 60px;
   position: absolute;
-  top: 150px;
+  top: 195px;
   left: 20px;
   width: 400px;
   padding: 10px;

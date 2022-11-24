@@ -21,8 +21,6 @@ public interface MemberMapper {
 	/** 회원 정보 수정 **/
 	int updateMember (MemberDto memberDto) throws SQLException;
 	
-	
-	
 	/****** Token**************/
 	public MemberDto userInfo(String userid) throws SQLException;
 	public void saveRefreshToken(Map<String, String> map) throws SQLException;

@@ -10,21 +10,14 @@ public interface MemberService {
 	
 	// 아이디 중복 체크
 	boolean idCheck(String userId) throws Exception;
-	//회원 가입
+	// 회원 가입
 	boolean joinMember(MemberDto memberDto) throws Exception;
-	//로그인
+	// 로그인
 	MemberDto loginMember(MemberDto memberDto) throws Exception;
-	
 	//회원 탈퇴
 	boolean deleteMember(String userId) throws Exception;
-	
 	//회원 정보 수정 
 	boolean updateMember(MemberDto memberDto) throws Exception;
-	
-	
-	
-	
-	
 	
 	/**Token**/
 	public MemberDto userInfo(String userid) throws Exception;

@@ -62,7 +62,6 @@
       <div class="dealTabel">
         <div id="list-box" class="card">
           <div class="bg-white mb-2">
-            <div class="border-bottom"><h5 class="p-3 m-0">실거래가</h5></div>
             <div style="overflow: auto; max-height: 25vh">
               <table class="w-100">
                 <thead class="bg-secondary text-white" style="position: sticky; top: 0">
@@ -156,7 +155,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 400,
+      default: 350,
     },
     cssClasses: {
       default: "",
@@ -325,8 +324,7 @@ export default {
 
           this.apartArea = this.areas[0].value;
         });
-      await this.getApartInfo(); //얘가
-      // await this.hi();
+      await this.getApartInfo();
       await this.getApartDealWithArea();
       await this.getDealTable();
     },
@@ -351,7 +349,7 @@ export default {
         this.map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
         this.map.setMapTypeId(window.kakao.maps.MapTypeId.ROADMAP);
 
-        ////로드뷰@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@//
+        /////////////////////////////// 로드뷰 /////////////////////////////
 
         var roadviewContainer = document.getElementById("roadview");
         var roadview = new window.kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
@@ -640,15 +638,23 @@ export default {
         // 마커를 생성하고 지도에 표시합니다
         var marker = this.addMarker(new window.kakao.maps.LatLng(places[i].y, places[i].x), order);
 
+        console.log("==========");
+        var displayPlaceInfo = this.displayPlaceInfo;
         // 마커와 검색결과 항목을 클릭 했을 때
         // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
         (function (marker, place) {
           window.kakao.maps.event.addListener(marker, "click", function () {
-            this.displayPlaceInfo(place);
+            displayPlaceInfo(place);
           });
         })(marker, places[i]);
       }
     },
+
+    // onClickPlace(place) {
+    //   return function () {
+    //     this.displayPlaceInfo(place);
+    //   };
+    // },
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     addMarker(position, order) {
@@ -774,7 +780,7 @@ export default {
 
 #map {
   width: 100%;
-  height: 100vh;
+  height: 105vh;
 }
 
 .search-group {

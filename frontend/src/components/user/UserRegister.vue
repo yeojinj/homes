@@ -10,7 +10,9 @@
       <b-col cols="8">
         <b-card class="text-center mt-3 register-box" style="max-width: 40rem" align="center">
           <b-form class="text-left">
-            <b-form-group label="아이디:" label-for="userId">
+            <b-form-group>
+              <div style="float: left">아이디:</div>
+              <div style="float: right; color: red; font-size: small">*필수</div>
               <b-form-input
                 id="userid"
                 v-model="user.userId"
@@ -21,7 +23,9 @@
               ></b-form-input>
               <div :style="{ color: idColor }">{{ idCheckDiv }}</div>
             </b-form-group>
-            <b-form-group label="비밀번호:" label-for="userPw">
+            <b-form-group>
+              <div style="float: left">비밀번호:</div>
+              <div style="float: right; color: red; font-size: small">*필수</div>
               <b-form-input
                 type="password"
                 id="userpw"
@@ -33,7 +37,9 @@
               ></b-form-input>
               <div :style="{ color: pwColor }">{{ pwCheckDiv }}</div>
             </b-form-group>
-            <b-form-group label="비밀번호 확인:" label-for="userPwCk">
+            <b-form-group>
+              <div style="float: left">비밀번호 확인:</div>
+              <div style="float: right; color: red; font-size: small">*필수</div>
               <b-form-input
                 type="password"
                 id="userpwCk"
@@ -45,7 +51,9 @@
               ></b-form-input>
               <div :style="{ color: pwSameColor }">{{ pwSameCheckDiv }}</div>
             </b-form-group>
-            <b-form-group label="이름:" label-for="name">
+            <b-form-group>
+              <div style="float: left">이름:</div>
+              <div style="float: right; color: red; font-size: small">*필수</div>
               <b-form-input
                 id="name"
                 v-model="user.name"
@@ -55,19 +63,12 @@
               ></b-form-input>
             </b-form-group>
             <b-form-group label="이메일:" label-for="email">
-              <b-form-input
-                id="email"
-                v-model="user.email"
-                required
-                placeholder="이메일"
-                @keyup.enter="confirm"
-              ></b-form-input>
+              <b-form-input id="email" v-model="user.email" placeholder="이메일" @keyup.enter="confirm"></b-form-input>
             </b-form-group>
             <b-form-group label="전화번호:" label-for="phone">
               <b-form-input
                 id="phone"
                 v-model="user.phone"
-                required
                 placeholder="전화번호"
                 @keyup.enter="confirm"
               ></b-form-input>
@@ -114,10 +115,9 @@ export default {
   methods: {
     ...mapActions(memberStore, ["userJoin", "userIdCheck"]),
     async confirm() {
-      if (this.userPw === this.userPwCk && this.canUseId && this.canUserPw) {
-        console.log("front :" + this.user);
+      if (this.userPw === this.userPwCk && this.canUseId && this.canUserPw && this.user.name) {
+        console.log("===========");
         await this.userJoin(this.user);
-
         alert(this.user.name + "님의 회원가입 완료!");
         this.$router.push({ name: "login" });
       } else {
