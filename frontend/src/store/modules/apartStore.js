@@ -8,6 +8,14 @@ const apartStore = {
     dongs: [],
     apartments: [],
     house: null,
+    searchData: {
+      sidoCode: null,
+      gugunCode: null,
+      dongCode: null,
+      sidoName: "",
+      gugunName: "",
+      apartName: "",
+    },
   },
 
   mutations: {
@@ -26,6 +34,27 @@ const apartStore = {
       dongs.forEach((dong) => {
         state.dongs.push({ value: dong.dongCode, text: dong.dongName });
       });
+    },
+
+    SET_SIDO_NAME(state, sidoName) {
+      state.searchData.sidoName = sidoName;
+    },
+    SET_GUGUN_NAME(state, gugunName) {
+      state.searchData.gugunName = gugunName;
+    },
+
+    SET_SIDO_CODE(state, sidoCode) {
+      state.searchData.sidoCode = sidoCode;
+    },
+    SET_GUGUN_CODE(state, gugunCode) {
+      state.searchData.gugunCode = gugunCode;
+    },
+    SET_DONG_CODE(state, dongCode) {
+      state.searchData.dongCode = dongCode;
+    },
+
+    SET_APART_NAME(state, apartName) {
+      state.searchData.apartName = apartName;
     },
     CLEAR_SIDO_LIST(state) {
       state.sidos = [];
@@ -67,7 +96,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
     async getGugun({ commit }, sidoCode) {
@@ -86,7 +115,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
 
@@ -104,7 +133,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
     },
 
@@ -123,7 +152,7 @@ const apartStore = {
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
 
       // // vue cli enviroment variables 검색

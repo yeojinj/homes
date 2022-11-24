@@ -12,12 +12,14 @@
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">지번 : {{ apartInfo.dongName + " " + apartInfo.jibun }}</h2>
+          <h2 class="address" style="font-size: 10px">
+            지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}
+          </h2>
         </div>
         <div class="address-info">
           <h2 class="address" style="font-size: 10px">
             도로명:
-            {{ apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
+            {{ sidoName + " " + apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
         </div>
         <div class="apart-buildYear">
@@ -128,6 +130,8 @@ import http from "@/api/http";
 import { Chart, registerables } from "chart.js";
 import { Line as LineChartGenerator } from "vue-chartjs/legacy";
 Chart.register(...registerables);
+import { mapState } from "vuex";
+const apartStore = "apartStore";
 
 export default {
   name: "apartDetailView",
@@ -189,6 +193,8 @@ export default {
         nowMonth: "",
         oldMonth: "",
       },
+      sidoName: "",
+      gugunName: "",
       isRoadViewOn: false,
 
       chartData: {
@@ -264,6 +270,18 @@ export default {
     var oneMonthAgo = new Date(now.setMonth(now.getMonth() - 3)); // 한달 전
     this.date.oldYear = oneMonthAgo.getFullYear();
     this.date.oldMonth = oneMonthAgo.getMonth();
+
+    //시도 구군 이름
+    this.sidoName = this.searchData.sidoName;
+    console.log(this.searchData.sidoName + "시도");
+    this.gugunName = this.searchData.gugunName;
+  },
+
+  computed: {
+    ...mapState(apartStore, ["searchData"]),
+    // sidos() {
+    //   return this.$store.state.sidos;
+    // },
   },
 
   mounted() {
@@ -512,7 +530,7 @@ export default {
       window.kakao.maps.event.addListener(
         this.marker,
         "mouseover",
-        this.makeOverListener(this.map, this.marker, infowindow),
+        this.makeOverListener(this.map, this.marker, infowindow)
       );
 
       window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
@@ -671,8 +689,6 @@ export default {
 
     // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
     displayPlaceInfo(place) {
-      console.log("displayPlaceInfo()...");
-      console.log(place);
       var content =
         '<div class="placeinfo">' +
         '   <a class="title" href="' +
