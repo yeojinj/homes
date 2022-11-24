@@ -249,7 +249,7 @@ export default {
     // this.init();
     //this.initRoadView();
     //현재 년월
-    var now = new Date(); // 현재 날짜 및 시간
+    var now = new Date(2022, 10); // 현재 날짜 및 시간
     this.date.nowYear = now.getFullYear();
     this.date.nowMonth = now.getMonth();
 
