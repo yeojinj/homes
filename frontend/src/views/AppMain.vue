@@ -2,18 +2,28 @@
   <div>
     <div id="main-image">
       <div class="container">
-        <h1>HOMES</h1>
-        <svg
+        <div class="title-text" style="text-align: left">
+          <h2>
+            <b>홈즈로<br />나에게 딱 맞게</b>
+          </h2>
+          <br />
+          <br />
+          <h5>
+            <span class="title-highlight">실거래가</span>부터 <span class="title-highlight">주변 상권</span>까지 한 번에
+          </h5>
+        </div>
+        <div class="title-image">
+          <img id="homes-image" src="@/assets/homes_title.svg" />
+        </div>
+        <!-- <svg
           class="pulse"
           viewBox="0 0 1024 1024"
           version="1.1"
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
         >
-          <circle id="Oval1" cx="512" cy="512" r="512"></circle>
-          <circle id="Oval2" cx="512" cy="512" r="512"></circle>
-          <circle id="Oval3" cx="512" cy="512" r="512"></circle>
-        </svg>
+          <circle id="Oval1" cx="512" cy="512" r="380"></circle>
+        </svg> -->
       </div>
     </div>
 
@@ -51,25 +61,10 @@ export default {
   display: inline-block;
 }
 
-@font-face {
-  font-family: "Cafe24ClassicType-Regular";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Cafe24ClassicType-Regular.woff2")
-    format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-h1 {
-  font-family: "Cafe24ClassicType-Regular";
-  font-size: 5rem;
-  text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
-  color: #343434;
-}
-
 .container {
   position: relative;
   z-index: 0;
-  background-color: #ededed;
+  background-color: #fff7f8;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,34 +73,66 @@ h1 {
   overflow: hidden;
 }
 
-.pulse {
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -40%, 0);
+  }
+  30% {
+    opacity: 0;
+    transform: translate3d(0, -40%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateZ(0, -50%);
+  }
+}
+
+.title-text {
+  animation: fadeInUp 1s;
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  transform: translate(0, -50%);
+}
+
+.title-highlight {
+  color: #3f667a;
+  font-weight: bold;
+}
+
+.title-image {
+  animation: fadeInUp 1s;
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(0, -50%);
+}
+
+#homes-image {
+  width: 300px;
+}
+
+/* h2 h5 {
+  animation: fadeInUp 1s;
+} */
+
+/* .pulse {
   z-index: -1;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   max-width: 30rem;
-}
-
-.pulse > circle {
-  fill: #7a4c51;
+} */
+/* .pulse > circle {
+  fill: #3f667a;
   transform: scale(0);
   opacity: 0;
   transform-origin: 50% 50%;
   animation: pulse 2s cubic-bezier(0.5, 0.5, 0, 1);
-}
-
-#Oval2 {
-  fill: #3f667a;
-  animation: pulse 2s 0.75s cubic-bezier(0.5, 0.5, 0, 1);
-}
-
-#Oval3 {
-  fill: #c7c35d;
-  animation: pulse 2s 1.5s cubic-bezier(0.5, 0.5, 0, 1);
-}
-
-@keyframes pulse {
+} */
+/* @keyframes pulse {
   25% {
     opacity: 0.4;
   }
@@ -113,5 +140,5 @@ h1 {
   100% {
     transform: scale(1);
   }
-}
+} */
 </style>
