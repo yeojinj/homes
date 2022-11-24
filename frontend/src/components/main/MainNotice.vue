@@ -51,7 +51,8 @@ h3 {
 
 #notice-detail {
   float: left;
-  margin: 10px;
+  margin: 20px;
+  margin-left: 40px;
   min-width: 20rem;
   border: none;
 }

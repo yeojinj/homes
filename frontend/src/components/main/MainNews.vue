@@ -2,13 +2,7 @@
   <div id="news">
     <h3>관련 뉴스</h3>
     <div id="news-detail" v-for="(item, index) in newsItems" :key="index">
-      <b-card
-        @click="handleClick(item)"
-        tag="article"
-        style="max-width: 20rem; border: none"
-        class="mb-2 shadow news-table"
-        :title="item.title"
-      >
+      <b-card @click="handleClick(item)" tag="article" style="max-width: 20rem; border: none" class="mb-2 shadow news-table" :title="item.title">
         <hr />
         <b-card-text v-html="item.description"></b-card-text>
       </b-card>
@@ -58,7 +52,7 @@ h3 {
 
 #news-detail {
   float: left;
-  margin: 10px;
+  margin: 20px;
 }
 
 .news-table {
