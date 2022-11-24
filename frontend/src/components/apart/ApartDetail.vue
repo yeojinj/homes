@@ -3,16 +3,14 @@
     <div id="detailInfo">
       <fieldset class="search-group except-content">
         <div class="header-info">
-          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로가기</span></a>
+          <router-link class="btn-back" data-ga-event="apt,backBtn" :to="{ name: 'apartMain' }"><span>뒤로가기</span></router-link>
           <h1 style="font-size: 23px">
             <span>{{ apartInfo.apartmentName }} </span>
           </h1>
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 11px">
-            지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}
-          </h2>
+          <h2 class="address" style="font-size: 11px">지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}</h2>
         </div>
         <div class="address-info">
           <h2 class="address" style="font-size: 11px">
@@ -27,12 +25,7 @@
         <div style="display: flex">
           <div class="roadViewDiv" style="width: 50%" @click="showRoadView">로드뷰</div>
           <div class="areaDiv" style="width: 50%">
-            <b-form-select
-              class="area-select"
-              v-model="apartArea"
-              :options="areas"
-              @change="changeArea"
-            ></b-form-select>
+            <b-form-select class="area-select" v-model="apartArea" :options="areas" @change="changeArea"></b-form-select>
           </div>
         </div>
       </fieldset>
@@ -221,12 +214,7 @@ export default {
                 let length = value.toString().length;
 
                 if (length >= 5) {
-                  return (
-                    value.toString().substring(0, length - 4) +
-                    "억 " +
-                    value.toString().substring(length - 4, length) +
-                    "만원"
-                  );
+                  return value.toString().substring(0, length - 4) + "억 " + value.toString().substring(length - 4, length) + "만원";
                 } else {
                   return value + "만원";
                 }
@@ -297,8 +285,7 @@ export default {
         console.log("initmap mounted  else");
         script.onload = () => window.kakao.maps.load(this.initMap);
 
-        script.src =
-          "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
+        script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
         document.head.appendChild(script);
       }
     },
@@ -395,12 +382,7 @@ export default {
           let year = data[i].dealYear;
           let month = data[i].dealMonth;
 
-          if (
-            year >= this.date.oldYear &&
-            year <= this.date.nowYear &&
-            month >= this.date.oldMonth &&
-            month <= this.date.nowMonth
-          ) {
+          if (year >= this.date.oldYear && year <= this.date.nowYear && month >= this.date.oldMonth && month <= this.date.nowMonth) {
             //최근 3개월 거래 개수
 
             this.count++;
@@ -416,7 +398,7 @@ export default {
         //거래한 개수가 존재할때만 평균 금액을 구한다.
         if (this.count != 0) {
           //거래 횟수 만큼 나눔
-          let deal = this.averDeal / this.count;
+          let deal = Math.round(this.averDeal / this.count);
 
           //억,천만 단위 찍어주는 함수 호출
           this.averDeal = this.calUnitAmount(deal);
@@ -430,9 +412,7 @@ export default {
     calUnitAmount(amount) {
       let length = amount.toString().length;
       if (length >= 5) {
-        return (
-          amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원"
-        );
+        return amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원";
       } else {
         return amount + "만원";
       }
@@ -513,8 +493,7 @@ export default {
       });
 
       // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-      var iwContent =
-        '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      var iwContent = '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
       // 인포윈도우를 생성합니다
       var infowindow = new window.kakao.maps.InfoWindow({
@@ -524,11 +503,7 @@ export default {
       // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
       // 이벤트 리스너로는 클로저를 만들어 등록합니다
       // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-      window.kakao.maps.event.addListener(
-        this.marker,
-        "mouseover",
-        this.makeOverListener(this.map, this.marker, infowindow),
-      );
+      window.kakao.maps.event.addListener(this.marker, "mouseover", this.makeOverListener(this.map, this.marker, infowindow));
 
       window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
 
@@ -934,8 +909,7 @@ export default {
   padding: 10px;
   color: #fff;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px
-    center;
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
 }
 .placeinfo .tel {
   color: #3f667a;

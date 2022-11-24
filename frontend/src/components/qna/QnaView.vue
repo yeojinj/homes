@@ -13,9 +13,7 @@
           v-if="qnaItem.userId === userInfo.userId && qnaItem.state == 'N'"
           >수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteQna" v-if="qnaItem.userId === userInfo.userId"
-          >삭제</b-button
-        >
+        <b-button variant="outline-danger" size="sm" @click="deleteQna" v-if="qnaItem.userId === userInfo.userId">삭제</b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
@@ -90,7 +88,6 @@ export default {
         name: "qnamodify",
         params: { no: this.qnaItem.no },
       });
-      //   this.$router.push({ path: `/board/modify/${this.article.articleno}` });
     },
     //삭제하기
     deleteQna() {

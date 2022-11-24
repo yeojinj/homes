@@ -49,7 +49,20 @@ export default {
   },
   created() {
     http.get(`/qna`).then(({ data }) => {
-      this.qnaItems = data;
+      for (var i = 0; i < data.length; i++) {
+        //답변완료 상태로 변경하여준다.
+
+        console.log(data[i].state);
+        if (data[i].state === "Y") {
+          data[i].state = "답변완료";
+          //미완료로 변경한다.
+        } else {
+          data[i].state = "미완료";
+        }
+        this.qnaItems.push(data[i]);
+      }
+
+      // this.qnaItems = data;
       console.log(this.qnaItems + "데이터");
     });
   },

@@ -4,14 +4,14 @@
 
 <mapper
 	namespace="com.ssafy.homes.apart.model.mapper.ApartMapper">
-
+<!-- 시도 정보 얻기 -->
 	<select id="getSido" resultType="SiGunDongDto">
 		select left(sidoCode,2)
 		sidoCode, sidoName
 		from sidocode
 		order by sidoCode
 	</select>
-
+<!--  구군 정보 얻기  -->
 	<select id="getGugunInSido" parameterType="string"
 		resultType="SiGunDongDto">
 		select left(gugunCode,5) gugunCode, gugunName
@@ -19,9 +19,7 @@
 		where left(gugunCode,2) = #{sido}
 		order by gugunCode
 	</select>
-	<!-- <select id="getDongInGugun" parameterType="string" resultType="SiGunDongDto"> 
-		select distinct dongName, dongCode from dongCode where left(dongCode, 5) 
-		= #{gugun} order by dongName </select> -->
+	
 
 	<!--해당하는 동의 데이터가 없는 아파트 정보들이 많아서 있는 동에 대한 것만 출력할때 사용하는 쿼리 -->
 	<select id="getDongInGugun" parameterType="string"
@@ -33,7 +31,6 @@
 		order by dongName
 	</select>
 	
-	<!-- 뭘까?? ?? -->
 
 	<select id="getAptInDong" parameterType="string"
 		resultType="houseInfoDto">
@@ -53,13 +50,10 @@
 		where dongCode = #{dong}
 		order by aptName
 	</select>
-
-
-
-
+	
+<!-- 연 월 기준으로 거래금액 조회 -->
 	<select id="getYearMonthAmount" parameterType="map"
 		resultType="map">
-
 
 		select dealYear ,dealMonth ,
 		round((replace(dealAmount,',',''))) as amount
@@ -72,10 +66,7 @@
 		group by dealYear ,dealMonth;
 	</select>
 
-
-
-
-
+	<!-- 오름차순으로 거래내역 조회 -->
 	<select id="getDealList" parameterType="map" resultType="map">
 
 		select floor, dealYear ,dealMonth , dealDay, round((replace(dealAmount,',',''))) as amount 

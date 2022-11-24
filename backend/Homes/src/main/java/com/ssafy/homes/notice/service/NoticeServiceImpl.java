@@ -22,7 +22,7 @@ public class NoticeServiceImpl implements NoticeService {
 	public NoticeServiceImpl(NoticeMapper noticeMapper) {
 		this.noticeMapper = noticeMapper;
 	}
-
+	/** 글쓰기 **/
 	@Override
 	@Transactional
 	public boolean writeArticle(NoticeDto noticeDto) throws Exception {
@@ -31,7 +31,7 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 		return noticeMapper.writeArticle(noticeDto) == 1;
 	}
-
+	/** 글 목록 조회 **/
 	@Override
 	public List<NoticeDto> listArticle(Map<String, String> map) throws Exception {
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -47,7 +47,7 @@ public class NoticeServiceImpl implements NoticeService {
 
 		return noticeMapper.listArticle(param);
 	}
-
+	/** 페이징 **/
 	@Override
 	public PageNavigation makePageNavigation(Map<String, String> map) throws Exception {
 		PageNavigation pageNavigation = new PageNavigation();
@@ -76,22 +76,24 @@ public class NoticeServiceImpl implements NoticeService {
 
 		return pageNavigation;
 	}
-
+	/** 글 조회 **/
 	@Override
 	public NoticeDto getArticle(int no) throws Exception {
 		return noticeMapper.getArticle(no);
 	}
-
+	/** 조회수 수정 **/
 	@Override
 	public void updateHit(int no) throws Exception {
 		noticeMapper.updateHit(no);
 	}
-
+	
+	/** 글 수정 **/
 	@Override
 	public boolean modifyArticle(NoticeDto noticeDto) throws Exception {
 		return noticeMapper.modifyArticle(noticeDto) == 1;
 	}
 
+	/** 글 삭제 **/
 	@Override
 	@Transactional
 	public boolean deleteArticle(int no) throws Exception {
@@ -99,3 +101,6 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 }
+	
+	
+
