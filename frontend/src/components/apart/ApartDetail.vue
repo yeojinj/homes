@@ -60,7 +60,6 @@
       <div class="dealTabel">
         <div id="list-box" class="card">
           <div class="bg-white mb-2">
-            <div class="border-bottom"><h5 class="p-3 m-0">실거래가</h5></div>
             <div style="overflow: auto; max-height: 25vh">
               <table class="w-100">
                 <thead class="bg-secondary text-white" style="position: sticky; top: 0">
@@ -152,7 +151,7 @@ export default {
     },
     height: {
       type: Number,
-      default: 400,
+      default: 350,
     },
     cssClasses: {
       default: "",
@@ -219,7 +218,12 @@ export default {
                 let length = value.toString().length;
 
                 if (length >= 5) {
-                  return value.toString().substring(0, length - 4) + "억 " + value.toString().substring(length - 4, length) + "만원";
+                  return (
+                    value.toString().substring(0, length - 4) +
+                    "억 " +
+                    value.toString().substring(length - 4, length) +
+                    "만원"
+                  );
                 } else {
                   return value + "만원";
                 }
@@ -278,7 +282,8 @@ export default {
         console.log("initmap mounted  else");
         script.onload = () => window.kakao.maps.load(this.initMap);
 
-        script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
+        script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
         document.head.appendChild(script);
       }
     },
@@ -301,8 +306,7 @@ export default {
 
           this.apartArea = this.areas[0].value;
         });
-      await this.getApartInfo(); //얘가
-      // await this.hi();
+      await this.getApartInfo();
       await this.getApartDealWithArea();
       await this.getDealTable();
     },
@@ -327,7 +331,7 @@ export default {
         this.map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
         this.map.setMapTypeId(window.kakao.maps.MapTypeId.ROADMAP);
 
-        ////로드뷰@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@//
+        /////////////////////////////// 로드뷰 /////////////////////////////
 
         var roadviewContainer = document.getElementById("roadview");
         var roadview = new window.kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
@@ -376,7 +380,12 @@ export default {
           let year = data[i].dealYear;
           let month = data[i].dealMonth;
 
-          if (year >= this.date.oldYear && year <= this.date.nowYear && month >= this.date.oldMonth && month <= this.date.nowMonth) {
+          if (
+            year >= this.date.oldYear &&
+            year <= this.date.nowYear &&
+            month >= this.date.oldMonth &&
+            month <= this.date.nowMonth
+          ) {
             //최근 3개월 거래 개수
 
             this.count++;
@@ -406,7 +415,9 @@ export default {
     calUnitAmount(amount) {
       let length = amount.toString().length;
       if (length >= 5) {
-        return amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원";
+        return (
+          amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원"
+        );
       } else {
         return amount + "만원";
       }
@@ -487,7 +498,8 @@ export default {
       });
 
       // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-      var iwContent = '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      var iwContent =
+        '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
       // 인포윈도우를 생성합니다
       var infowindow = new window.kakao.maps.InfoWindow({
@@ -497,7 +509,11 @@ export default {
       // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
       // 이벤트 리스너로는 클로저를 만들어 등록합니다
       // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-      window.kakao.maps.event.addListener(this.marker, "mouseover", this.makeOverListener(this.map, this.marker, infowindow));
+      window.kakao.maps.event.addListener(
+        this.marker,
+        "mouseover",
+        this.makeOverListener(this.map, this.marker, infowindow),
+      );
 
       window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
 
@@ -604,15 +620,23 @@ export default {
         // 마커를 생성하고 지도에 표시합니다
         var marker = this.addMarker(new window.kakao.maps.LatLng(places[i].y, places[i].x), order);
 
+        console.log("==========");
+        var displayPlaceInfo = this.displayPlaceInfo;
         // 마커와 검색결과 항목을 클릭 했을 때
         // 장소정보를 표출하도록 클릭 이벤트를 등록합니다
         (function (marker, place) {
           window.kakao.maps.event.addListener(marker, "click", function () {
-            this.displayPlaceInfo(place);
+            displayPlaceInfo(place);
           });
         })(marker, places[i]);
       }
     },
+
+    // onClickPlace(place) {
+    //   return function () {
+    //     this.displayPlaceInfo(place);
+    //   };
+    // },
 
     // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
     addMarker(position, order) {
@@ -647,6 +671,8 @@ export default {
 
     // 클릭한 마커에 대한 장소 상세정보를 커스텀 오버레이로 표시하는 함수입니다
     displayPlaceInfo(place) {
+      console.log("displayPlaceInfo()...");
+      console.log(place);
       var content =
         '<div class="placeinfo">' +
         '   <a class="title" href="' +
@@ -738,7 +764,7 @@ export default {
 
 #map {
   width: 100%;
-  height: 100vh;
+  height: 105vh;
 }
 
 .search-group {
@@ -895,7 +921,8 @@ export default {
   padding: 10px;
   color: #fff;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px
+    center;
 }
 .placeinfo .tel {
   color: #3f667a;
