@@ -19,35 +19,30 @@ public class MemberServiceImpl implements MemberService {
 	/** 아이디 중복 체크 **/
 	@Override
 	public boolean idCheck(String userId) throws Exception {
-		// TODO Auto-generated method stub
 		return sqlSession.getMapper(MemberMapper.class).idCheck(userId) == 0;
 	}
 
 	/** 회원가입 **/
 	@Override
 	public boolean joinMember(MemberDto memberDto) throws Exception {
-		// TODO 값 제대로 안들어 왔을때 예외처리 하기
 		return sqlSession.getMapper(MemberMapper.class).joinMember(memberDto) == 1;
 	}
 
 	/** 로그인 하기 **/
 	@Override
 	public MemberDto loginMember(MemberDto memberDto) throws Exception {
-		// TODO Auto-generated method stub
 		return sqlSession.getMapper(MemberMapper.class).loginMember(memberDto);
 	}
 
 	/** 회원 탈퇴 **/
 	@Override
 	public boolean deleteMember(String userId) throws Exception {
-		// TODO Auto-generated method stub
 		return sqlSession.getMapper(MemberMapper.class).deleteMember(userId) == 1;
 	}
 
 	/** 회원 정보 수정 **/
 	@Override
 	public boolean updateMember(MemberDto memberDto) throws Exception {
-		// TODO Auto-generated method stub
 		return sqlSession.getMapper(MemberMapper.class).updateMember(memberDto) == 1;
 	}
 
