@@ -73,8 +73,8 @@ const routes = [
     path: "/house",
     name: "house",
     redirect: "/house/main",
+    beforeEnter: onlyAuthUser,
     component: () => import("@/views/AppHouse"),
-
     children: [
       {
         path: "main",
@@ -82,7 +82,6 @@ const routes = [
 
         component: () => import("@/components/apart/ApartMain"),
       },
-
       {
         path: "view/:apartCode",
         name: "apartDetailView",
@@ -95,7 +94,6 @@ const routes = [
     name: "qna",
     beforeEnter: onlyAuthUser,
     init,
-    // beforeEnter: init,
     component: () => import("@/views/AppQna"),
     redirect: "/qna/list",
     children: [
