@@ -14,12 +14,9 @@
         </div>
         <div class="address-info">
           <h2 class="address" style="font-size: 11px">
-            도로명:
+            도로명 :
             {{ sidoName + " " + apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
-        </div>
-        <div class="address-info">
-          <h2 class="address" style="font-size: 11px">지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}</h2>
         </div>
         <div class="apart-buildYear">
           <h2 class="buildYear" style="font-size: 11px">준공년도 : {{ apartInfo.buildYear }}</h2>
