@@ -13,14 +13,7 @@
             <b-form-group>
               <div style="float: left">아이디:</div>
               <div style="float: right; color: red; font-size: small">*필수</div>
-              <b-form-input
-                id="userid"
-                v-model="user.userId"
-                required
-                placeholder="아이디"
-                @keyup="idCheck"
-                @keyup.enter="confirm"
-              ></b-form-input>
+              <b-form-input id="userid" v-model="user.userId" required placeholder="아이디" @keyup="idCheck" @keyup.enter="confirm"></b-form-input>
               <div :style="{ color: idColor }">{{ idCheckDiv }}</div>
             </b-form-group>
             <b-form-group>
@@ -54,24 +47,13 @@
             <b-form-group>
               <div style="float: left">이름:</div>
               <div style="float: right; color: red; font-size: small">*필수</div>
-              <b-form-input
-                id="name"
-                v-model="user.name"
-                required
-                placeholder="이름"
-                @keyup.enter="confirm"
-              ></b-form-input>
+              <b-form-input id="name" v-model="user.name" required placeholder="이름" @keyup.enter="confirm"></b-form-input>
             </b-form-group>
             <b-form-group label="이메일:" label-for="email">
               <b-form-input id="email" v-model="user.email" placeholder="이메일" @keyup.enter="confirm"></b-form-input>
             </b-form-group>
             <b-form-group label="전화번호:" label-for="phone">
-              <b-form-input
-                id="phone"
-                v-model="user.phone"
-                placeholder="전화번호"
-                @keyup.enter="confirm"
-              ></b-form-input>
+              <b-form-input id="phone" v-model="user.phone" placeholder="전화번호" @keyup.enter="confirm"></b-form-input>
             </b-form-group>
 
             <b-button type="button" variant="dark" class="" @click="confirm">회원가입</b-button>
@@ -118,7 +100,7 @@ export default {
       if (this.userPw === this.userPwCk && this.canUseId && this.canUserPw && this.user.name) {
         console.log("===========");
         await this.userJoin(this.user);
-        alert(this.user.name + "님의 회원가입 완료!");
+        alert(this.user.name + "님 회원가입 되었습니다.\n서비스를 이용하려면 로그인 해주세요.");
         this.$router.push({ name: "login" });
       } else {
         alert("회원 정보를 모두 입력해주세요.");
