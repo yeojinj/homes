@@ -3,21 +3,21 @@
     <b-container>
       <b-row class="text-center pb-2 px-1">
         <b-col class="select-bar">
-          <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList">
+          <b-form-select id="sido" v-model="sidoCode" :options="sidos" @change="gugunList()">
             <template #first>
               <b-form-select-option :value="null" disabled>광역시/도</b-form-select-option>
             </template>
           </b-form-select>
         </b-col>
         <b-col class="select-bar">
-          <b-form-select v-model="gugunCode" :options="guguns" @change="dongList">
+          <b-form-select id="gugun" v-model="gugunCode" :options="guguns" @change="dongList">
             <template #first>
               <b-form-select-option :value="null" disabled>시/구</b-form-select-option>
             </template>
           </b-form-select>
         </b-col>
         <b-col class="select-bar">
-          <b-form-select v-model="dongCode" :options="dongs">
+          <b-form-select v-model="dongCode" :options="dongs" @change="dongChange">
             <template #first>
               <b-form-select-option :value="null" disabled>동</b-form-select-option>
             </template>
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import $ from "jquery";
 import { mapState, mapActions, mapMutations } from "vuex";
 const apartStore = "apartStore";
 export default {
@@ -58,12 +59,17 @@ export default {
   },
 
   computed: {
-    ...mapState(apartStore, ["sidos", "guguns", "dongs", "apartments"]),
+    ...mapState(apartStore, ["sidos", "guguns", "dongs", "apartments", "searchData"]),
     // sidos() {
     //   return this.$store.state.sidos;
     // },
   },
   created() {
+    this.sidoCode = this.searchData.sidoCode;
+    this.gugunCode = this.searchData.gugunCode;
+    this.dongCode = this.searchData.dongCode;
+    this.apartName = this.searchData.apartName;
+
     console.log("실거래가 페이지 Create ()");
     // this.$store.dispatch("getSido");
     // this.sidoList();
@@ -80,18 +86,35 @@ export default {
 
   methods: {
     ...mapActions(apartStore, ["getSido", "getGugun", "getDong", "getApartList"]),
-    ...mapMutations(apartStore, ["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_APT_LIST"]),
+    ...mapMutations(apartStore, [
+      "CLEAR_SIDO_LIST",
+      "CLEAR_GUGUN_LIST",
+      "CLEAR_DONG_LIST",
+      "CLEAR_APT_LIST",
+      "SET_SIDO_CODE",
+      "SET_GUGUN_CODE",
+      "SET_DONG_CODE",
+      "SET_APART_NAME",
+      "SET_SIDO_NAME",
+      "SET_GUGUN_NAME",
+    ]),
     async sidoList() {
       console.log("@@@");
       await this.getSido();
     },
     //선택한 시도에 대한 구군 정보를 얻어온다.
     async gugunList() {
-      console.log(this.sidoCode);
+      //선택한 시에 대한 정보를 apartStore state에 저장한다.
+      // console.log(inputVal.options[inputVal.selectedIndex].text);
+      console.log($("#sido option:checked").text());
+
+      this.SET_SIDO_NAME($("#sido option:checked").text());
       //구군 리스트 를 지운다.
       this.CLEAR_GUGUN_LIST();
       //선택한 구군 코드 초기화
       this.gugunCode = null;
+
+      this.SET_SIDO_CODE(this.sidoCode);
       if (this.sidoCode) {
         //시도 코드 2글자가 넘어간다.
         await this.getGugun(this.sidoCode);
@@ -104,10 +127,18 @@ export default {
       this.CLEAR_DONG_LIST();
       //선택한 동 코드 초기화
       this.dongCode = null;
+      this.SET_GUGUN_CODE(this.gugunCode);
+      this.SET_GUGUN_NAME($("#gugun option:checked").text());
+
+      console.log($("#gugun option:checked").text());
       if (this.gugunCode) {
         //구군 코드 5글자가   넘어간다.
         await this.getDong(this.gugunCode);
       }
+    },
+
+    dongChange() {
+      this.SET_DONG_CODE(this.dongCode);
     },
 
     async searchApt() {
@@ -115,6 +146,7 @@ export default {
         alert("시/구/동은 반드시 선택해주세요");
         return;
       } else {
+        this.SET_APART_NAME(this.apartName);
         console.log("검색할 동 코드:" + this.dongCode);
         console.log(this.dongCode + " " + this.apartName);
 

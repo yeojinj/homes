@@ -12,12 +12,14 @@
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">지번 : {{ apartInfo.dongName + " " + apartInfo.jibun }}</h2>
+          <h2 class="address" style="font-size: 10px">
+            지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}
+          </h2>
         </div>
         <div class="address-info">
           <h2 class="address" style="font-size: 10px">
             도로명:
-            {{ apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
+            {{ sidoName + " " + apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
         </div>
         <div class="apart-buildYear">
@@ -129,6 +131,8 @@ import http from "@/api/http";
 import { Chart, registerables } from "chart.js";
 import { Line as LineChartGenerator } from "vue-chartjs/legacy";
 Chart.register(...registerables);
+import { mapState } from "vuex";
+const apartStore = "apartStore";
 
 export default {
   name: "apartDetailView",
@@ -190,6 +194,8 @@ export default {
         nowMonth: "",
         oldMonth: "",
       },
+      sidoName: "",
+      gugunName: "",
       isRoadViewOn: false,
 
       chartData: {
@@ -219,7 +225,12 @@ export default {
                 let length = value.toString().length;
 
                 if (length >= 5) {
-                  return value.toString().substring(0, length - 4) + "억 " + value.toString().substring(length - 4, length) + "만원";
+                  return (
+                    value.toString().substring(0, length - 4) +
+                    "억 " +
+                    value.toString().substring(length - 4, length) +
+                    "만원"
+                  );
                 } else {
                   return value + "만원";
                 }
@@ -260,6 +271,18 @@ export default {
     var oneMonthAgo = new Date(now.setMonth(now.getMonth() - 3)); // 한달 전
     this.date.oldYear = oneMonthAgo.getFullYear();
     this.date.oldMonth = oneMonthAgo.getMonth();
+
+    //시도 구군 이름
+    this.sidoName = this.searchData.sidoName;
+    console.log(this.searchData.sidoName + "시도");
+    this.gugunName = this.searchData.gugunName;
+  },
+
+  computed: {
+    ...mapState(apartStore, ["searchData"]),
+    // sidos() {
+    //   return this.$store.state.sidos;
+    // },
   },
 
   mounted() {
@@ -278,7 +301,8 @@ export default {
         console.log("initmap mounted  else");
         script.onload = () => window.kakao.maps.load(this.initMap);
 
-        script.src = "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
+        script.src =
+          "//dapi.kakao.com/v2/maps/sdk.js?appkey=25a670a3c5b2cb026eddd631f8e2eaad&libraries=services&autoload=false";
         document.head.appendChild(script);
       }
     },
@@ -376,7 +400,12 @@ export default {
           let year = data[i].dealYear;
           let month = data[i].dealMonth;
 
-          if (year >= this.date.oldYear && year <= this.date.nowYear && month >= this.date.oldMonth && month <= this.date.nowMonth) {
+          if (
+            year >= this.date.oldYear &&
+            year <= this.date.nowYear &&
+            month >= this.date.oldMonth &&
+            month <= this.date.nowMonth
+          ) {
             //최근 3개월 거래 개수
 
             this.count++;
@@ -406,7 +435,9 @@ export default {
     calUnitAmount(amount) {
       let length = amount.toString().length;
       if (length >= 5) {
-        return amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원";
+        return (
+          amount.toString().substring(0, length - 4) + "억 " + amount.toString().substring(length - 4, length) + "만원"
+        );
       } else {
         return amount + "만원";
       }
@@ -487,7 +518,8 @@ export default {
       });
 
       // 마커에 커서가 오버됐을 때 마커 위에 표시할 인포윈도우를 생성합니다
-      var iwContent = '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+      var iwContent =
+        '<div id="info-box" style="padding: 5px; font-weight: bold; ">' + this.apartInfo.apartmentName + "</div>"; // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
 
       // 인포윈도우를 생성합니다
       var infowindow = new window.kakao.maps.InfoWindow({
@@ -497,7 +529,11 @@ export default {
       // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
       // 이벤트 리스너로는 클로저를 만들어 등록합니다
       // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-      window.kakao.maps.event.addListener(this.marker, "mouseover", this.makeOverListener(this.map, this.marker, infowindow));
+      window.kakao.maps.event.addListener(
+        this.marker,
+        "mouseover",
+        this.makeOverListener(this.map, this.marker, infowindow)
+      );
 
       window.kakao.maps.event.addListener(this.marker, "mouseout", this.makeOutListener(infowindow));
 
@@ -895,7 +931,8 @@ export default {
   padding: 10px;
   color: #fff;
   background: #d95050;
-  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px center;
+  background: #d95050 url(https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/arrow_white.png) no-repeat right 14px
+    center;
 }
 .placeinfo .tel {
   color: #3f667a;
