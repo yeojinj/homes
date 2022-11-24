@@ -19,11 +19,17 @@ const onlyAuthUser = async (to, from, next) => {
   if (!checkToken || checkUserInfo === null) {
     alert("로그인이 필요한 페이지입니다.");
     // next({ name: "login" });
-    if (router.path !== "/user/login") router.push({ name: "login" });
+    router.push({ name: "login" });
   } else {
     console.log("로그인 했다!!!!!!!!!!!!!.");
     next();
   }
+};
+
+const init = async (to, from, next) => {
+  console.log("search data 초기화 init()");
+  await store.commit("apartStore/CLEAR_SEARCHDATA");
+  next();
 };
 
 const routes = [
@@ -31,10 +37,12 @@ const routes = [
     path: "/",
     name: "main",
     component: AppMain,
+    beforeEnter: init,
   },
   {
     path: "/user",
     name: "user",
+    beforeEnter: init,
     component: () => import("@/views/AppUser"),
     children: [
       {
@@ -71,6 +79,7 @@ const routes = [
       {
         path: "main",
         name: "apartMain",
+
         component: () => import("@/components/apart/ApartMain"),
       },
 
@@ -85,6 +94,8 @@ const routes = [
     path: "/qna",
     name: "qna",
     beforeEnter: onlyAuthUser,
+    init,
+    // beforeEnter: init,
     component: () => import("@/views/AppQna"),
     redirect: "/qna/list",
     children: [
@@ -119,6 +130,7 @@ const routes = [
     path: "/notice",
     name: "notice",
     beforeEnter: onlyAuthUser,
+    init,
     component: () => import("@/views/AppNotice"),
     redirect: "/notice/list",
     children: [

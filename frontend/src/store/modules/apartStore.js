@@ -56,6 +56,18 @@ const apartStore = {
     SET_APART_NAME(state, apartName) {
       state.searchData.apartName = apartName;
     },
+
+    CLEAR_SEARCHDATA(state) {
+      state.searchData = {
+        sidoCode: null,
+        gugunCode: null,
+        dongCode: null,
+        sidoName: "",
+        gugunName: "",
+        apartName: "",
+      };
+      state.apartments = [];
+    },
     CLEAR_SIDO_LIST(state) {
       state.sidos = [];
     },
