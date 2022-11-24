@@ -3,14 +3,12 @@
     <div id="main-image">
       <div class="container">
         <div class="title-text" style="text-align: left">
-          <h2>
+          <h1>
             <b>홈즈로<br />나에게 딱 맞게</b>
-          </h2>
+          </h1>
           <br />
           <br />
-          <h5>
-            <span class="title-highlight">실거래가</span>부터 <span class="title-highlight">주변 상권</span>까지 한 번에
-          </h5>
+          <h4><span class="title-highlight">실거래가</span>부터 <span class="title-highlight">주변 상권</span>까지 한 번에</h4>
         </div>
         <div class="title-image">
           <img id="homes-image" src="@/assets/homes_title.svg" />
@@ -110,7 +108,7 @@ export default {
 }
 
 #homes-image {
-  width: 300px;
+  width: 350px;
 }
 
 /* h2 h5 {
