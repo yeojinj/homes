@@ -1,46 +1,43 @@
 <template>
-  <div style="display: flex">
+  <div id="allDiv" style="display: flex">
     <div id="detailInfo">
       <fieldset class="search-group except-content">
         <div class="header-info">
-          <h1 style="font-size: 20px">
-            <span>{{ apartInfo.dongName }} </span>
+          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로가기</span></a>
+          <h1 style="font-size: 23px">
             <span>{{ apartInfo.apartmentName }} </span>
           </h1>
-          <a href="#" class="btn-back" data-ga-event="apt,backBtn"><span>뒤로</span></a
-          ><a href="#" class="btn-close" data-ga-event="apt,closeBtn"><span>X</span></a>
         </div>
 
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">
+          <h2 class="address" style="font-size: 11px">
             지번 : {{ sidoName + " " + gugunName + " " + apartInfo.dongName + " " + apartInfo.jibun }}
           </h2>
         </div>
         <div class="address-info">
-          <h2 class="address" style="font-size: 10px">
+          <h2 class="address" style="font-size: 11px">
             도로명:
             {{ sidoName + " " + apartInfo.roadName + " " + parseInt(apartInfo.roadNameBonbun) }}
           </h2>
         </div>
         <div class="apart-buildYear">
-          <h2 class="buildYear" style="font-size: 10px">준공년도: {{ apartInfo.buildYear }}</h2>
+          <h2 class="buildYear" style="font-size: 11px">준공년도: {{ apartInfo.buildYear }}</h2>
         </div>
 
-        <ul class="search-select-group">
-          <li class="type select"></li>
-          <li class="area select"></li>
-          <li class="roadViewButton">
-            <button @click="showRoadView">로드뷰</button>
-          </li>
-          <li class="options">
-            <div>
-              <b-form-select v-model="apartArea" :options="areas" @change="changeArea"></b-form-select>
-            </div>
-          </li>
-        </ul>
+        <div style="display: flex">
+          <div class="roadViewDiv" style="width: 50%" @click="showRoadView">로드뷰</div>
+          <div class="areaDiv" style="width: 50%">
+            <b-form-select
+              class="area-select"
+              v-model="apartArea"
+              :options="areas"
+              @change="changeArea"
+            ></b-form-select>
+          </div>
+        </div>
       </fieldset>
 
-      <div class="averDeal">최근 3개월 평균 거래가격 : {{ averDeal }}</div>
+      <div class="averDealDiv">최근 3개월 평균 거래가격 : {{ averDeal }}</div>
 
       <!--로드뷰-->
       <div id="roadview" style="width: 100%; height: 300px" v-show="isRoadViewOn"></div>
@@ -947,5 +944,60 @@ export default {
   color: #999;
   font-size: 11px;
   margin-top: 0;
+}
+
+/* houseInfo  start*/
+h1 {
+  display: block;
+  font-size: 2em;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
+}
+
+.btn-back span {
+  display: inline-block;
+  overflow: hidden;
+  width: 16px;
+  height: 16px;
+  background-image: url("~@/assets/left-arrow.png");
+  /* background-position: -283px -383px; */
+  line-height: 999em;
+  vertical-align: top;
+  /* background-repeat: no-repeat; */
+}
+
+.btn-back {
+  position: absolute;
+  left: 0px;
+  top: 1px;
+  padding-left: 20px;
+  padding-top: 21px;
+}
+
+.areaDiv > .area-select {
+  border: none;
+  color: white;
+}
+.areaDiv > .custom-select {
+  background: #3f667a
+    url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='white' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e")
+    no-repeat right 0.75rem center/8px 10px;
+}
+
+.roadViewDiv {
+  line-height: 39px;
+  border-right: solid 1px lightslategray;
+  border-top: solid 1px lightslategray;
+}
+.areaDiv {
+  border-top: solid 1px lightslategray;
+}
+.averDealDiv {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: solid 1px lightslategray;
 }
 </style>
