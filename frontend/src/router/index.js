@@ -5,9 +5,6 @@ import AppMain from "@/views/AppMain";
 import store from "@/store";
 Vue.use(VueRouter);
 
-
-
-
 // https://v3.router.vuejs.org/kr/guide/advanced/navigation-guards.html
 const onlyAuthUser = async (to, from, next) => {
   const checkUserInfo = store.getters["memberStore/checkUserInfo"];
@@ -20,7 +17,7 @@ const onlyAuthUser = async (to, from, next) => {
     await store.dispatch("memberStore/getUserInfo", token);
   }
   if (!checkToken || checkUserInfo === null) {
-    alert("로그인이 필요한 페이지입니다..");
+    alert("로그인이 필요한 페이지입니다.");
     // next({ name: "login" });
     router.push({ name: "login" });
   } else {
@@ -29,21 +26,74 @@ const onlyAuthUser = async (to, from, next) => {
   }
 };
 
-
-
-
-
+const init = async (to, from, next) => {
+  console.log("search data 초기화 init()");
+  await store.commit("apartStore/CLEAR_SEARCHDATA");
+  next();
+};
 
 const routes = [
   {
     path: "/",
     name: "main",
     component: AppMain,
+    beforeEnter: init,
+  },
+  {
+    path: "/user",
+    name: "user",
+    beforeEnter: init,
+    component: () => import("@/views/AppUser"),
+    children: [
+      {
+        path: "join",
+        name: "join",
+        component: () => import("@/components/user/UserRegister"),
+      },
+      {
+        path: "login",
+        name: "login",
+        component: () => import("@/components/user/UserLogin"),
+      },
+      {
+        path: "mypage",
+        name: "mypage",
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/user/UserMyPage"),
+      },
+      {
+        path: "modify",
+        name: "modify",
+        beforeEnter: onlyAuthUser,
+        component: () => import("@/components/user/UserModify"),
+      },
+    ],
+  },
+  {
+    path: "/house",
+    name: "house",
+    redirect: "/house/main",
+    beforeEnter: onlyAuthUser,
+    component: () => import("@/views/AppHouse"),
+    children: [
+      {
+        path: "main",
+        name: "apartMain",
+
+        component: () => import("@/components/apart/ApartMain"),
+      },
+      {
+        path: "view/:apartCode",
+        name: "apartDetailView",
+        component: () => import("@/components/apart/ApartDetail"),
+      },
+    ],
   },
   {
     path: "/qna",
     name: "qna",
     beforeEnter: onlyAuthUser,
+    init,
     component: () => import("@/views/AppQna"),
     redirect: "/qna/list",
     children: [
@@ -57,7 +107,6 @@ const routes = [
         name: "qnaview",
         component: () => import("@/components/qna/QnaView"),
       },
-
       {
         path: "write",
         name: "qnawrite",
@@ -68,22 +117,40 @@ const routes = [
         name: "qnamodify",
         component: () => import("@/components/qna/QnaModify"),
       },
+      {
+        path: "comment/:no",
+        name: "qnacomment",
+        component: () => import("@/components/qna/QnaComment"),
+      },
     ],
   },
   {
-    path: "/user",
-    name: "user",
-    component: () => import("@/views/AppUser"),
+    path: "/notice",
+    name: "notice",
+    beforeEnter: onlyAuthUser,
+    init,
+    component: () => import("@/views/AppNotice"),
+    redirect: "/notice/list",
     children: [
-      // {
-      //   path: "join",
-      //   name: "join",
-      //   component: () => import("@/components/user/UserRegister"),
-      // },
       {
-        path: "login",
-        name: "login",
-        component: () => import("@/components/user/UserLogin"),
+        path: "list",
+        name: "noticelist",
+        component: () => import("@/components/notice/NoticeList"),
+      },
+      {
+        path: "view/:no",
+        name: "noticeview",
+        component: () => import("@/components/notice/NoticeView"),
+      },
+      {
+        path: "write",
+        name: "noticewrite",
+        component: () => import("@/components/notice/NoticeWrite"),
+      },
+      {
+        path: "modify/:no",
+        name: "noticemodify",
+        component: () => import("@/components/notice/NoticeModify"),
       },
     ],
   },

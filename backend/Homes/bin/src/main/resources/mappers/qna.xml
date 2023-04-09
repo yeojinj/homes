@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+	<mapper namespace="com.ssafy.homes.qna.model.mapper.QnaMapper">
+	
+	
+	<resultMap type="qnaDto" id="qna">
+		<result column="no" property="no"/>
+		<result column="user_id" property="userId"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="reg_time" property="regTime"/>
+		<result column="comment" property="comment"/>
+		<result column="com_time" property="comTime"/>
+		<result column="state" property="state"/>
+	</resultMap>
+	
+	<!--  GET ONE : 상세 QNA -->
+	<!-- map 으로 list에 필요한거만 가져와도 될듯  -->
+	<select id="getQna" parameterType="int" resultMap="qna">
+		select no , user_id , subject ,content , reg_time,comment,com_time,state
+		from qnaboard
+		where no = #{no}
+	</select>
+	
+	
+	<!-- POST : QNA등록 -->
+	
+		<insert id="writeQna" parameterType="qnaDto">
+		insert into qnaboard (user_id, subject, content, reg_time, state)
+		values (#{userId}, #{subject}, #{content}, now(), #{state})
+	</insert>
+	
+	
+	
+	
+	<!-- GET LIST : QNA 목록 긁어오기 -->
+		<select id="listQna"  resultMap="qna">
+		select no , user_id , subject ,content , reg_time,comment,com_time,state
+		from qnaboard
+	</select>
+	
+	<!-- DELETE : QNA 삭제  -->
+	
+	<!--  DELETE : QNA 삭제 : 글번호 -->
+	<delete id="deleteQna" parameterType="int">
+		delete from qnaboard
+		where no = #{no}
+	</delete>
+	
+	
+	<!--  DELETE : QNA 삭제 : 회원 아이디 -->
+		<delete id="deleteQnaWithUserId" parameterType="String">
+		delete from qnaboard
+		where user_id = #{userId}
+	</delete>
+	
+	</mapper>

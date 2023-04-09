@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app">
     <the-header-navbar></the-header-navbar>
     <router-view />
     <the-footer-navbar></the-footer-navbar>
@@ -20,8 +20,6 @@ export default {
 </script>
 
 <style>
-
-
 #app {
   font-family: "SUIT-Regular";
   -webkit-font-smoothing: antialiased;

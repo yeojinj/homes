@@ -10,9 +10,6 @@
 </template>
 
 <script>
-//테스트
-//금비
-//정여진
 export default {
   name: "QnaListItem",
   props: {
